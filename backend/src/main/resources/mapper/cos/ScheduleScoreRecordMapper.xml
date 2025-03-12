@@ -2,4 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cc.mrbird.febs.cos.dao.ScheduleScoreRecordMapper">
 
+    <!-- 分页获取课程分数记录信息 -->
+    <select id="queryShedulePage" resultType="java.util.LinkedHashMap">
+
+    </select>
 </mapper>

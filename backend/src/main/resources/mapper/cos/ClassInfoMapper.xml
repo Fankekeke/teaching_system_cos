@@ -2,4 +2,34 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cc.mrbird.febs.cos.dao.ClassInfoMapper">
 
+    <!-- 分页获取班级信息 -->
+    <select id="queryClassPage" resultType="java.util.LinkedHashMap">
+        select
+        ci.id,
+        ci.code,
+        ci.name,
+        ci.content,
+        ci.tie_id,
+        ci.major_id,
+        ci.grade_yaer,
+        ci.teacher_id,
+        ci.create_date,
+        si.name as staffName,
+        si.images as staffImages,
+        ti.name as tieName,
+        mi.name as majorName
+        from
+        class_info ci
+        left join staff_info si on (si.id = ci.teacher_id)
+        left join tie_info ti on (ti.id = ci.tie_id)
+        left join major_info mi on (mi.id = ci.major_id)
+        where 1 = 1
+        <if test="classInfo.name != null and classInfo.name != ''">
+            AND ci.name LIKE CONCAT('%',#{classInfo.name},'%')
+        </if>
+        <if test="classInfo.staffName != null and classInfo.staffName != ''">
+            AND si.name LIKE CONCAT('%',#{classInfo.staffName},'%')
+        </if>
+        order by ci.create_date desc
+    </select>
 </mapper>
