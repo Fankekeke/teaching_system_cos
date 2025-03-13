@@ -11,12 +11,9 @@
         di.content,
         di.create_date,
         di.create_by,
-        di.del_flag,
-        ei.name as enterpriseName,
-        ei.images as enterpriseImages
+        di.del_flag
         from
         position_info di
-        left join enterprise_info ei on (ei.id = di.enterprise_id)
         where
         1 = 1
         and del_flag = '0'
@@ -25,9 +22,6 @@
         </if>
         <if test="positionInfo.name != null and positionInfo.name != ''">
             AND di.name LIKE CONCAT('%',#{positionInfo.name},'%')
-        </if>
-        <if test="positionInfo.enterpriseId != null and positionInfo.enterpriseId != ''">
-            AND ei.user_id = #{positionInfo.enterpriseId}
         </if>
         order by
         create_date desc

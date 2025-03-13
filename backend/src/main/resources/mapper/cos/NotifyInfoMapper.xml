@@ -46,6 +46,50 @@
         ni.create_date desc
     </select>
 
+    <!-- 分页获取消息通知信息 -->
+    <select id="queryNotifyPageByStudent" resultType="java.util.LinkedHashMap">
+        select ni.id,
+               ni.user_code,
+               ni.user_id,
+               ni.content,
+               ni.del_flag,
+               ni.create_date,
+               ni.`type`,
+               stui.name,
+               stui.sex,
+               ci.name   as className,
+               si.name   as staffName,
+               si.images as staffImages,
+               ti.name   as tieName,
+               mi.name   as majorName
+        from notify_info ni
+                 left join student_info stui on (si.id = ni.user_id)
+                 left join major_info mi on (mi.id = stui.major_id)
+                 left join class_info ci on (ci.id = stui.class_id)
+                 left join staff_info si on (si.id = ci.teacher_id)
+                 left join tie_info ti on (ti.id = ci.tie_id)
+        where ni.`type` = 1
+        order by ni.create_date desc
+    </select>
+
+    <!-- 分页获取消息通知信息 -->
+    <select id="queryNotifyPageByStaff" resultType="java.util.LinkedHashMap">
+        select
+            ni.id,
+            ni.user_code,
+            ni.user_id,
+            ni.content,
+            ni.del_flag,
+            ni.create_date,
+            ni.name,
+            ni.`type`
+        from
+            notify_info ni
+                left join staff_info si2 on (si2.id = ni.user_id)
+        where ni.`type` = 2
+        order by ni.create_date desc
+    </select>
+
     <!-- 根据用户ID获取消息通知信息 -->
     <select id="queryNotifyByUser" resultType="java.util.LinkedHashMap">
         select ni.id,
