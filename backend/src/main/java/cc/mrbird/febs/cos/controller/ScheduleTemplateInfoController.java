@@ -2,9 +2,16 @@ package cc.mrbird.febs.cos.controller;
 
 
 import cc.mrbird.febs.common.utils.R;
+import cc.mrbird.febs.cos.entity.ScheduleClassInfo;
 import cc.mrbird.febs.cos.entity.ScheduleTemplateInfo;
+import cc.mrbird.febs.cos.service.IScheduleClassInfoService;
 import cc.mrbird.febs.cos.service.IScheduleTemplateInfoService;
+import cn.hutool.core.collection.CollectionUtil;
+import cn.hutool.core.date.DateField;
+import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +31,8 @@ import java.util.List;
 public class ScheduleTemplateInfoController {
 
     private final IScheduleTemplateInfoService scheduleTemplateInfoService;
+
+    private final IScheduleClassInfoService scheduleClassInfoService;
 
     /**
      * 分页获取课表模板信息
@@ -66,8 +75,54 @@ public class ScheduleTemplateInfoController {
      */
     @PostMapping
     public R save(ScheduleTemplateInfo scheduleTemplateInfo) {
+        scheduleTemplateInfo.setCode("TEM-" + System.currentTimeMillis());
         scheduleTemplateInfo.setCreateDate(DateUtil.formatDateTime(new Date()));
         return R.ok(scheduleTemplateInfoService.save(scheduleTemplateInfo));
+    }
+
+    /**
+     * 批量保存课表信息
+     *
+     * @return 结果
+     */
+    @GetMapping("/batchSaveSchedule")
+    public R batchSaveSchedule() {
+        // 获取所有课表模板信息
+        List<ScheduleTemplateInfo> list = scheduleTemplateInfoService.list();
+        if (CollectionUtil.isEmpty(list)) {
+            throw new RuntimeException("请先添加课表模板信息");
+        }
+        String date = DateUtil.format(new Date(), "yyyy-MM");
+        // 先删除本月课表
+        scheduleClassInfoService.remove(Wrappers.<ScheduleClassInfo>lambdaQuery().apply("date_format(course_date, '%m-%d') = " + date));
+
+        // 待添加的课表信息
+        List<ScheduleClassInfo> scheduleClassInfoList = CollectionUtil.newArrayList();
+
+        // 本月日期列表
+        List<DateTime> dateList = DateUtil.rangeToList(DateUtil.beginOfMonth(new Date()), DateUtil.endOfMonth(new Date()), DateField.DAY_OF_MONTH);
+
+        // 生成本月课表
+        for (ScheduleTemplateInfo scheduleTemplate : list) {
+            for (DateTime dateTime : dateList) {
+                int weekday = DateUtil.dayOfWeek(dateTime);
+                if (scheduleTemplate.getTypeDay().equals(StrUtil.toString(weekday))) {
+                    ScheduleClassInfo scheduleClassInfo = new ScheduleClassInfo();
+                    scheduleClassInfo.setCourseId(scheduleTemplate.getCourseId());
+                    scheduleClassInfo.setClassId(scheduleTemplate.getClassId());
+                    scheduleClassInfo.setCourseDate(DateUtil.formatDateTime(dateTime));
+                    scheduleClassInfo.setStartTime(scheduleTemplate.getStartTime());
+                    scheduleClassInfo.setEndTime(scheduleTemplate.getEndTime());
+
+                    scheduleClassInfoList.add(scheduleClassInfo);
+                }
+            }
+
+        }
+        if (CollectionUtil.isNotEmpty(scheduleClassInfoList)) {
+            scheduleClassInfoService.saveBatch(scheduleClassInfoList);
+        }
+        return R.ok(true);
     }
 
     /**

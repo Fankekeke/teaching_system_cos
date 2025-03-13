@@ -39,6 +39,17 @@ public class ClassInfoController {
     }
 
     /**
+     * 根据班级ID查询学生信息
+     *
+     * @param classId 班级ID
+     * @return 结果
+     */
+    @GetMapping("/queryStudentByClassId")
+    public R queryStudentByClassId(Integer classId) {
+        return R.ok(classInfoService.queryStudentByClassId(classId));
+    }
+
+    /**
      * 查询班级信息详情
      *
      * @param id 主键ID
@@ -67,6 +78,7 @@ public class ClassInfoController {
      */
     @PostMapping
     public R save(ClassInfo classInfo) {
+        classInfo.setCode("CLA-" + System.currentTimeMillis());
         classInfo.setCreateDate(DateUtil.formatDateTime(new Date()));
         return R.ok(classInfoService.save(classInfo));
     }

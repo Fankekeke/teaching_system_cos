@@ -49,4 +49,46 @@
         order by
         sei.course_date desc
     </select>
+
+    <!-- 查询选修课分数记录信息 -->
+    <select id="queryElectiveScoreRecord" resultType="java.util.LinkedHashMap">
+        select
+        esr.id,
+        esr.student_id,
+        esr.course_id,
+        esr.elective_id,
+        esr.score,
+        si.name as studentName,
+        si.images as studentImages,
+        sei.course_date,
+        sei.start_time,
+        sei.end_time,
+        ci.name as courseName,
+        ci.address,
+        si.name as staffName,
+        si.images as staffImages,
+        ti.name as tieName,
+        mi.name as majorName
+        from
+        elective_score_record esr
+        left join student_info si on
+        (si.id = esr.student_id)
+        left join schedule_elective_info sei on
+        (sei.id = esr.elective_id)
+        left join course_info ci on
+        (ci.id = esr.course_id)
+        left join left join staff_info si on
+        (si.id = ci.staff_id)
+        left join tie_info ti on
+        (ti.id = ci.tie_id)
+        left join major_info mi on
+        (mi.id = ci.major_id)
+        where
+        1 = 1
+        <if test="electiveId != null and electiveId != ''">
+            AND esr.elective_id = #{electiveId}
+        </if>
+        order by
+        sei.course_date desc
+    </select>
 </mapper>

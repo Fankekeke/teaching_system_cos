@@ -4,6 +4,40 @@
 
     <!-- 分页获取选修课表信息 -->
     <select id="queryElectivePage" resultType="java.util.LinkedHashMap">
-
+        select
+        sei.id,
+        sei.course_date,
+        sei.start_time,
+        sei.end_time,
+        sei.course_id,
+        sei.content,
+        sei.create_date,
+        ci.name as courseName,
+        ci.address,
+        si.name as staffName,
+        si.images as staffImages,
+        ti.name as tieName,
+        mi.name as majorName
+        from
+        schedule_elective_info sei
+        left join course_info ci on
+        (ci.id = sei.course_id)
+        left join left join staff_info si on
+        (si.id = ci.staff_id)
+        left join tie_info ti on
+        (ti.id = ci.tie_id)
+        left join major_info mi on
+        (mi.id = ci.major_id)
+        where 1 = 1
+        <if test="scheduleElectiveInfo.courseName != null and scheduleElectiveInfo.courseName != ''">
+            AND ci.name LIKE CONCAT('%',#{scheduleElectiveInfo.courseName},'%')
+        </if>
+        <if test="scheduleElectiveInfo.majorName != null and scheduleElectiveInfo.majorName != ''">
+            AND mi.name LIKE CONCAT('%',#{scheduleElectiveInfo.majorName},'%')
+        </if>
+        <if test="scheduleElectiveInfo.staffName != null and scheduleElectiveInfo.staffName != ''">
+            AND si.name LIKE CONCAT('%',#{scheduleElectiveInfo.staffName},'%')
+        </if>
+        order by sei.create_date desc
     </select>
 </mapper>

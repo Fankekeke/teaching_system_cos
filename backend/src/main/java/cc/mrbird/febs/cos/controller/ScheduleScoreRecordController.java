@@ -57,6 +57,17 @@ public class ScheduleScoreRecordController {
     }
 
     /**
+     * 根据课程ID查询课程分数记录信息
+     *
+     * @param scheduleId 课程ID
+     * @return 结果
+     */
+    @GetMapping("/queryScheduleScoreRecord")
+    public R queryScheduleScoreRecord(Integer scheduleId) {
+        return R.ok(scheduleScoreRecordService.queryScheduleScoreRecord(scheduleId));
+    }
+
+    /**
      * 新增课程分数记录信息
      *
      * @param scheduleScoreRecord 课程分数记录信息

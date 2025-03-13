@@ -4,6 +4,74 @@
 
     <!-- 分页获取学生信息 -->
     <select id="queryStudentPage" resultType="java.util.LinkedHashMap">
+        select
+        stui.id,
+        stui.code,
+        stui.name,
+        stui.sex,
+        stui.major_id,
+        stui.class_id,
+        stui.phone,
+        stui.email,
+        stui.content,
+        stui.create_date,
+        stui.images,
+        stui.user_id,
+        ci.name as className,
+        si.name as staffName,
+        si.images as staffImages,
+        ti.name as tieName,
+        mi.name as majorName
+        from
+        student_info stui
+        left join major_info mi on (mi.id = stui.major_id)
+        left join class_info ci on (ci.id = stui.class_id)
+        left join staff_info si on (si.id = ci.teacher_id)
+        left join tie_info ti on (ti.id = ci.tie_id)
+        where 1 = 1
+        <if test="studentInfo.name != null and studentInfo.name != ''">
+            AND stui.name LIKE CONCAT('%',#{studentInfo.name},'%')
+        </if>
+        <if test="studentInfo.className != null and studentInfo.className != ''">
+            AND ci.name LIKE CONCAT('%',#{studentInfo.className},'%')
+        </if>
+        <if test="studentInfo.staffName != null and studentInfo.staffName != ''">
+            AND si.name LIKE CONCAT('%',#{studentInfo.staffName},'%')
+        </if>
+        stui.create_date desc
+    </select>
 
+    <!-- 根据ID查询学生信息 -->
+    <select id="queryStudentByIds" resultType="java.util.LinkedHashMap">
+        select
+        stui.id,
+        stui.code,
+        stui.name,
+        stui.sex,
+        stui.major_id,
+        stui.class_id,
+        stui.phone,
+        stui.email,
+        stui.content,
+        stui.create_date,
+        stui.images,
+        stui.user_id,
+        ci.name as className,
+        si.name as staffName,
+        si.images as staffImages,
+        ti.name as tieName,
+        mi.name as majorName
+        from
+        student_info stui
+        left join major_info mi on (mi.id = stui.major_id)
+        left join class_info ci on (ci.id = stui.class_id)
+        left join staff_info si on (si.id = ci.teacher_id)
+        left join tie_info ti on (ti.id = ci.tie_id)
+        where 1 = 1
+        and stui.id in
+        <foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        stui.create_date desc
     </select>
 </mapper>

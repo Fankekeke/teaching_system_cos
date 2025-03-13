@@ -28,15 +28,26 @@ public class StaffInfoController {
     private final UserService userService;
 
     /**
-     * 分页获取员工信息
+     * 分页获取导师信息
      *
      * @param page          分页对象
-     * @param staffInfo 员工信息
+     * @param staffInfo 导师信息
      * @return 结果
      */
     @GetMapping("/page")
     public R page(Page<StaffInfo> page, StaffInfo staffInfo) {
         return R.ok(staffInfoService.selectStaffPage(page, staffInfo));
+    }
+
+    /**
+     * 查询导师课表信息
+     *
+     * @param staffId 导师ID
+     * @return 结果
+     */
+    @GetMapping("/queryScheduleByStaffId")
+    public R queryScheduleByStaffId(Integer staffId) {
+        return R.ok(staffInfoService.queryScheduleByStaffId(staffId));
     }
 
     /**
@@ -51,7 +62,7 @@ public class StaffInfoController {
     }
 
     /**
-     * 获取员工列表
+     * 获取导师列表
      *
      * @param enterpriseId 校企ID
      * @return 结果
@@ -62,7 +73,7 @@ public class StaffInfoController {
     }
 
     /**
-     * 获取员工列表
+     * 获取导师列表
      *
      * @param staffId 校企ID
      * @return 结果
@@ -74,7 +85,7 @@ public class StaffInfoController {
     }
 
     /**
-     * 获取员工信息
+     * 获取导师信息
      *
      * @return 结果
      */
@@ -84,7 +95,7 @@ public class StaffInfoController {
     }
 
     /**
-     * 获取员工信息
+     * 获取导师信息
      *
      * @return 结果
      */
@@ -94,7 +105,7 @@ public class StaffInfoController {
     }
 
     /**
-     * 获取员工详细信息
+     * 获取导师详细信息
      *
      * @param id ID
      * @return 结果
@@ -105,9 +116,9 @@ public class StaffInfoController {
     }
 
     /**
-     * 新增员工信息
+     * 新增导师信息
      *
-     * @param staffInfo 员工信息
+     * @param staffInfo 导师信息
      * @return 结果
      */
     @PostMapping
@@ -119,9 +130,9 @@ public class StaffInfoController {
     }
 
     /**
-     * 修改员工信息
+     * 修改导师信息
      *
-     * @param staffInfo 员工信息
+     * @param staffInfo 导师信息
      * @return 结果
      */
     @PutMapping
@@ -130,7 +141,7 @@ public class StaffInfoController {
     }
 
     /**
-     * 删除员工信息
+     * 删除导师信息
      *
      * @param ids 主键IDS
      * @return 结果

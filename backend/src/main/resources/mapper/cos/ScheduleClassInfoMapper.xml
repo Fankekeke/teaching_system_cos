@@ -22,7 +22,7 @@
         schedule_class_info sci
         left join class_info cai on (cai.id = sci.class_id)
         left join course_info ci on
-        (ci.id = esr.course_id)
+        (ci.id = sci.course_id)
         left join left join staff_info si on
         (si.id = ci.staff_id)
         left join tie_info ti on

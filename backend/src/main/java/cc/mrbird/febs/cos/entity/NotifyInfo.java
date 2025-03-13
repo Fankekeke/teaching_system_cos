@@ -57,6 +57,11 @@ public class NotifyInfo implements Serializable {
 
     private String name;
 
+    /**
+     * 类型（1.学生 2.导师）
+     */
+    private String type;
+
     @TableField(exist = false)
     private String staffName;
 
@@ -69,6 +74,14 @@ public class NotifyInfo implements Serializable {
         this.createDate = createDate;
         this.name = name;
     }
+
+    public NotifyInfo(Integer userId, String createDate, String type, String content) {
+        this.userId = userId;
+        this.createDate = createDate;
+        this.type = type;
+        this.content = content;
+    }
+
     public NotifyInfo() {}
 
 }

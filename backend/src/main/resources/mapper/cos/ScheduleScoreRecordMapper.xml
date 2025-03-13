@@ -4,6 +4,85 @@
 
     <!-- 分页获取课程分数记录信息 -->
     <select id="queryShedulePage" resultType="java.util.LinkedHashMap">
+        select
+        ssr.id,
+        ssr.student_id,
+        ssr.course_id,
+        ssr.schedule_id,
+        ssr.score,
+        stui.name as studentName,
+        stui.images as studentImages,
+        ci.name as courseName,
+        ci.address,
+        si.name as staffName,
+        si.images as staffImages,
+        ti.name as tieName,
+        mi.name as majorName,
+        sci.course_date,
+        sci.start_time,
+        sci.end_time
+        from
+        schedule_score_record ssr
+        left join student_info stui on
+        (stui.id = ssr.student_id)
+        left join course_info ci on
+        (ci.id = ssr.course_id)
+        left join left join staff_info si on
+        (si.id = ci.staff_id)
+        left join tie_info ti on
+        (ti.id = ci.tie_id)
+        left join major_info mi on
+        (mi.id = ci.major_id)
+        left join schedule_class_info sci on (sci.id = ssr.schedule_id)
+        where 1 = 1
+        <if test="scheduleScoreRecord.courseName != null and scheduleScoreRecord.courseName != ''">
+            AND ci.name LIKE CONCAT('%',#{scheduleScoreRecord.courseName},'%')
+        </if>
+        <if test="scheduleScoreRecord.majorName != null and scheduleScoreRecord.majorName != ''">
+            AND mi.name LIKE CONCAT('%',#{scheduleScoreRecord.majorName},'%')
+        </if>
+        <if test="scheduleScoreRecord.staffName != null and scheduleScoreRecord.staffName != ''">
+            AND si.name LIKE CONCAT('%',#{scheduleScoreRecord.staffName},'%')
+        </if>
+        order by sci.course_date desc
+    </select>
 
+    <!-- 根据课程ID查询课程分数记录信息 -->
+    <select id="queryScheduleScoreRecord" resultType="java.util.LinkedHashMap">
+        select
+        ssr.id,
+        ssr.student_id,
+        ssr.course_id,
+        ssr.schedule_id,
+        ssr.score,
+        stui.name as studentName,
+        stui.images as studentImages,
+        ci.name as courseName,
+        ci.address,
+        si.name as staffName,
+        si.images as staffImages,
+        ti.name as tieName,
+        mi.name as majorName,
+        sci.course_date,
+        sci.start_time,
+        sci.end_time
+        from
+        schedule_score_record ssr
+        left join student_info stui on
+        (stui.id = ssr.student_id)
+        left join course_info ci on
+        (ci.id = ssr.course_id)
+        left join left join staff_info si on
+        (si.id = ci.staff_id)
+        left join tie_info ti on
+        (ti.id = ci.tie_id)
+        left join major_info mi on
+        (mi.id = ci.major_id)
+        left join schedule_class_info sci on (sci.id = ssr.schedule_id)
+        where 1 = 1
+        <if test="scheduleId != null and scheduleId != ''">
+            AND ssr.schedule_id = #{scheduleId}
+        </if>
+        order by sci.course_date desc
     </select>
 </mapper>

@@ -1,14 +1,20 @@
 package cc.mrbird.febs.cos.service.impl;
 
+import cc.mrbird.febs.cos.dao.StudentInfoMapper;
 import cc.mrbird.febs.cos.entity.ClassInfo;
 import cc.mrbird.febs.cos.dao.ClassInfoMapper;
+import cc.mrbird.febs.cos.entity.StudentInfo;
 import cc.mrbird.febs.cos.service.IClassInfoService;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 
 /**
  * 班级管理 实现层
@@ -16,7 +22,10 @@ import java.util.LinkedHashMap;
  * @author FanK fan1ke2ke@gmail.com
  */
 @Service
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class ClassInfoServiceImpl extends ServiceImpl<ClassInfoMapper, ClassInfo> implements IClassInfoService {
+
+    private final StudentInfoMapper studentInfoMapper;
 
     /**
      * 分页获取班级信息
@@ -28,5 +37,16 @@ public class ClassInfoServiceImpl extends ServiceImpl<ClassInfoMapper, ClassInfo
     @Override
     public IPage<LinkedHashMap<String, Object>> queryClassPage(Page<ClassInfo> page, ClassInfo classInfo) {
         return baseMapper.queryClassPage(page, classInfo);
+    }
+
+    /**
+     * 根据班级ID查询学生信息
+     *
+     * @param classId 班级ID
+     * @return 结果
+     */
+    @Override
+    public List<StudentInfo> queryStudentByClassId(Integer classId) {
+        return studentInfoMapper.selectList(Wrappers.<StudentInfo>lambdaQuery().eq(StudentInfo::getClassId, classId));
     }
 }

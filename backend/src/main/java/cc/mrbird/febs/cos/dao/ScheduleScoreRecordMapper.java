@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 
 /**
  * 课程分数记录 mapper层
@@ -23,4 +24,12 @@ public interface ScheduleScoreRecordMapper extends BaseMapper<ScheduleScoreRecor
      * @return 结果
      */
     IPage<LinkedHashMap<String, Object>> queryShedulePage(Page<ScheduleScoreRecord> page, @Param("scheduleScoreRecord") ScheduleScoreRecord scheduleScoreRecord);
+
+    /**
+     * 根据课程ID查询课程分数记录信息
+     *
+     * @param scheduleId 课程ID
+     * @return 结果
+     */
+    List<LinkedHashMap<String, Object>> queryScheduleScoreRecord(@Param("scheduleId") Integer scheduleId);
 }

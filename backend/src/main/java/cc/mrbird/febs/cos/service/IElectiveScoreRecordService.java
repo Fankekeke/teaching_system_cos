@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 
 /**
  * 选修课分数记录 service层
@@ -23,4 +24,12 @@ public interface IElectiveScoreRecordService extends IService<ElectiveScoreRecor
      * @return 结果
      */
     IPage<LinkedHashMap<String, Object>> queryScoreRecord(Page<ElectiveScoreRecord> page, ElectiveScoreRecord electiveScoreRecord);
+
+    /**
+     * 查询选修课分数记录信息
+     *
+     * @param electiveId 选修课ID
+     * @return 结果
+     */
+    List<LinkedHashMap<String, Object>> queryElectiveScoreRecord(Integer electiveId);
 }

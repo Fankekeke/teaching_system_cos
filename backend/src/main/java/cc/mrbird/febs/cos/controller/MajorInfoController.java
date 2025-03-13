@@ -66,6 +66,7 @@ public class MajorInfoController {
      */
     @PostMapping
     public R save(MajorInfo majorInfo) {
+        majorInfo.setCode("MAJ-" + System.currentTimeMillis());
         majorInfo.setCreateDate(DateUtil.formatDateTime(new Date()));
         return R.ok(majorInfoService.save(majorInfo));
     }

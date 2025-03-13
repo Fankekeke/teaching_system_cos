@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 
 /**
  * 课程预约 service层
@@ -23,4 +24,20 @@ public interface ICourseReserveInfoService extends IService<CourseReserveInfo> {
      * @return 结果
      */
     IPage<LinkedHashMap<String, Object>> queryResevePage(Page<CourseReserveInfo> page, CourseReserveInfo courseReserveInfo);
+
+    /**
+     * 审核预约
+     *
+     * @param courseReserveInfo 课程预约信息
+     * @return 结果
+     */
+    boolean auditReserve(CourseReserveInfo courseReserveInfo);
+
+    /**
+     * 查询课程预约信息
+     *
+     * @param electiveId 选课ID
+     * @return 结果
+     */
+    List<LinkedHashMap<String, Object>> queryCourseReserveInfo(Integer electiveId);
 }

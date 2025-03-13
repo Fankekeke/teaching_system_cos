@@ -36,6 +36,17 @@ public class ElectiveScoreRecordController {
     }
 
     /**
+     * 查询选修课分数记录信息
+     *
+     * @param electiveId 选修课ID
+     * @return 结果
+     */
+    @GetMapping("/queryElectiveScoreRecord")
+    public R queryElectiveScoreRecord(Integer electiveId) {
+        return R.ok(electiveScoreRecordService.queryElectiveScoreRecord(electiveId));
+    }
+
+    /**
      * 查询选修课分数记录信息详情
      *
      * @param id 主键ID

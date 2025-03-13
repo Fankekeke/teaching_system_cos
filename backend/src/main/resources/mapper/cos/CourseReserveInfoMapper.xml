@@ -13,8 +13,8 @@
         cri.status,
         cri.reason,
         cri.audit_date,
-        si.name as studentName,
-        si.images as studentImages,
+        stui.name as studentName,
+        stui.images as studentImages,
         sei.course_date,
         sei.start_time,
         sei.end_time,
@@ -26,8 +26,8 @@
         mi.name as majorName
         from
         course_reserve_info cri
-        left join student_info si on
-        (si.id = cri.student_id)
+        left join student_info stui on
+        (stui.id = cri.student_id)
         left join schedule_elective_info sei on
         (sei.id = cri.elective_id)
         left join course_info ci on

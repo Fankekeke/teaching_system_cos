@@ -29,15 +29,26 @@ public class StaffInfoServiceImpl extends ServiceImpl<StaffInfoMapper, StaffInfo
     private final IBulletinInfoService bulletinInfoService;
 
     /**
-     * 分页获取员工信息
+     * 分页获取导师信息
      *
      * @param page          分页对象
-     * @param staffInfo 员工信息
+     * @param staffInfo 导师信息
      * @return 结果
      */
     @Override
     public IPage<LinkedHashMap<String, Object>> selectStaffPage(Page<StaffInfo> page, StaffInfo staffInfo) {
         return baseMapper.selectStaffPage(page, staffInfo);
+    }
+
+    /**
+     * 查询导师课表信息
+     *
+     * @param staffId 导师ID
+     * @return 结果
+     */
+    @Override
+    public List<LinkedHashMap<String, Object>> queryScheduleByStaffId(Integer staffId) {
+        return baseMapper.queryScheduleByStaffId(staffId);
     }
 
     /**
@@ -68,7 +79,7 @@ public class StaffInfoServiceImpl extends ServiceImpl<StaffInfoMapper, StaffInfo
     }
 
     /**
-     * 查询员工信息
+     * 查询导师信息
      *
      * @param enterpriseId 校企id
      * @return 结果
@@ -79,7 +90,7 @@ public class StaffInfoServiceImpl extends ServiceImpl<StaffInfoMapper, StaffInfo
     }
 
     /**
-     * 获取员工列表
+     * 获取导师列表
      *
      * @param enterpriseId 校企ID
      * @return 结果
@@ -90,14 +101,14 @@ public class StaffInfoServiceImpl extends ServiceImpl<StaffInfoMapper, StaffInfo
     }
 
     /**
-     * 根据用户id查询员工信息
+     * 根据用户id查询导师信息
      *
      * @param userId 用户id
      * @return 结果
      */
     @Override
     public LinkedHashMap<String, Object> queryStaffByUserId(Integer userId) {
-        // 获取员工信息
+        // 获取导师信息
         StaffInfo staffInfo = staffInfoService.selectOne(Wrappers.<StaffInfo>lambdaQuery().eq(StaffInfo::getUserId, userId));
         // 返回数据
         LinkedHashMap<String, Object> result = new LinkedHashMap<String, Object>() {
@@ -109,7 +120,7 @@ public class StaffInfoServiceImpl extends ServiceImpl<StaffInfoMapper, StaffInfo
     }
 
     /**
-     * 查询员工信息
+     * 查询导师信息
      *
      * @param ids ids
      * @return 结果

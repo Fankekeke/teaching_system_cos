@@ -9,6 +9,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 
 /**
  * 课程分数记录 实现层
@@ -28,5 +29,16 @@ public class ScheduleScoreRecordServiceImpl extends ServiceImpl<ScheduleScoreRec
     @Override
     public IPage<LinkedHashMap<String, Object>> queryShedulePage(Page<ScheduleScoreRecord> page, ScheduleScoreRecord scheduleScoreRecord) {
         return baseMapper.queryShedulePage(page, scheduleScoreRecord);
+    }
+
+    /**
+     * 根据课程ID查询课程分数记录信息
+     *
+     * @param scheduleId 课程ID
+     * @return 结果
+     */
+    @Override
+    public List<LinkedHashMap<String, Object>> queryScheduleScoreRecord(Integer scheduleId) {
+        return null;
     }
 }
