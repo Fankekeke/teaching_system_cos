@@ -4,6 +4,30 @@
 
     <!-- 分页获取专业管理信息 -->
     <select id="queryMajorPage" resultType="java.util.LinkedHashMap">
+        select
+        mi.id,
+        mi.tie_id,
+        mi.code,
+        mi.name,
+        mi.degree_category,
+        mi.study_duration,
+        mi.content,
+        mi.create_date,
+        ti.name as tieName
+        from
+        major_info mi
+        left join tie_info ti on (ti.id = mi.tie_id)
+        where 1 = 1
+        <if test="majorInfo.name != null and majorInfo.name != ''">
+            AND mi.name LIKE CONCAT('%',#{majorInfo.name},'%')
+        </if>
+        <if test="majorInfo.code != null and majorInfo.code != ''">
+            AND mi.code LIKE CONCAT('%',#{majorInfo.code},'%')
+        </if>
+        <if test="majorInfo.tieName != null and majorInfo.tieName != ''">
+            AND ti.code LIKE CONCAT('%',#{majorInfo.tieName},'%')
+        </if>
+        order by mi.create_date desc
 
     </select>
 </mapper>

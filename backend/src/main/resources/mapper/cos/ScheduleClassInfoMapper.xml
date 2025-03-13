@@ -4,6 +4,46 @@
 
     <!-- 分页获取班级课表信息 -->
     <select id="querySchedulePage" resultType="java.util.LinkedHashMap">
-
+        select
+        sci.id,
+        sci.course_date,
+        sci.start_time,
+        sci.end_time,
+        sci.class_id,
+        sci.course_id,
+        cai.name as className,
+        ci.name as courseName,
+        ci.address,
+        si.name as staffName,
+        si.images as staffImages,
+        ti.name as tieName,
+        mi.name as majorName
+        from
+        schedule_class_info sci
+        left join class_info cai on (cai.id = sci.class_id)
+        left join course_info ci on
+        (ci.id = esr.course_id)
+        left join left join staff_info si on
+        (si.id = ci.staff_id)
+        left join tie_info ti on
+        (ti.id = ci.tie_id)
+        left join major_info mi on
+        (mi.id = ci.major_id)
+        where 1 = 1
+        order by sci.course_date desc
+        where 1 = 1
+        <if test="scheduleClassInfo.className != null and scheduleClassInfo.className != ''">
+            AND cai.name LIKE CONCAT('%',#{scheduleClassInfo.className},'%')
+        </if>
+        <if test="scheduleClassInfo.courseName != null and scheduleClassInfo.courseName != ''">
+            AND ci.name LIKE CONCAT('%',#{scheduleClassInfo.courseName},'%')
+        </if>
+        <if test="scheduleClassInfo.majorName != null and scheduleClassInfo.majorName != ''">
+            AND mi.name LIKE CONCAT('%',#{scheduleClassInfo.majorName},'%')
+        </if>
+        <if test="scheduleClassInfo.staffName != null and scheduleClassInfo.staffName != ''">
+            AND si.name LIKE CONCAT('%',#{scheduleClassInfo.staffName},'%')
+        </if>
+        order by sci.course_date desc
     </select>
 </mapper>

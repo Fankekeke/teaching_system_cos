@@ -4,6 +4,42 @@
 
     <!-- 分页获取课程信息 -->
     <select id="queryCoursePage" resultType="java.util.LinkedHashMap">
+        select
+        ci.id,
+        ci.code,
+        ci.name,
+        ci.staff_id,
+        ci.grade_id,
+        ci.duration,
+        ci.address,
+        ci.people_num,
+        ci.`type`,
+        ci.tie_id,
+        ci.major_id,
+        ci.create_date,
+        ci.content,
+        si.name as staffName,
+        si.images as staffImages,
+        ti.name as tieName,
+        mi.name as majorName
+        from
+        course_info ci
+        left join staff_info si on
+        (si.id = ci.staff_id)
+        left join tie_info ti on
+        (ti.id = ci.tie_id)
+        left join major_info mi on
+        (mi.id = ci.major_id)
+        where
+        1 = 1
+        <if test="courseInfo.name != null and courseInfo.name != ''">
+            AND ci.name LIKE CONCAT('%',#{courseInfo.name},'%')
+        </if>
+        <if test="courseInfo.staffName != null and courseInfo.staffName != ''">
+            AND si.name LIKE CONCAT('%',#{courseInfo.staffName},'%')
+        </if>
+        order by
+        ci.create_date desc
 
     </select>
 </mapper>
