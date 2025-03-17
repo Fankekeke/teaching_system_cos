@@ -1,5 +1,5 @@
 <template>
-  <a-modal v-model="show" title="会议详情" @cancel="onClose" :width="1000">
+  <a-modal v-model="show" title="选修课表详情" @cancel="onClose" :width="1000">
     <template slot="footer">
       <a-button key="back" @click="onClose" type="danger">
         关闭
@@ -11,10 +11,10 @@
         <a-col :span="8"><b>举办人：</b>
           {{ dishesData.staffName }}
         </a-col>
-        <a-col :span="8"><b>会议主题：</b>
+        <a-col :span="8"><b>选修课表主题：</b>
           {{ dishesData.title ? dishesData.title : '- -' }}
         </a-col>
-        <a-col :span="8"><b>会议地址：</b>
+        <a-col :span="8"><b>选修课表地址：</b>
           {{ dishesData.address ? dishesData.address : '- -' }}
         </a-col>
       </a-row>
@@ -29,7 +29,7 @@
       </a-row>
       <br/>
       <a-row style="padding-left: 24px;padding-right: 24px;">
-        <a-col :span="24"><b>会议内容：</b>
+        <a-col :span="24"><b>选修课表内容：</b>
           {{ dishesData.content }}
         </a-col>
       </a-row>
@@ -59,7 +59,7 @@
       </a-row>
       <br/>
       <a-row style="padding-left: 24px;padding-right: 24px;" v-if="staffList.length !== 0">
-        <a-col style="margin-bottom: 15px"><span style="font-size: 15px;font-weight: 650;color: #000c17">会议邀请人</span></a-col>
+        <a-col style="margin-bottom: 15px"><span style="font-size: 15px;font-weight: 650;color: #000c17">选修课表邀请人</span></a-col>
         <a-row :gutter="15">
           <a-col :span="6" v-for="(item, index) in staffList" :key="index">
             <a-card :bordered="false">
@@ -132,7 +132,7 @@ export default {
   },
   methods: {
     queryStaffListByCondition (id) {
-      this.$get('/cos/conference-info/queryStaffListByCondition', {conditionId: id}).then((r) => {
+      this.$get('/cos/schedule-elective-info/queryStaffListByCondition', {conditionId: id}).then((r) => {
         this.staffList = r.data.data
       })
     },

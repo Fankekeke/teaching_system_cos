@@ -1,5 +1,5 @@
 <template>
-  <a-modal v-model="show" title="新增会议" @cancel="onClose" :width="800">
+  <a-modal v-model="show" title="新增课表模板" @cancel="onClose" :width="800">
     <template slot="footer">
       <a-button key="back" @click="onClose">
         取消
@@ -11,18 +11,18 @@
     <a-form :form="form" layout="vertical">
       <a-row :gutter="20">
         <a-col :span="12">
-          <a-form-item label='会议标题' v-bind="formItemLayout">
+          <a-form-item label='课表模板标题' v-bind="formItemLayout">
             <a-input v-decorator="[
             'title',
-            { rules: [{ required: true, message: '请输入会议标题!' }] }
+            { rules: [{ required: true, message: '请输入课表模板标题!' }] }
             ]"/>
           </a-form-item>
         </a-col>
         <a-col :span="12">
-          <a-form-item label='会议地址' v-bind="formItemLayout">
+          <a-form-item label='课表模板地址' v-bind="formItemLayout">
             <a-input v-decorator="[
             'address',
-            { rules: [{ required: true, message: '请输入会议地址!' }] }
+            { rules: [{ required: true, message: '请输入课表模板地址!' }] }
             ]"/>
           </a-form-item>
         </a-col>
@@ -35,10 +35,10 @@
           </a-form-item>
         </a-col>
         <a-col :span="12">
-          <a-form-item label='会议特性' v-bind="formItemLayout">
+          <a-form-item label='课表模板特性' v-bind="formItemLayout">
             <a-select v-decorator="[
               'status',
-              { rules: [{ required: true, message: '请输入会议特性!' }] }
+              { rules: [{ required: true, message: '请输入课表模板特性!' }] }
               ]">
               <a-select-option value="轻">轻</a-select-option>
               <a-select-option value="重">重</a-select-option>
@@ -65,10 +65,10 @@
           </a-form-item>
         </a-col>
         <a-col :span="24">
-          <a-form-item label='会议邀请' v-bind="formItemLayout">
+          <a-form-item label='课表模板邀请' v-bind="formItemLayout">
             <a-select mode="multiple" style="width: 100%" v-decorator="[
             'staffIdList',
-            { rules: [{ required: true, message: '请输入会议邀请人!' }] }
+            { rules: [{ required: true, message: '请输入课表模板邀请人!' }] }
             ]" option-label-prop="label">
               <a-select-option v-for="(item, index) in staffList" :key="index" :value="item.id" :label="item.name">
                 <a-row>
@@ -89,10 +89,10 @@
           </a-form-item>
         </a-col>
         <a-col :span="24">
-          <a-form-item label='会议内容' v-bind="formItemLayout">
+          <a-form-item label='课表模板内容' v-bind="formItemLayout">
             <a-textarea :rows="6" v-decorator="[
             'content',
-             { rules: [{ required: true, message: '请输入会议内容!' }] }
+             { rules: [{ required: true, message: '请输入课表模板内容!' }] }
             ]"/>
           </a-form-item>
         </a-col>
@@ -215,7 +215,7 @@ export default {
         values.images = images.length > 0 ? images.join(',') : null
         if (!err) {
           this.loading = true
-          this.$post('/cos/conference-info', {
+          this.$post('/cos/schedule-template-info', {
             ...values
           }).then((r) => {
             this.reset()

@@ -7,7 +7,7 @@
           <div :class="advanced ? null: 'fold'">
             <a-col :md="6" :sm="24">
               <a-form-item
-                label="会议标题"
+                label="学生标题"
                 :labelCol="{span: 5}"
                 :wrapperCol="{span: 18, offset: 1}">
                 <a-input v-model="queryParams.title"/>
@@ -15,7 +15,7 @@
             </a-col>
             <a-col :md="6" :sm="24">
               <a-form-item
-                label="会议地址"
+                label="学生地址"
                 :labelCol="{span: 5}"
                 :wrapperCol="{span: 18, offset: 1}">
                 <a-input v-model="queryParams.address"/>
@@ -151,17 +151,17 @@ export default {
         ellipsis: true,
         dataIndex: 'organizer'
       }, {
-        title: '会议特性',
+        title: '学生特性',
         dataIndex: 'status',
         customRender: (text, row, index) => {
           return <a-tag>{{ text }}</a-tag>
         }
       }, {
-        title: '会议标题',
+        title: '学生标题',
         ellipsis: true,
         dataIndex: 'title'
       }, {
-        title: '会议图片',
+        title: '学生图片',
         dataIndex: 'images',
         customRender: (text, record, index) => {
           if (!record.images) return <a-avatar shape="square" icon="user" />
@@ -235,7 +235,7 @@ export default {
     },
     handledishesAddSuccess () {
       this.dishesAdd.visiable = false
-      this.$message.success('新增会议成功')
+      this.$message.success('新增学生成功')
       this.search()
     },
     edit (record) {
@@ -247,7 +247,7 @@ export default {
     },
     handledishesEditSuccess () {
       this.dishesEdit.visiable = false
-      this.$message.success('修改会议成功')
+      this.$message.success('修改学生成功')
       this.search()
     },
     handleDeptChange (value) {
@@ -265,7 +265,7 @@ export default {
         centered: true,
         onOk () {
           let ids = that.selectedRowKeys.join(',')
-          that.$delete('/cos/conference-info/' + ids).then(() => {
+          that.$delete('/cos/student-info/' + ids).then(() => {
             that.$message.success('删除成功')
             that.selectedRowKeys = []
             that.search()
@@ -336,7 +336,7 @@ export default {
         params.current = this.pagination.defaultCurrent
       }
       params.enterpriseId = this.currentUser.userId
-      this.$get('/cos/conference-info/page', {
+      this.$get('/cos/student-info/page', {
         ...params
       }).then((r) => {
         let data = r.data.data
