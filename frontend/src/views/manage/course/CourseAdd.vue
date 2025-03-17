@@ -11,64 +11,81 @@
     <a-form :form="form" layout="vertical">
       <a-row :gutter="20">
         <a-col :span="12">
-          <a-form-item label='课程标题' v-bind="formItemLayout">
+          <a-form-item label='课程名称' v-bind="formItemLayout">
             <a-input v-decorator="[
-            'title',
-            { rules: [{ required: true, message: '请输入课程标题!' }] }
+            'name',
+            { rules: [{ required: true, message: '请输入课程名称!' }] }
             ]"/>
           </a-form-item>
         </a-col>
         <a-col :span="12">
-          <a-form-item label='课程地址' v-bind="formItemLayout">
+          <a-form-item label='年级' v-bind="formItemLayout">
+            <a-input v-decorator="[
+            'gradeId',
+            { rules: [{ required: true, message: '请输入年级!' }] }
+            ]"/>
+          </a-form-item>
+        </a-col>
+        <a-col :span="12">
+          <a-form-item label='时常' v-bind="formItemLayout">
+            <a-input v-decorator="[
+            'duration',
+            { rules: [{ required: true, message: '请输入时常!' }] }
+            ]"/>
+          </a-form-item>
+        </a-col>
+        <a-col :span="12">
+          <a-form-item label='上课地点' v-bind="formItemLayout">
             <a-input v-decorator="[
             'address',
-            { rules: [{ required: true, message: '请输入课程地址!' }] }
+            { rules: [{ required: true, message: '请输入上课地点!' }] }
             ]"/>
           </a-form-item>
         </a-col>
         <a-col :span="12">
-          <a-form-item label='主办方' v-bind="formItemLayout">
-            <a-input v-decorator="[
-            'organizer',
-            { rules: [{ required: true, message: '请输入主办方!' }] }
-            ]"/>
+          <a-form-item label='人数' v-bind="formItemLayout">
+            <a-input-number :min="1" :max="999" v-decorator="[
+              'peopleNum',
+              { rules: [{ required: true, message: '请输入人数!' }] }
+              ]" style="width: 100%"/>
           </a-form-item>
         </a-col>
         <a-col :span="12">
-          <a-form-item label='课程特性' v-bind="formItemLayout">
+          <a-form-item label='课程类型' v-bind="formItemLayout">
             <a-select v-decorator="[
-              'status',
-              { rules: [{ required: true, message: '请输入课程特性!' }] }
+              'type',
+              { rules: [{ required: true, message: '请输入课程类型!' }] }
               ]">
-              <a-select-option value="轻">轻</a-select-option>
-              <a-select-option value="重">重</a-select-option>
-              <a-select-option value="缓">缓</a-select-option>
-              <a-select-option value="急">急</a-select-option>
-              <a-select-option value="一般">一般</a-select-option>
+              <a-select-option value="1">常规</a-select-option>
+              <a-select-option value="2">选修</a-select-option>
+            </a-select>
+          </a-form-item>
+        </a-col>
+        <a-col :md="6" :sm="24">
+          <a-form-item label='所属系' v-bind="formItemLayout">
+            <a-select style="width: 100%" v-decorator="[
+            'tieId',
+            { rules: [{ required: true, message: '请输入所属系!' }] }
+            ]">
+              <a-select-option :value="item.id" v-for="(item, index) in tieList" :key="index">{{ item.name }}</a-select-option>
+            </a-select>
+          </a-form-item>
+        </a-col>
+        <a-col :md="6" :sm="24">
+          <a-form-item label='所属专业' v-bind="formItemLayout">
+            <a-select style="width: 100%" v-decorator="[
+            'majorId',
+            { rules: [{ required: true, message: '请输入所属专业!' }] }
+            ]">
+              <a-select-option :value="item.id" v-for="(item, index) in majorList" :key="index">{{ item.name }}</a-select-option>
             </a-select>
           </a-form-item>
         </a-col>
         <a-col :span="12">
-          <a-form-item label='开始时间' v-bind="formItemLayout">
-            <a-date-picker show-time format="YYYY-MM-DD HH:mm:ss" style="width: 100%" v-decorator="[
-            'startTime',
-            { rules: [{ required: true, message: '请输入开始时间!' }] }
-            ]"/>
-          </a-form-item>
-        </a-col>
-        <a-col :span="12">
-          <a-form-item label='结束时间' v-bind="formItemLayout">
-            <a-date-picker show-time format="YYYY-MM-DD HH:mm:ss" style="width: 100%" v-decorator="[
-            'endTime',
-            { rules: [{ required: true, message: '请输入结束时间!' }] }
-            ]"/>
-          </a-form-item>
-        </a-col>
-        <a-col :span="24">
-          <a-form-item label='课程邀请' v-bind="formItemLayout">
-            <a-select mode="multiple" style="width: 100%" v-decorator="[
-            'staffIdList',
-            { rules: [{ required: true, message: '请输入课程邀请人!' }] }
+          <a-form-item label='班级导师' v-bind="formItemLayout">
+            <a-select style="width: 100%" v-decorator="[
+            'staffId',
+            { rules: [{ required: true, message: '请输入班级导师!' }] }
             ]" option-label-prop="label">
               <a-select-option v-for="(item, index) in staffList" :key="index" :value="item.id" :label="item.name">
                 <a-row>
@@ -94,28 +111,6 @@
             'content',
              { rules: [{ required: true, message: '请输入课程内容!' }] }
             ]"/>
-          </a-form-item>
-        </a-col>
-        <a-col :span="24">
-          <a-form-item label='图册' v-bind="formItemLayout">
-            <a-upload
-              name="avatar"
-              action="http://127.0.0.1:9527/file/fileUpload/"
-              list-type="picture-card"
-              :file-list="fileList"
-              @preview="handlePreview"
-              @change="picHandleChange"
-            >
-              <div v-if="fileList.length < 8">
-                <a-icon type="plus" />
-                <div class="ant-upload-text">
-                  Upload
-                </div>
-              </div>
-            </a-upload>
-            <a-modal :visible="previewVisible" :footer="null" @cancel="handleCancel">
-              <img alt="example" style="width: 100%" :src="previewImage" />
-            </a-modal>
           </a-form-item>
         </a-col>
       </a-row>
@@ -164,14 +159,28 @@ export default {
       loading: false,
       fileList: [],
       staffList: [],
+      tieList: [],
+      majorList: [],
       previewVisible: false,
       previewImage: ''
     }
   },
   mounted () {
     this.getStaffList()
+    this.getTieList()
+    this.getMajorList()
   },
   methods: {
+    getTieList () {
+      this.$get('/cos/tie-info/list').then((r) => {
+        this.tieList = r.data.data
+      })
+    },
+    getMajorList () {
+      this.$get('/cos/major-info/list').then((r) => {
+        this.majorList = r.data.data
+      })
+    },
     getStaffList () {
       this.$get('/cos/staff-info/queryStaffList', {enterpriseId: 13}).then((r) => {
         this.staffList = r.data.data

@@ -7,23 +7,15 @@
           <div :class="advanced ? null: 'fold'">
             <a-col :md="6" :sm="24">
               <a-form-item
-                label="班级标题"
+                label="班级名称"
                 :labelCol="{span: 5}"
                 :wrapperCol="{span: 18, offset: 1}">
-                <a-input v-model="queryParams.title"/>
+                <a-input v-model="queryParams.name"/>
               </a-form-item>
             </a-col>
             <a-col :md="6" :sm="24">
               <a-form-item
-                label="班级地址"
-                :labelCol="{span: 5}"
-                :wrapperCol="{span: 18, offset: 1}">
-                <a-input v-model="queryParams.address"/>
-              </a-form-item>
-            </a-col>
-            <a-col :md="6" :sm="24">
-              <a-form-item
-                label="举办人"
+                label="导师姓名"
                 :labelCol="{span: 5}"
                 :wrapperCol="{span: 18, offset: 1}">
                 <a-input v-model="queryParams.staffName"/>
@@ -39,7 +31,7 @@
     </div>
     <div>
       <div class="operator">
-<!--        <a-button type="primary" ghost @click="add">新增</a-button>-->
+        <a-button type="primary" ghost @click="add">新增</a-button>
         <a-button @click="batchDelete">删除</a-button>
       </div>
       <!-- 表格区域 -->
@@ -127,11 +119,27 @@ export default {
     }),
     columns () {
       return [{
-        title: '用户名称',
+        title: '班级编号',
+        ellipsis: true,
+        dataIndex: 'code'
+      }, {
+        title: '班级名称',
+        ellipsis: true,
+        dataIndex: 'name'
+      }, {
+        title: '备注',
+        ellipsis: true,
+        dataIndex: 'content'
+      }, {
+        title: '年级',
+        ellipsis: true,
+        dataIndex: 'gradeYaer'
+      }, {
+        title: '导师姓名',
         ellipsis: true,
         dataIndex: 'staffName'
       }, {
-        title: '员工头像',
+        title: '导师照片',
         dataIndex: 'staffImages',
         customRender: (text, record, index) => {
           if (!record.staffImages) return <a-avatar shape="square" icon="user" />
@@ -143,39 +151,9 @@ export default {
           </a-popover>
         }
       }, {
-        title: '所属校企',
+        title: '所属系',
         ellipsis: true,
-        dataIndex: 'enterpriseName'
-      }, {
-        title: '主办方',
-        ellipsis: true,
-        dataIndex: 'organizer'
-      }, {
-        title: '班级特性',
-        dataIndex: 'status',
-        customRender: (text, row, index) => {
-          return <a-tag>{{ text }}</a-tag>
-        }
-      }, {
-        title: '班级标题',
-        ellipsis: true,
-        dataIndex: 'title'
-      }, {
-        title: '班级图片',
-        dataIndex: 'images',
-        customRender: (text, record, index) => {
-          if (!record.images) return <a-avatar shape="square" icon="user" />
-          return <a-popover>
-            <template slot="content">
-              <a-avatar shape="square" size={132} icon="user" src={ 'http://127.0.0.1:9527/imagesWeb/' + record.images.split(',')[0] } />
-            </template>
-            <a-avatar shape="square" icon="user" src={ 'http://127.0.0.1:9527/imagesWeb/' + record.images.split(',')[0] } />
-          </a-popover>
-        }
-      }, {
-        title: '开始时间',
-        ellipsis: true,
-        dataIndex: 'startTime',
+        dataIndex: 'tieName',
         customRender: (text, row, index) => {
           if (text !== null) {
             return text
@@ -184,8 +162,8 @@ export default {
           }
         }
       }, {
-        title: '结束时间',
-        dataIndex: 'endTime',
+        title: '所属专业',
+        dataIndex: 'majorName',
         customRender: (text, row, index) => {
           if (text !== null) {
             return text

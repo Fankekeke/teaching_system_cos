@@ -11,111 +11,71 @@
     <a-form :form="form" layout="vertical">
       <a-row :gutter="20">
         <a-col :span="12">
-          <a-form-item label='班级标题' v-bind="formItemLayout">
+          <a-form-item label='班级名称' v-bind="formItemLayout">
             <a-input v-decorator="[
-            'title',
-            { rules: [{ required: true, message: '请输入班级标题!' }] }
+            'name',
+            { rules: [{ required: true, message: '请输入班级名称!' }] }
             ]"/>
           </a-form-item>
         </a-col>
         <a-col :span="12">
-          <a-form-item label='班级地址' v-bind="formItemLayout">
+          <a-form-item label='年级' v-bind="formItemLayout">
             <a-input v-decorator="[
-            'address',
-            { rules: [{ required: true, message: '请输入班级地址!' }] }
+            'gradeYaer',
+            { rules: [{ required: true, message: '请输入年级!' }] }
             ]"/>
           </a-form-item>
         </a-col>
         <a-col :span="12">
-          <a-form-item label='主办方' v-bind="formItemLayout">
-            <a-input v-decorator="[
-            'organizer',
-            { rules: [{ required: true, message: '请输入主办方!' }] }
-            ]"/>
-          </a-form-item>
-        </a-col>
-        <a-col :span="12">
-          <a-form-item label='班级特性' v-bind="formItemLayout">
-            <a-select v-decorator="[
-              'status',
-              { rules: [{ required: true, message: '请输入班级特性!' }] }
-              ]">
-              <a-select-option value="轻">轻</a-select-option>
-              <a-select-option value="重">重</a-select-option>
-              <a-select-option value="缓">缓</a-select-option>
-              <a-select-option value="急">急</a-select-option>
-              <a-select-option value="一般">一般</a-select-option>
+          <a-form-item label='所属系' v-bind="formItemLayout">
+            <a-select style="width: 100%" v-decorator="[
+            'tieId',
+            { rules: [{ required: true, message: '请输入所属系!' }] }
+            ]">
+              <a-select-option :value="item.id" v-for="(item, index) in tieList" :key="index">{{ item.name }}</a-select-option>
             </a-select>
           </a-form-item>
         </a-col>
         <a-col :span="12">
-          <a-form-item label='开始时间' v-bind="formItemLayout">
-            <a-date-picker show-time format="YYYY-MM-DD HH:mm:ss" style="width: 100%" v-decorator="[
-            'startTime',
-            { rules: [{ required: true, message: '请输入开始时间!' }] }
-            ]"/>
+          <a-form-item label='所属专业' v-bind="formItemLayout">
+            <a-select style="width: 100%" v-decorator="[
+            'majorId',
+            { rules: [{ required: true, message: '请输入所属专业!' }] }
+            ]">
+              <a-select-option :value="item.id" v-for="(item, index) in majorList" :key="index">{{ item.name }}</a-select-option>
+            </a-select>
           </a-form-item>
         </a-col>
         <a-col :span="12">
-          <a-form-item label='结束时间' v-bind="formItemLayout">
-            <a-date-picker show-time format="YYYY-MM-DD HH:mm:ss" style="width: 100%" v-decorator="[
-            'endTime',
-            { rules: [{ required: true, message: '请输入结束时间!' }] }
-            ]"/>
+          <a-form-item label='班级导师' v-bind="formItemLayout">
+            <a-select style="width: 100%" v-decorator="[
+            'teacherId',
+            { rules: [{ required: true, message: '请输入班级导师!' }] }
+            ]" option-label-prop="label">
+              <a-select-option v-for="(item, index) in staffList" :key="index" :value="item.id" :label="item.name">
+                <a-row>
+                  <a-col :span="2">
+                    <a-avatar style="margin-right: 20px" shape="square" :size="40" icon="user" :src="'http://127.0.0.1:9527/imagesWeb/' + item.images.split(',')[0]" />
+                  </a-col>
+                  <a-col :span="22">
+                    <a-row>
+                      <a-col><span>{{item.name}}</span></a-col>
+                      <a-col style="font-size: 10px">
+                        {{item.deptName}} - {{item.positionName}}
+                      </a-col>
+                    </a-row>
+                  </a-col>
+                </a-row>
+              </a-select-option>
+            </a-select>
           </a-form-item>
         </a-col>
-<!--        <a-col :span="24">-->
-<!--          <a-form-item label='班级邀请' v-bind="formItemLayout">-->
-<!--            <a-select mode="multiple" style="width: 100%" v-decorator="[-->
-<!--            'staffIdList',-->
-<!--            { rules: [{ required: true, message: '请输入班级邀请人!' }] }-->
-<!--            ]" option-label-prop="label">-->
-<!--              <a-select-option v-for="(item, index) in staffList" :key="index" :value="item.id.toString()" :label="item.name">-->
-<!--                <a-row>-->
-<!--                  <a-col :span="2">-->
-<!--                    <a-avatar style="margin-right: 20px" shape="square" :size="40" icon="user" :src="'http://127.0.0.1:9527/imagesWeb/' + item.images.split(',')[0]" />-->
-<!--                  </a-col>-->
-<!--                  <a-col :span="22">-->
-<!--                    <a-row>-->
-<!--                      <a-col><span>{{item.name}}</span></a-col>-->
-<!--                      <a-col style="font-size: 10px">-->
-<!--                        {{item.deptName}} - {{item.positionName}}-->
-<!--                      </a-col>-->
-<!--                    </a-row>-->
-<!--                  </a-col>-->
-<!--                </a-row>-->
-<!--              </a-select-option>-->
-<!--            </a-select>-->
-<!--          </a-form-item>-->
-<!--        </a-col>-->
         <a-col :span="24">
-          <a-form-item label='班级内容' v-bind="formItemLayout">
+          <a-form-item label='备注' v-bind="formItemLayout">
             <a-textarea :rows="6" v-decorator="[
             'content',
-             { rules: [{ required: true, message: '请输入班级内容!' }] }
+             { rules: [{ required: true, message: '请输入备注!' }] }
             ]"/>
-          </a-form-item>
-        </a-col>
-        <a-col :span="24">
-          <a-form-item label='图册' v-bind="formItemLayout">
-            <a-upload
-              name="avatar"
-              action="http://127.0.0.1:9527/file/fileUpload/"
-              list-type="picture-card"
-              :file-list="fileList"
-              @preview="handlePreview"
-              @change="picHandleChange"
-            >
-              <div v-if="fileList.length < 8">
-                <a-icon type="plus" />
-                <div class="ant-upload-text">
-                  Upload
-                </div>
-              </div>
-            </a-upload>
-            <a-modal :visible="previewVisible" :footer="null" @cancel="handleCancel">
-              <img alt="example" style="width: 100%" :src="previewImage" />
-            </a-modal>
           </a-form-item>
         </a-col>
       </a-row>
@@ -172,8 +132,20 @@ export default {
   },
   mounted () {
     this.getStaffList()
+    this.getTieList()
+    this.getMajorList()
   },
   methods: {
+    getTieList () {
+      this.$get('/cos/tie-info/list').then((r) => {
+        this.tieList = r.data.data
+      })
+    },
+    getMajorList () {
+      this.$get('/cos/major-info/list').then((r) => {
+        this.majorList = r.data.data
+      })
+    },
     getStaffList () {
       this.$get('/cos/staff-info/queryStaffList', {enterpriseId: 13}).then((r) => {
         this.staffList = r.data.data
@@ -203,7 +175,7 @@ export default {
     },
     setFormValues ({...dishes}) {
       this.rowId = dishes.id
-      let fields = ['title', 'content', 'address', 'startTime', 'endTime', 'staffIds', 'organizer', 'status']
+      let fields = ['name', 'content', 'tieId', 'majorName', 'teacherId', 'gradeYaer']
       let obj = {}
       Object.keys(dishes).forEach((key) => {
         if (key === 'images') {

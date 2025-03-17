@@ -7,26 +7,26 @@
           <div :class="advanced ? null: 'fold'">
             <a-col :md="6" :sm="24">
               <a-form-item
-                label="选修分数标题"
+                label="学生姓名"
                 :labelCol="{span: 5}"
                 :wrapperCol="{span: 18, offset: 1}">
-                <a-input v-model="queryParams.title"/>
+                <a-input v-model="queryParams.studentName"/>
               </a-form-item>
             </a-col>
             <a-col :md="6" :sm="24">
               <a-form-item
-                label="选修分数地址"
+                label="课程名称"
                 :labelCol="{span: 5}"
                 :wrapperCol="{span: 18, offset: 1}">
-                <a-input v-model="queryParams.address"/>
+                <a-input v-model="queryParams.courseName"/>
               </a-form-item>
             </a-col>
             <a-col :md="6" :sm="24">
               <a-form-item
-                label="举办人"
+                label="专业名称"
                 :labelCol="{span: 5}"
                 :wrapperCol="{span: 18, offset: 1}">
-                <a-input v-model="queryParams.staffName"/>
+                <a-input v-model="queryParams.majorName"/>
               </a-form-item>
             </a-col>
           </div>
@@ -127,11 +127,45 @@ export default {
     }),
     columns () {
       return [{
-        title: '用户名称',
+        title: '学生姓名',
+        ellipsis: true,
+        dataIndex: 'studentName'
+      }, {
+        title: '学生头像',
+        dataIndex: 'studentImages',
+        customRender: (text, record, index) => {
+          if (!record.studentImages) return <a-avatar shape="square" icon="user" />
+          return <a-popover>
+            <template slot="content">
+              <a-avatar shape="square" size={132} icon="user" src={ 'http://127.0.0.1:9527/imagesWeb/' + record.studentImages.split(',')[0] } />
+            </template>
+            <a-avatar shape="square" icon="user" src={ 'http://127.0.0.1:9527/imagesWeb/' + record.studentImages.split(',')[0] } />
+          </a-popover>
+        }
+      }, {
+        title: '课程名称',
+        ellipsis: true,
+        dataIndex: 'courseName'
+      }, {
+        title: '课程时间',
+        ellipsis: true,
+        dataIndex: 'courseDate'
+      }, {
+        title: '开始结束时间',
+        dataIndex: 'startTime',
+        customRender: (text, row, index) => {
+          if (text !== null) {
+            return row.startTime + ' - ' + row.endTime
+          } else {
+            return '- -'
+          }
+        }
+      }, {
+        title: '课程导师',
         ellipsis: true,
         dataIndex: 'staffName'
       }, {
-        title: '员工头像',
+        title: '导师头像',
         dataIndex: 'staffImages',
         customRender: (text, record, index) => {
           if (!record.staffImages) return <a-avatar shape="square" icon="user" />
@@ -143,39 +177,9 @@ export default {
           </a-popover>
         }
       }, {
-        title: '所属校企',
+        title: '所属专业',
         ellipsis: true,
-        dataIndex: 'enterpriseName'
-      }, {
-        title: '主办方',
-        ellipsis: true,
-        dataIndex: 'organizer'
-      }, {
-        title: '选修分数特性',
-        dataIndex: 'status',
-        customRender: (text, row, index) => {
-          return <a-tag>{{ text }}</a-tag>
-        }
-      }, {
-        title: '选修分数标题',
-        ellipsis: true,
-        dataIndex: 'title'
-      }, {
-        title: '选修分数图片',
-        dataIndex: 'images',
-        customRender: (text, record, index) => {
-          if (!record.images) return <a-avatar shape="square" icon="user" />
-          return <a-popover>
-            <template slot="content">
-              <a-avatar shape="square" size={132} icon="user" src={ 'http://127.0.0.1:9527/imagesWeb/' + record.images.split(',')[0] } />
-            </template>
-            <a-avatar shape="square" icon="user" src={ 'http://127.0.0.1:9527/imagesWeb/' + record.images.split(',')[0] } />
-          </a-popover>
-        }
-      }, {
-        title: '开始时间',
-        ellipsis: true,
-        dataIndex: 'startTime',
+        dataIndex: 'majorName',
         customRender: (text, row, index) => {
           if (text !== null) {
             return text
@@ -184,8 +188,8 @@ export default {
           }
         }
       }, {
-        title: '结束时间',
-        dataIndex: 'endTime',
+        title: '分数',
+        dataIndex: 'score',
         customRender: (text, row, index) => {
           if (text !== null) {
             return text
