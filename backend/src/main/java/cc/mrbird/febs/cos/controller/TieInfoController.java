@@ -66,6 +66,7 @@ public class TieInfoController {
      */
     @PostMapping
     public R save(TieInfo tieInfo) {
+        tieInfo.setCode("TIE-" + System.currentTimeMillis());
         tieInfo.setCreateDate(DateUtil.formatDateTime(new Date()));
         return R.ok(tieInfoService.save(tieInfo));
     }

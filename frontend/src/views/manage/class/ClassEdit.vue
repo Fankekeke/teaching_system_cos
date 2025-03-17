@@ -147,7 +147,7 @@ export default {
       })
     },
     getStaffList () {
-      this.$get('/cos/staff-info/queryStaffList', {enterpriseId: 13}).then((r) => {
+      this.$get('/cos/staff-info/list').then((r) => {
         this.staffList = r.data.data
       })
     },
@@ -175,7 +175,7 @@ export default {
     },
     setFormValues ({...dishes}) {
       this.rowId = dishes.id
-      let fields = ['name', 'content', 'tieId', 'majorName', 'teacherId', 'gradeYaer']
+      let fields = ['name', 'content', 'tieId', 'majorName', 'teacherId', 'gradeYaer', 'majorId']
       let obj = {}
       Object.keys(dishes).forEach((key) => {
         if (key === 'images') {
@@ -222,14 +222,6 @@ export default {
       })
       this.form.validateFields((err, values) => {
         values.id = this.rowId
-        values.images = images.length > 0 ? images.join(',') : null
-        if (values.startTime) {
-          values.startTime = moment(values.startTime).format('YYYY-MM-DD HH:mm:ss')
-        }
-        if (values.endTime) {
-          values.endTime = moment(values.endTime).format('YYYY-MM-DD HH:mm:ss')
-        }
-        // values.staffIds = values.staffIdList.join(',')
         if (!err) {
           this.loading = true
           this.$put('/cos/class-info', {

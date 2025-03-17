@@ -173,7 +173,7 @@ export default {
   },
   methods: {
     getStaffList () {
-      this.$get('/cos/staff-info/queryStaffList', {enterpriseId: 13}).then((r) => {
+      this.$get('/cos/staff-info/list').then((r) => {
         this.staffList = r.data.data
       })
     },

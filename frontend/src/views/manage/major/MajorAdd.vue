@@ -114,7 +114,7 @@ export default {
       })
     },
     getStaffList () {
-      this.$get('/cos/staff-info/queryStaffList', {enterpriseId: 13}).then((r) => {
+      this.$get('/cos/staff-info/list').then((r) => {
         this.staffList = r.data.data
       })
     },
@@ -146,14 +146,6 @@ export default {
         images.push(image.response)
       })
       this.form.validateFields((err, values) => {
-        if (values.startTime) {
-          values.startTime = moment(values.startTime).format('YYYY-MM-DD HH:mm:ss')
-        }
-        if (values.endTime) {
-          values.endTime = moment(values.endTime).format('YYYY-MM-DD HH:mm:ss')
-        }
-        values.staffIds = values.staffIdList.join(',')
-        values.images = images.length > 0 ? images.join(',') : null
         if (!err) {
           this.loading = true
           this.$post('/cos/major-info', {

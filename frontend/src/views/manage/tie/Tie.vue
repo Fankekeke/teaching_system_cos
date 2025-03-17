@@ -7,26 +7,18 @@
           <div :class="advanced ? null: 'fold'">
             <a-col :md="6" :sm="24">
               <a-form-item
-                label="会议标题"
+                label="系编号"
                 :labelCol="{span: 5}"
                 :wrapperCol="{span: 18, offset: 1}">
-                <a-input v-model="queryParams.title"/>
+                <a-input v-model="queryParams.code"/>
               </a-form-item>
             </a-col>
             <a-col :md="6" :sm="24">
               <a-form-item
-                label="会议地址"
+                label="系名称"
                 :labelCol="{span: 5}"
                 :wrapperCol="{span: 18, offset: 1}">
-                <a-input v-model="queryParams.address"/>
-              </a-form-item>
-            </a-col>
-            <a-col :md="6" :sm="24">
-              <a-form-item
-                label="举办人"
-                :labelCol="{span: 5}"
-                :wrapperCol="{span: 18, offset: 1}">
-                <a-input v-model="queryParams.staffName"/>
+                <a-input v-model="queryParams.name"/>
               </a-form-item>
             </a-col>
           </div>
@@ -39,7 +31,7 @@
     </div>
     <div>
       <div class="operator">
-<!--        <a-button type="primary" ghost @click="add">新增</a-button>-->
+        <a-button type="primary" ghost @click="add">新增</a-button>
         <a-button @click="batchDelete">删除</a-button>
       </div>
       <!-- 表格区域 -->
@@ -54,7 +46,7 @@
                @change="handleTableChange">
         <template slot="operation" slot-scope="text, record">
           <a-icon type="setting" theme="twoTone" twoToneColor="#4a9ff5" @click="edit(record)" title="修 改"></a-icon>
-          <a-icon type="file-search" @click="dishesViewOpen(record)" title="详 情" style="margin-left: 15px"></a-icon>
+<!--          <a-icon type="file-search" @click="dishesViewOpen(record)" title="详 情" style="margin-left: 15px"></a-icon>-->
         </template>
       </a-table>
     </div>
@@ -127,71 +119,22 @@ export default {
     }),
     columns () {
       return [{
-        title: '用户名称',
+        title: '系名称',
         ellipsis: true,
-        dataIndex: 'staffName'
+        dataIndex: 'code'
       }, {
-        title: '员工头像',
-        dataIndex: 'staffImages',
-        customRender: (text, record, index) => {
-          if (!record.staffImages) return <a-avatar shape="square" icon="user" />
-          return <a-popover>
-            <template slot="content">
-              <a-avatar shape="square" size={132} icon="user" src={ 'http://127.0.0.1:9527/imagesWeb/' + record.staffImages.split(',')[0] } />
-            </template>
-            <a-avatar shape="square" icon="user" src={ 'http://127.0.0.1:9527/imagesWeb/' + record.staffImages.split(',')[0] } />
-          </a-popover>
-        }
-      }, {
-        title: '所属校企',
+        title: '系名称',
         ellipsis: true,
-        dataIndex: 'enterpriseName'
+        dataIndex: 'name'
       }, {
-        title: '主办方',
+        title: '备注',
         ellipsis: true,
-        dataIndex: 'organizer'
+        dataIndex: 'content'
       }, {
-        title: '会议特性',
-        dataIndex: 'status',
+        title: '所属大系',
+        dataIndex: 'topTip',
         customRender: (text, row, index) => {
           return <a-tag>{{ text }}</a-tag>
-        }
-      }, {
-        title: '会议标题',
-        ellipsis: true,
-        dataIndex: 'title'
-      }, {
-        title: '会议图片',
-        dataIndex: 'images',
-        customRender: (text, record, index) => {
-          if (!record.images) return <a-avatar shape="square" icon="user" />
-          return <a-popover>
-            <template slot="content">
-              <a-avatar shape="square" size={132} icon="user" src={ 'http://127.0.0.1:9527/imagesWeb/' + record.images.split(',')[0] } />
-            </template>
-            <a-avatar shape="square" icon="user" src={ 'http://127.0.0.1:9527/imagesWeb/' + record.images.split(',')[0] } />
-          </a-popover>
-        }
-      }, {
-        title: '开始时间',
-        ellipsis: true,
-        dataIndex: 'startTime',
-        customRender: (text, row, index) => {
-          if (text !== null) {
-            return text
-          } else {
-            return '- -'
-          }
-        }
-      }, {
-        title: '结束时间',
-        dataIndex: 'endTime',
-        customRender: (text, row, index) => {
-          if (text !== null) {
-            return text
-          } else {
-            return '- -'
-          }
         }
       }, {
         title: '创建时间',
@@ -235,7 +178,7 @@ export default {
     },
     handledishesAddSuccess () {
       this.dishesAdd.visiable = false
-      this.$message.success('新增会议成功')
+      this.$message.success('新增系成功')
       this.search()
     },
     edit (record) {
@@ -247,7 +190,7 @@ export default {
     },
     handledishesEditSuccess () {
       this.dishesEdit.visiable = false
-      this.$message.success('修改会议成功')
+      this.$message.success('修改系成功')
       this.search()
     },
     handleDeptChange (value) {
@@ -265,7 +208,7 @@ export default {
         centered: true,
         onOk () {
           let ids = that.selectedRowKeys.join(',')
-          that.$delete('/cos/conference-info/' + ids).then(() => {
+          that.$delete('/cos/tie-info/' + ids).then(() => {
             that.$message.success('删除成功')
             that.selectedRowKeys = []
             that.search()
@@ -336,7 +279,7 @@ export default {
         params.current = this.pagination.defaultCurrent
       }
       params.enterpriseId = this.currentUser.userId
-      this.$get('/cos/conference-info/page', {
+      this.$get('/cos/tie-info/page', {
         ...params
       }).then((r) => {
         let data = r.data.data

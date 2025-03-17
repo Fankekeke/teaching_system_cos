@@ -4,6 +4,7 @@ package cc.mrbird.febs.cos.controller;
 import cc.mrbird.febs.common.utils.R;
 import cc.mrbird.febs.cos.entity.StudentInfo;
 import cc.mrbird.febs.cos.service.IStudentInfoService;
+import cc.mrbird.febs.system.service.UserService;
 import cn.hutool.core.date.DateUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +25,8 @@ import java.util.List;
 public class StudentInfoController {
 
     private final IStudentInfoService studentInfoService;
+
+    private final UserService usersService;
 
     /**
      * 分页获取学生信息
@@ -65,9 +68,11 @@ public class StudentInfoController {
      * @return 结果
      */
     @PostMapping
-    public R save(StudentInfo studentInfo) {
+    public R save(StudentInfo studentInfo) throws Exception {
+        studentInfo.setCode("STU-" + System.currentTimeMillis());
         studentInfo.setCreateDate(DateUtil.formatDateTime(new Date()));
-        return R.ok(studentInfoService.save(studentInfo));
+        usersService.registStudent(studentInfo.getCode(), "1234qwer", studentInfo);
+        return R.ok(true);
     }
 
     /**

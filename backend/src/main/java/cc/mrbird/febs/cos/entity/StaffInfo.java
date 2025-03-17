@@ -36,6 +36,9 @@ public class StaffInfo implements Serializable {
      */
     private String name;
 
+    private Integer majorId;
+    private Integer tieId;
+
     /**
      * 性别
      */
@@ -79,7 +82,7 @@ public class StaffInfo implements Serializable {
     /**
      * 邮箱地址
      */
-    private String mail;
+    private String email;
 
     /**
      * 联系方式
@@ -106,12 +109,6 @@ public class StaffInfo implements Serializable {
      * 用户ID
      */
     private Integer userId;
-
-    /**
-     * 所属校企
-     */
-    private Integer enterpriseId;
-
     /**
      * 岗位管理
      */

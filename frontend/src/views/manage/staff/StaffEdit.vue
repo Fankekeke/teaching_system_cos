@@ -80,7 +80,7 @@
         <a-col :span="12">
           <a-form-item label='邮 箱' v-bind="formItemLayout">
             <a-input v-decorator="[
-            'mail'
+            'email'
             ]"/>
           </a-form-item>
         </a-col>
@@ -108,6 +108,26 @@
               { rules: [{ required: true, message: '请输入所属岗位!' }] }
               ]">
               <a-select-option :value="item.id" v-for="(item, index) in positionList" :key="index">{{ item.name }}</a-select-option>
+            </a-select>
+          </a-form-item>
+        </a-col>
+        <a-col :md="6" :sm="24">
+          <a-form-item label='所属系' v-bind="formItemLayout">
+            <a-select style="width: 100%" v-decorator="[
+            'tieId',
+            { rules: [{ required: true, message: '请输入所属系!' }] }
+            ]">
+              <a-select-option :value="item.id" v-for="(item, index) in tieList" :key="index">{{ item.name }}</a-select-option>
+            </a-select>
+          </a-form-item>
+        </a-col>
+        <a-col :md="6" :sm="24">
+          <a-form-item label='所属专业' v-bind="formItemLayout">
+            <a-select style="width: 100%" v-decorator="[
+            'majorId',
+            { rules: [{ required: true, message: '请输入所属专业!' }] }
+            ]">
+              <a-select-option :value="item.id" v-for="(item, index) in majorList" :key="index">{{ item.name }}</a-select-option>
             </a-select>
           </a-form-item>
         </a-col>
@@ -184,14 +204,28 @@ export default {
       previewVisible: false,
       previewImage: '',
       deptList: [],
+      tieList: [],
+      majorList: [],
       positionList: []
     }
   },
   mounted () {
     this.selectDeptList()
     this.selectPositionList()
+    this.getTieList()
+    this.getMajorList()
   },
   methods: {
+    getTieList () {
+      this.$get('/cos/tie-info/list').then((r) => {
+        this.tieList = r.data.data
+      })
+    },
+    getMajorList () {
+      this.$get('/cos/major-info/list').then((r) => {
+        this.majorList = r.data.data
+      })
+    },
     selectDeptList () {
       this.$get(`/cos/dept-info/list`).then((r) => {
         this.deptList = r.data.data
@@ -241,7 +275,7 @@ export default {
     },
     setFormValues ({...staff}) {
       this.rowId = staff.id
-      let fields = ['name', 'sex', 'birthday', 'nativeAddress', 'idCard', 'diploma', 'schoolName', 'address', 'mail', 'phone', 'deptId', 'positionId']
+      let fields = ['name', 'sex', 'birthday', 'nativeAddress', 'idCard', 'diploma', 'schoolName', 'address', 'email', 'phone', 'deptId', 'positionId', 'tieId', 'majorId']
       let obj = {}
       Object.keys(staff).forEach((key) => {
         if (key === 'sex') {

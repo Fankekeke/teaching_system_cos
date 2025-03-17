@@ -16,23 +16,26 @@
         si.diploma,
         si.school_name,
         si.address,
-        si.mail,
+        si.email,
         si.phone,
         si.create_date,
         si.del_flag,
         si.dept_id,
         si.position_id,
+        si.tie_id,
+        si.major_id,
         di.dept_name,
         poi.name as positionName,
-        ei.name as enterpriseName
+        ti.name as tieName,
+        mi.name as majorName
         from
         staff_info si
         left join dept_info di on
         (di.id = si.dept_id)
         left join position_info poi on
         (poi.id = si.position_id)
-        left join enterprise_info ei on
-        (ei.id = si.enterprise_id)
+        left join tie_info ti on (ti.id = si.tie_id)
+        left join major_info mi on (mi.id = si.major_id)
         where
         1 = 1
         and si.del_flag = '0'
@@ -47,9 +50,6 @@
         </if>
         <if test="staffInfo.positionId != null and staffInfo.positionId != ''">
             AND si.position_id = #{staffInfo.positionId}
-        </if>
-        <if test="staffInfo.enterpriseId != null and staffInfo.enterpriseId != ''">
-            AND ei.user_id = #{staffInfo.enterpriseId}
         </if>
         order by
         si.create_date desc
@@ -137,29 +137,23 @@
         si.diploma,
         si.school_name,
         si.address,
-        si.mail,
+        si.email,
         si.phone,
         si.create_date,
         si.del_flag,
         si.dept_id,
         si.position_id,
         di.dept_name,
-        poi.name as positionName,
-        ei.name as enterpriseName
+        poi.name as positionName
         from
         staff_info si
         left join dept_info di on
         (di.id = si.dept_id)
         left join position_info poi on
         (poi.id = si.position_id)
-        left join enterprise_info ei on
-        (ei.id = si.enterprise_id)
         where
         1 = 1
         and si.del_flag = '0'
-        <if test="enterpriseId != null">
-            AND ei.user_id = #{enterpriseId}
-        </if>
         order by
         si.create_date desc
     </select>
@@ -178,30 +172,24 @@
         si.diploma,
         si.school_name,
         si.address,
-        si.mail,
+        si.email,
         si.phone,
         si.create_date,
         si.del_flag,
         si.dept_id,
         si.position_id,
         di.dept_name,
-        poi.name as positionName,
-        ei.name as enterpriseName
+        poi.name as positionName
         from
         staff_info si
         left join dept_info di on
         (di.id = si.dept_id)
         left join position_info poi on
         (poi.id = si.position_id)
-        left join enterprise_info ei on
-        (ei.id = si.enterprise_id)
         where
         1 = 1
         and si.del_flag = '0'
         and si.id != #{staffId}
-        <if test="enterpriseId != null">
-            AND ei.id = #{enterpriseId}
-        </if>
         order by
         si.create_date desc
     </select>
@@ -220,23 +208,20 @@
         si.diploma,
         si.school_name,
         si.address,
-        si.mail,
+        si.email,
         si.phone,
         si.create_date,
         si.del_flag,
         si.dept_id,
         si.position_id,
         di.dept_name,
-        poi.name as positionName,
-        ei.name as enterpriseName
+        poi.name as positionName
         from
         staff_info si
         left join dept_info di on
         (di.id = si.dept_id)
         left join position_info poi on
         (poi.id = si.position_id)
-        left join enterprise_info ei on
-        (ei.id = si.enterprise_id)
         where
         1 = 1
         and si.del_flag = '0'

@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -81,7 +82,7 @@ public class StaffInfoController {
     @GetMapping("/queryStaffList/staff")
     public R queryStaffListByStaff(@RequestParam(value = "staffId") Integer staffId) {
         StaffInfo staffInfo = staffInfoService.getOne(Wrappers.<StaffInfo>lambdaQuery().eq(StaffInfo::getUserId, staffId));
-        return R.ok(staffInfoService.queryStaffListByStaff(staffInfo.getEnterpriseId(), staffInfo.getId()));
+        return R.ok(Collections.emptyList());
     }
 
     /**

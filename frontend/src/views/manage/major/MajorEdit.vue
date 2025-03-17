@@ -100,16 +100,23 @@ export default {
       staffIds: [],
       staffList: [],
       fileList: [],
+      tieList: [],
       previewVisible: false,
       previewImage: ''
     }
   },
   mounted () {
     this.getStaffList()
+    this.getTieList()
   },
   methods: {
+    getTieList () {
+      this.$get('/cos/tie-info/list').then((r) => {
+        this.tieList = r.data.data
+      })
+    },
     getStaffList () {
-      this.$get('/cos/staff-info/queryStaffList', {enterpriseId: 13}).then((r) => {
+      this.$get('/cos/staff-info/list').then((r) => {
         this.staffList = r.data.data
       })
     },
@@ -137,26 +144,16 @@ export default {
     },
     setFormValues ({...dishes}) {
       this.rowId = dishes.id
-      let fields = ['title', 'content', 'address', 'startTime', 'endTime', 'staffIds', 'organizer', 'status']
+      let fields = ['tieId', 'name', 'degreeCategory', 'studyDuration', 'content']
       let obj = {}
       Object.keys(dishes).forEach((key) => {
         if (key === 'images') {
           this.fileList = []
           this.imagesInit(dishes['images'])
         }
-        if (key === 'startTime') {
-          dishes[key] = moment(dishes[key])
-        }
-        if (key === 'endTime') {
-          dishes[key] = moment(dishes[key])
-        }
-        if (key === 'staffIds') {
-          setTimeout(() => {
-            dishes['staffIdList'] = dishes[key].split(',').map(Number)
-            // this.staffIds = dishes[key].split(',')
-            console.log(dishes['staffIdList'])
-          }, 500)
-        }
+        // if (key === 'tieId') {
+        //   dishes[key] = dishes[key].toString()
+        // }
         if (fields.indexOf(key) !== -1) {
           this.form.getFieldDecorator(key)
           obj[key] = dishes[key]
@@ -184,14 +181,6 @@ export default {
       })
       this.form.validateFields((err, values) => {
         values.id = this.rowId
-        values.images = images.length > 0 ? images.join(',') : null
-        if (values.startTime) {
-          values.startTime = moment(values.startTime).format('YYYY-MM-DD HH:mm:ss')
-        }
-        if (values.endTime) {
-          values.endTime = moment(values.endTime).format('YYYY-MM-DD HH:mm:ss')
-        }
-        // values.staffIds = values.staffIdList.join(',')
         if (!err) {
           this.loading = true
           this.$put('/cos/major-info', {
