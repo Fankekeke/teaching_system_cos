@@ -11,88 +11,75 @@
     <a-form :form="form" layout="vertical">
       <a-row :gutter="20">
         <a-col :span="12">
-          <a-form-item label='学生标题' v-bind="formItemLayout">
+          <a-form-item label='学生姓名' v-bind="formItemLayout">
             <a-input v-decorator="[
-            'title',
-            { rules: [{ required: true, message: '请输入学生标题!' }] }
+            'name',
+            { rules: [{ required: true, message: '请输入学生姓名!' }] }
             ]"/>
           </a-form-item>
         </a-col>
         <a-col :span="12">
-          <a-form-item label='学生地址' v-bind="formItemLayout">
-            <a-input v-decorator="[
-            'address',
-            { rules: [{ required: true, message: '请输入学生地址!' }] }
-            ]"/>
-          </a-form-item>
-        </a-col>
-        <a-col :span="12">
-          <a-form-item label='主办方' v-bind="formItemLayout">
-            <a-input v-decorator="[
-            'organizer',
-            { rules: [{ required: true, message: '请输入主办方!' }] }
-            ]"/>
-          </a-form-item>
-        </a-col>
-        <a-col :span="12">
-          <a-form-item label='学生特性' v-bind="formItemLayout">
+          <a-form-item label='性别' v-bind="formItemLayout">
             <a-select v-decorator="[
-              'status',
-              { rules: [{ required: true, message: '请输入学生特性!' }] }
+              'sex',
+              { rules: [{ required: true, message: '请输入性别!' }] }
               ]">
-              <a-select-option value="轻">轻</a-select-option>
-              <a-select-option value="重">重</a-select-option>
-              <a-select-option value="缓">缓</a-select-option>
-              <a-select-option value="急">急</a-select-option>
-              <a-select-option value="一般">一般</a-select-option>
+              <a-select-option value="1">男</a-select-option>
+              <a-select-option value="2">女</a-select-option>
             </a-select>
           </a-form-item>
         </a-col>
         <a-col :span="12">
-          <a-form-item label='开始时间' v-bind="formItemLayout">
-            <a-date-picker show-time format="YYYY-MM-DD HH:mm:ss" style="width: 100%" v-decorator="[
-            'startTime',
-            { rules: [{ required: true, message: '请输入开始时间!' }] }
+          <a-form-item label='联系方式' v-bind="formItemLayout">
+            <a-input v-decorator="[
+            'phone',
+            { rules: [{ required: true, message: '请输入联系方式!' }] }
             ]"/>
           </a-form-item>
         </a-col>
         <a-col :span="12">
-          <a-form-item label='结束时间' v-bind="formItemLayout">
-            <a-date-picker show-time format="YYYY-MM-DD HH:mm:ss" style="width: 100%" v-decorator="[
-            'endTime',
-            { rules: [{ required: true, message: '请输入结束时间!' }] }
+          <a-form-item label='邮箱地址' v-bind="formItemLayout">
+            <a-input v-decorator="[
+            'email',
+            { rules: [{ required: true, message: '请输入邮箱地址!' }] }
             ]"/>
           </a-form-item>
         </a-col>
-<!--        <a-col :span="24">-->
-<!--          <a-form-item label='学生邀请' v-bind="formItemLayout">-->
-<!--            <a-select mode="multiple" style="width: 100%" v-decorator="[-->
-<!--            'staffIdList',-->
-<!--            { rules: [{ required: true, message: '请输入学生邀请人!' }] }-->
-<!--            ]" option-label-prop="label">-->
-<!--              <a-select-option v-for="(item, index) in staffList" :key="index" :value="item.id.toString()" :label="item.name">-->
-<!--                <a-row>-->
-<!--                  <a-col :span="2">-->
-<!--                    <a-avatar style="margin-right: 20px" shape="square" :size="40" icon="user" :src="'http://127.0.0.1:9527/imagesWeb/' + item.images.split(',')[0]" />-->
-<!--                  </a-col>-->
-<!--                  <a-col :span="22">-->
-<!--                    <a-row>-->
-<!--                      <a-col><span>{{item.name}}</span></a-col>-->
-<!--                      <a-col style="font-size: 10px">-->
-<!--                        {{item.deptName}} - {{item.positionName}}-->
-<!--                      </a-col>-->
-<!--                    </a-row>-->
-<!--                  </a-col>-->
-<!--                </a-row>-->
-<!--              </a-select-option>-->
-<!--            </a-select>-->
-<!--          </a-form-item>-->
-<!--        </a-col>-->
+        <a-col :span="12">
+          <a-form-item label='所属系' v-bind="formItemLayout">
+            <a-select style="width: 100%" v-decorator="[
+            'tieId',
+            { rules: [{ required: true, message: '请输入所属系!' }] }
+            ]">
+              <a-select-option :value="item.id" v-for="(item, index) in tieList" :key="index">{{ item.name }}</a-select-option>
+            </a-select>
+          </a-form-item>
+        </a-col>
+        <a-col :span="12">
+          <a-form-item label='所属专业' v-bind="formItemLayout">
+            <a-select style="width: 100%" v-decorator="[
+            'majorId',
+            { rules: [{ required: true, message: '请输入所属专业!' }] }
+            ]">
+              <a-select-option :value="item.id" v-for="(item, index) in majorList" :key="index">{{ item.name }}</a-select-option>
+            </a-select>
+          </a-form-item>
+        </a-col>
+        <a-col :span="12">
+          <a-form-item label='所属班级' v-bind="formItemLayout">
+            <a-select style="width: 100%" v-decorator="[
+            'classId',
+            { rules: [{ required: true, message: '请输入所属班级!' }] }
+            ]">
+              <a-select-option :value="item.id" v-for="(item, index) in classList" :key="index">{{ item.name }}</a-select-option>
+            </a-select>
+          </a-form-item>
+        </a-col>
         <a-col :span="24">
-          <a-form-item label='学生内容' v-bind="formItemLayout">
+          <a-form-item label='备注' v-bind="formItemLayout">
             <a-textarea :rows="6" v-decorator="[
             'content',
-             { rules: [{ required: true, message: '请输入学生内容!' }] }
+             { rules: [{ required: true, message: '请输入备注!' }] }
             ]"/>
           </a-form-item>
         </a-col>
@@ -165,6 +152,9 @@ export default {
       loading: false,
       staffIds: [],
       staffList: [],
+      tieList: [],
+      majorList: [],
+      classList: [],
       fileList: [],
       previewVisible: false,
       previewImage: ''
@@ -172,8 +162,26 @@ export default {
   },
   mounted () {
     this.getStaffList()
+    this.getTieList()
+    this.getMajorList()
+    this.getClassList()
   },
   methods: {
+    getClassList () {
+      this.$get('/cos/classinfo/list').then((r) => {
+        this.classList = r.data.data
+      })
+    },
+    getTieList () {
+      this.$get('/cos/tie-info/list').then((r) => {
+        this.tieList = r.data.data
+      })
+    },
+    getMajorList () {
+      this.$get('/cos/major-info/list').then((r) => {
+        this.majorList = r.data.data
+      })
+    },
     getStaffList () {
       this.$get('/cos/staff-info/list').then((r) => {
         this.staffList = r.data.data
@@ -203,25 +211,12 @@ export default {
     },
     setFormValues ({...dishes}) {
       this.rowId = dishes.id
-      let fields = ['title', 'content', 'address', 'startTime', 'endTime', 'staffIds', 'organizer', 'status']
+      let fields = ['name', 'sex', 'majorId', 'classId', 'phone', 'email', 'content']
       let obj = {}
       Object.keys(dishes).forEach((key) => {
         if (key === 'images') {
           this.fileList = []
           this.imagesInit(dishes['images'])
-        }
-        if (key === 'startTime') {
-          dishes[key] = moment(dishes[key])
-        }
-        if (key === 'endTime') {
-          dishes[key] = moment(dishes[key])
-        }
-        if (key === 'staffIds') {
-          setTimeout(() => {
-            dishes['staffIdList'] = dishes[key].split(',').map(Number)
-            // this.staffIds = dishes[key].split(',')
-            console.log(dishes['staffIdList'])
-          }, 500)
         }
         if (fields.indexOf(key) !== -1) {
           this.form.getFieldDecorator(key)
@@ -251,13 +246,6 @@ export default {
       this.form.validateFields((err, values) => {
         values.id = this.rowId
         values.images = images.length > 0 ? images.join(',') : null
-        if (values.startTime) {
-          values.startTime = moment(values.startTime).format('YYYY-MM-DD HH:mm:ss')
-        }
-        if (values.endTime) {
-          values.endTime = moment(values.endTime).format('YYYY-MM-DD HH:mm:ss')
-        }
-        // values.staffIds = values.staffIdList.join(',')
         if (!err) {
           this.loading = true
           this.$put('/cos/student-info', {
