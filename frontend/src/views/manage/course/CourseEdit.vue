@@ -89,15 +89,12 @@
             ]" option-label-prop="label">
               <a-select-option v-for="(item, index) in staffList" :key="index" :value="item.id" :label="item.name">
                 <a-row>
-                  <a-col :span="2">
+                  <a-col :span="4">
                     <a-avatar style="margin-right: 20px" shape="square" :size="40" icon="user" :src="'http://127.0.0.1:9527/imagesWeb/' + item.images.split(',')[0]" />
                   </a-col>
-                  <a-col :span="22">
+                  <a-col :span="20">
                     <a-row>
                       <a-col><span>{{item.name}}</span></a-col>
-                      <a-col style="font-size: 10px">
-                        {{item.deptName}} - {{item.positionName}}
-                      </a-col>
                     </a-row>
                   </a-col>
                 </a-row>

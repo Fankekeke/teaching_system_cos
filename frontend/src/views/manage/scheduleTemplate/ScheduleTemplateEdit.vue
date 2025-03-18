@@ -28,7 +28,7 @@
         </a-col>
         <a-col :span="12">
           <a-form-item label='课程开始时间' v-bind="formItemLayout">
-            <a-date-picker show-time format="HH:mm:ss" style="width: 100%" v-decorator="[
+            <a-time-picker format="HH:mm:ss" style="width: 100%" v-decorator="[
             'startTime',
             { rules: [{ required: true, message: '请输入课程开始时间!' }] }
             ]"/>
@@ -36,7 +36,7 @@
         </a-col>
         <a-col :span="12">
           <a-form-item label='课程结束时间' v-bind="formItemLayout">
-            <a-date-picker show-time format="HH:mm:ss" style="width: 100%" v-decorator="[
+            <a-time-picker format="HH:mm:ss" style="width: 100%" v-decorator="[
             'endTime',
             { rules: [{ required: true, message: '请输入课程结束时间!' }] }
             ]"/>
@@ -123,7 +123,7 @@ export default {
   },
   methods: {
     getClassList () {
-      this.$get('/cos/classinfo/list').then((r) => {
+      this.$get('/cos/class-info/list').then((r) => {
         this.classList = r.data.data
       })
     },
@@ -161,7 +161,7 @@ export default {
     },
     setFormValues ({...dishes}) {
       this.rowId = dishes.id
-      let fields = ['title', 'content', 'address', 'startTime', 'endTime', 'staffIds', 'organizer', 'status']
+      let fields = ['typeDay', 'content', 'classId', 'startTime', 'endTime', 'courseId']
       let obj = {}
       Object.keys(dishes).forEach((key) => {
         if (key === 'images') {
@@ -169,16 +169,15 @@ export default {
           this.imagesInit(dishes['images'])
         }
         if (key === 'startTime') {
-          dishes[key] = moment(dishes[key])
+          dishes[key] = moment(dishes[key], 'HH:mm:ss')
         }
         if (key === 'endTime') {
-          dishes[key] = moment(dishes[key])
+          dishes[key] = moment(dishes[key], 'HH:mm:ss')
         }
         if (key === 'staffIds') {
           setTimeout(() => {
             dishes['staffIdList'] = dishes[key].split(',').map(Number)
             // this.staffIds = dishes[key].split(',')
-            console.log(dishes['staffIdList'])
           }, 500)
         }
         if (fields.indexOf(key) !== -1) {

@@ -28,7 +28,7 @@
         </a-col>
         <a-col :span="12">
           <a-form-item label='课程开始时间' v-bind="formItemLayout">
-            <a-date-picker show-time format="HH:mm:ss" style="width: 100%" v-decorator="[
+            <a-time-picker format="HH:mm:ss" style="width: 100%" v-decorator="[
             'startTime',
             { rules: [{ required: true, message: '请输入课程开始时间!' }] }
             ]"/>
@@ -36,7 +36,7 @@
         </a-col>
         <a-col :span="12">
           <a-form-item label='课程结束时间' v-bind="formItemLayout">
-            <a-date-picker show-time format="HH:mm:ss" style="width: 100%" v-decorator="[
+            <a-time-picker format="HH:mm:ss" style="width: 100%" v-decorator="[
             'endTime',
             { rules: [{ required: true, message: '请输入课程结束时间!' }] }
             ]"/>
@@ -121,7 +121,7 @@ export default {
   },
   methods: {
     getClassList () {
-      this.$get('/cos/classinfo/list').then((r) => {
+      this.$get('/cos/class-info/list').then((r) => {
         this.classList = r.data.data
       })
     },

@@ -38,7 +38,7 @@
         <if test="studentInfo.staffName != null and studentInfo.staffName != ''">
             AND si.name LIKE CONCAT('%',#{studentInfo.staffName},'%')
         </if>
-        stui.create_date desc
+        order by stui.create_date desc
     </select>
 
     <!-- 根据ID查询学生信息 -->

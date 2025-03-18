@@ -166,7 +166,7 @@ export default {
   },
   methods: {
     getClassList () {
-      this.$get('/cos/classinfo/list').then((r) => {
+      this.$get('/cos/class-info/list').then((r) => {
         this.classList = r.data.data
       })
     },

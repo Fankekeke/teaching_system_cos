@@ -5,39 +5,34 @@
     <!-- 分页获取留言信息 -->
     <select id="selectCommentPage" resultType="java.util.LinkedHashMap">
         select
-        ci.id,
-        ci.user_id,
-        ci.content,
-        ci.images,
-        ci.status,
-        ci.create_date,
-        ci.del_flag,
-        si.code as staffCode,
-        si.name as staffName,
-        si.images as staffImages,
-        ei.name as enterpriseName,
-        ei.images as enterpriseImages,
-        di.dept_name,
-        poi.name as positionName
+        lc.id,
+        lc.user_id,
+        lc.content,
+        lc.images,
+        lc.status,
+        lc.create_date,
+        lc.del_flag,
+        stui.name as studentName,
+        stui.images as studentImages,
+        ti.name as tieName,
+        mi.name as majorName
         from
-        leave_comments ci
-        left join staff_info si on (si.id = ci.user_id)
-        left join enterprise_info ei on (ei.id = si.enterprise_id)
-        left join dept_info di on (di.id = si.dept_id)
-        left join position_info poi on (poi.id = si.position_id)
+        leave_comments lc
+        left join student_info stui on (stui.id = lc.user_id)
+        left join major_info mi on
+        (mi.id = stui.major_id)
+        left join tie_info ti on
+        (ti.id = mi.tie_id)
         where 1 = 1
         <if test="leaveComments.staffName != null and leaveComments.staffName != ''">
-            AND si.name LIKE CONCAT('%',#{leaveComments.staffName},'%')
+            AND stui.name LIKE CONCAT('%',#{leaveComments.staffName},'%')
         </if>
         <if test="leaveComments.status != null and leaveComments.status != ''">
             AND lc.status = #{leaveComments.status}
         </if>
         <if test="leaveComments.staffId != null and leaveComments.staffId != ''">
-            AND si.user_id = #{leaveComments.staffId}
+            AND stui.user_id = #{leaveComments.staffId}
         </if>
-        <if test="leaveComments.enterpriseId != null and leaveComments.enterpriseId != ''">
-            AND ei.user_id = #{leaveComments.enterpriseId}
-        </if>
-        order by ci.create_date desc
+        order by lc.create_date desc
     </select>
 </mapper>

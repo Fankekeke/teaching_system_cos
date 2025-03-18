@@ -125,7 +125,7 @@ export default {
       }, {
         title: '课程名称',
         ellipsis: true,
-        dataIndex: 'mame'
+        dataIndex: 'name'
       }, {
         title: '课程类型',
         dataIndex: 'type',
@@ -192,6 +192,7 @@ export default {
       }, {
         title: '创建时间',
         dataIndex: 'createDate',
+        ellipsis: true,
         customRender: (text, row, index) => {
           if (text !== null) {
             return text

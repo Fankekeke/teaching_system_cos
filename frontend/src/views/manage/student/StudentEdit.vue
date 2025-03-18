@@ -168,7 +168,7 @@ export default {
   },
   methods: {
     getClassList () {
-      this.$get('/cos/classinfo/list').then((r) => {
+      this.$get('/cos/class-info/list').then((r) => {
         this.classList = r.data.data
       })
     },
@@ -211,7 +211,7 @@ export default {
     },
     setFormValues ({...dishes}) {
       this.rowId = dishes.id
-      let fields = ['name', 'sex', 'majorId', 'classId', 'phone', 'email', 'content']
+      let fields = ['name', 'sex', 'majorId', 'classId', 'phone', 'email', 'content', 'tieId']
       let obj = {}
       Object.keys(dishes).forEach((key) => {
         if (key === 'images') {

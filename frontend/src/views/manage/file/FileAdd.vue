@@ -40,6 +40,14 @@
             ]"/>
           </a-form-item>
         </a-col>
+        <a-col :span="12">
+          <a-form-item label='文件关键字' v-bind="formItemLayout">
+            <a-input v-decorator="[
+            'fileKey',
+            { rules: [{ required: true, message: '请输入文件关键字!' }] }
+            ]"/>
+          </a-form-item>
+        </a-col>
         <a-col :span="24">
           <a-form-item label='文档备注' v-bind="formItemLayout">
             <a-textarea :rows="6" v-decorator="[
