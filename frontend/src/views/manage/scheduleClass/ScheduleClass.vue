@@ -7,23 +7,31 @@
           <div :class="advanced ? null: 'fold'">
             <a-col :md="6" :sm="24">
               <a-form-item
-                label="班级课表标题"
+                label="班级名称"
                 :labelCol="{span: 5}"
                 :wrapperCol="{span: 18, offset: 1}">
-                <a-input v-model="queryParams.title"/>
+                <a-input v-model="queryParams.className"/>
               </a-form-item>
             </a-col>
             <a-col :md="6" :sm="24">
               <a-form-item
-                label="班级课表地址"
+                label="课程名称"
                 :labelCol="{span: 5}"
                 :wrapperCol="{span: 18, offset: 1}">
-                <a-input v-model="queryParams.address"/>
+                <a-input v-model="queryParams.courseName"/>
               </a-form-item>
             </a-col>
             <a-col :md="6" :sm="24">
               <a-form-item
-                label="举办人"
+                label="专业名称"
+                :labelCol="{span: 5}"
+                :wrapperCol="{span: 18, offset: 1}">
+                <a-input v-model="queryParams.majorName"/>
+              </a-form-item>
+            </a-col>
+            <a-col :md="6" :sm="24">
+              <a-form-item
+                label="代课老师"
                 :labelCol="{span: 5}"
                 :wrapperCol="{span: 18, offset: 1}">
                 <a-input v-model="queryParams.staffName"/>
@@ -127,41 +135,36 @@ export default {
     }),
     columns () {
       return [{
-        title: '用户名称',
+        title: '课程时间',
         ellipsis: true,
-        dataIndex: 'staffName'
+        dataIndex: 'courseDate'
       }, {
-        title: '员工头像',
-        dataIndex: 'staffImages',
-        customRender: (text, record, index) => {
-          if (!record.staffImages) return <a-avatar shape="square" icon="user" />
-          return <a-popover>
-            <template slot="content">
-              <a-avatar shape="square" size={132} icon="user" src={ 'http://127.0.0.1:9527/imagesWeb/' + record.staffImages.split(',')[0] } />
-            </template>
-            <a-avatar shape="square" icon="user" src={ 'http://127.0.0.1:9527/imagesWeb/' + record.staffImages.split(',')[0] } />
-          </a-popover>
+        title: '开始结束时间',
+        ellipsis: true,
+        dataIndex: 'startTime',
+        customRender: (text, row, index) => {
+          if (text !== null) {
+            return row.startTime + ' - ' + row.endTime
+          } else {
+            return '- -'
+          }
         }
       }, {
-        title: '所属校企',
+        title: '班级名称',
         ellipsis: true,
-        dataIndex: 'enterpriseName'
+        dataIndex: 'className'
       }, {
-        title: '主办方',
-        ellipsis: true,
-        dataIndex: 'organizer'
-      }, {
-        title: '班级课表特性',
+        title: '选修课表特性',
         dataIndex: 'status',
         customRender: (text, row, index) => {
           return <a-tag>{{ text }}</a-tag>
         }
       }, {
-        title: '班级课表标题',
+        title: '选修课表标题',
         ellipsis: true,
         dataIndex: 'title'
       }, {
-        title: '班级课表图片',
+        title: '选修课表图片',
         dataIndex: 'images',
         customRender: (text, record, index) => {
           if (!record.images) return <a-avatar shape="square" icon="user" />
