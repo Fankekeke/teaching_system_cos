@@ -3,15 +3,19 @@ package cc.mrbird.febs.cos.controller;
 
 import cc.mrbird.febs.common.utils.R;
 import cc.mrbird.febs.cos.entity.ClassInfo;
-import cc.mrbird.febs.cos.service.IClassInfoService;
+import cc.mrbird.febs.cos.entity.StudentInfo;
+import cc.mrbird.febs.cos.service.*;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -25,6 +29,16 @@ import java.util.List;
 public class ClassInfoController {
 
     private final IClassInfoService classInfoService;
+
+    private final ITieInfoService tierInfoService;
+
+    private final IStaffInfoService staffInfoService;
+
+    private final IMajorInfoService majorInfoService;
+
+    private final IStudentInfoService studentInfoService;
+
+    private final ICourseInfoService courseInfoService;
 
     /**
      * 分页获取班级信息
@@ -47,6 +61,28 @@ public class ClassInfoController {
     @GetMapping("/queryStudentByClassId")
     public R queryStudentByClassId(Integer classId) {
         return R.ok(classInfoService.queryStudentByClassId(classId));
+    }
+
+    /**
+     * 查询班级详情
+     *
+     * @return 结果
+     */
+    @GetMapping("/detail/{id}")
+    public R queryClassDetail(@PathVariable("id") Integer id) {
+        // 返回数据
+        ClassInfo classInfo = classInfoService.getById(id);
+        LinkedHashMap<String, Object> result = new LinkedHashMap<String, Object>() {
+            {
+                put("classInfo", classInfo);
+                put("tieInfo", tierInfoService.getById(classInfo.getTieId()));
+                put("staffInfo", staffInfoService.getById(classInfo.getTeacherId()));
+                put("majorInfo", majorInfoService.getById(classInfo.getMajorId()));
+                put("studentInfo", studentInfoService.list(Wrappers.<StudentInfo>lambdaQuery().eq(StudentInfo::getClassId, classInfo.getId())));
+//                put("courseInfo", null);
+            }
+        };
+        return R.ok(result);
     }
 
     /**

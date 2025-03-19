@@ -2,13 +2,17 @@ package cc.mrbird.febs.cos.controller;
 
 
 import cc.mrbird.febs.common.utils.R;
+import cc.mrbird.febs.cos.entity.CourseInfo;
+import cc.mrbird.febs.cos.entity.CourseReserveInfo;
 import cc.mrbird.febs.cos.entity.ElectiveScoreRecord;
-import cc.mrbird.febs.cos.service.IElectiveScoreRecordService;
+import cc.mrbird.febs.cos.entity.StudentInfo;
+import cc.mrbird.febs.cos.service.*;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -23,6 +27,20 @@ public class ElectiveScoreRecordController {
 
     private final IElectiveScoreRecordService electiveScoreRecordService;
 
+    private final IStudentInfoService studentInfoService;
+
+    private final ICourseInfoService courseInfoService;
+
+    private final IScheduleElectiveInfoService scheduleElectiveInfoService;
+
+    private final IClassInfoService classInfoService;
+
+    private final ITieInfoService tierInfoService;
+
+    private final IStaffInfoService staffInfoService;
+
+    private final IMajorInfoService majorInfoService;
+
     /**
      * 分页获取选修课分数记录信息
      *
@@ -33,6 +51,31 @@ public class ElectiveScoreRecordController {
     @GetMapping("/page")
     public R page(Page<ElectiveScoreRecord> page, ElectiveScoreRecord electiveScoreRecord) {
         return R.ok(electiveScoreRecordService.queryScoreRecord(page, electiveScoreRecord));
+    }
+
+    /**
+     * 查询课程预约详情
+     *
+     * @return 结果
+     */
+    @GetMapping("/detail/{id}")
+    public R queryDetail(@PathVariable("id") Integer id) {
+        // 返回数据
+        ElectiveScoreRecord electiveScoreRecord = electiveScoreRecordService.getById(id);
+        StudentInfo studentInfo = studentInfoService.getById(electiveScoreRecord.getStudentId());
+        CourseInfo courseInfo = courseInfoService.getById(electiveScoreRecord.getCourseId());
+        LinkedHashMap<String, Object> result = new LinkedHashMap<String, Object>() {
+            {
+                put("electiveScoreRecord", electiveScoreRecord);
+                put("courseInfo", courseInfo);
+                put("classInfo", classInfoService.getById(studentInfo.getClassId()));
+                put("tieInfo", tierInfoService.getById(courseInfo.getTieId()));
+                put("staffInfo", staffInfoService.getById(courseInfo.getStaffId()));
+                put("majorInfo", majorInfoService.getById(courseInfo.getMajorId()));
+                put("studentInfo", studentInfo);
+            }
+        };
+        return R.ok(result);
     }
 
     /**

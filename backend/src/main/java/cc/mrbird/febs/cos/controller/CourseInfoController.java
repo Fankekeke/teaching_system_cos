@@ -2,15 +2,19 @@ package cc.mrbird.febs.cos.controller;
 
 
 import cc.mrbird.febs.common.utils.R;
+import cc.mrbird.febs.cos.entity.ClassInfo;
 import cc.mrbird.febs.cos.entity.CourseInfo;
-import cc.mrbird.febs.cos.service.ICourseInfoService;
+import cc.mrbird.febs.cos.entity.StudentInfo;
+import cc.mrbird.febs.cos.service.*;
 import cn.hutool.core.date.DateUtil;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -22,6 +26,16 @@ import java.util.List;
 @RequestMapping("/cos/course-info")
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class CourseInfoController {
+
+    private final IClassInfoService classInfoService;
+
+    private final ITieInfoService tierInfoService;
+
+    private final IStaffInfoService staffInfoService;
+
+    private final IMajorInfoService majorInfoService;
+
+    private final IStudentInfoService studentInfoService;
 
     private final ICourseInfoService courseInfoService;
 
@@ -35,6 +49,28 @@ public class CourseInfoController {
     @GetMapping("/page")
     public R page(Page<CourseInfo> page, CourseInfo courseInfo) {
         return R.ok(courseInfoService.queryCoursePage(page, courseInfo));
+    }
+
+    /**
+     * 查询课程详情
+     *
+     * @return 结果
+     */
+    @GetMapping("/detail/{id}")
+    public R queryDetail(@PathVariable("id") Integer id) {
+        // 返回数据
+        CourseInfo courseInfo = courseInfoService.getById(id);
+        LinkedHashMap<String, Object> result = new LinkedHashMap<String, Object>() {
+            {
+                put("courseInfo", courseInfo);
+//                put("classInfo", classInfo);
+                put("tieInfo", tierInfoService.getById(courseInfo.getTieId()));
+                put("staffInfo", staffInfoService.getById(courseInfo.getStaffId()));
+                put("majorInfo", majorInfoService.getById(courseInfo.getMajorId()));
+//                put("studentInfo", studentInfoService.list(Wrappers.<StudentInfo>lambdaQuery().eq(StudentInfo::getClassId, classInfo.getId())));
+            }
+        };
+        return R.ok(result);
     }
 
     /**
