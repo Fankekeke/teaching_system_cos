@@ -142,45 +142,33 @@ export default {
           }
         }
       }, {
-        title: '主办方',
+        title: '课程名称',
         ellipsis: true,
-        dataIndex: 'organizer'
+        dataIndex: 'courseName'
       }, {
-        title: '选修课表特性',
-        dataIndex: 'status',
-        customRender: (text, row, index) => {
-          return <a-tag>{{ text }}</a-tag>
-        }
-      }, {
-        title: '选修课表标题',
+        title: '上课地址',
         ellipsis: true,
-        dataIndex: 'title'
+        dataIndex: 'address'
       }, {
-        title: '选修课表图片',
-        dataIndex: 'images',
+        title: '代课老师',
+        ellipsis: true,
+        dataIndex: 'staffName'
+      }, {
+        title: '导师头像',
+        dataIndex: 'staffImages',
         customRender: (text, record, index) => {
-          if (!record.images) return <a-avatar shape="square" icon="user" />
+          if (!record.staffImages) return <a-avatar shape="square" icon="user" />
           return <a-popover>
             <template slot="content">
-              <a-avatar shape="square" size={132} icon="user" src={ 'http://127.0.0.1:9527/imagesWeb/' + record.images.split(',')[0] } />
+              <a-avatar shape="square" size={132} icon="user" src={ 'http://127.0.0.1:9527/imagesWeb/' + record.staffImages.split(',')[0] } />
             </template>
-            <a-avatar shape="square" icon="user" src={ 'http://127.0.0.1:9527/imagesWeb/' + record.images.split(',')[0] } />
+            <a-avatar shape="square" icon="user" src={ 'http://127.0.0.1:9527/imagesWeb/' + record.staffImages.split(',')[0] } />
           </a-popover>
         }
       }, {
-        title: '开始时间',
+        title: '所属专业',
         ellipsis: true,
-        dataIndex: 'startTime',
-        customRender: (text, row, index) => {
-          if (text !== null) {
-            return text
-          } else {
-            return '- -'
-          }
-        }
-      }, {
-        title: '结束时间',
-        dataIndex: 'endTime',
+        dataIndex: 'majorName',
         customRender: (text, row, index) => {
           if (text !== null) {
             return text
