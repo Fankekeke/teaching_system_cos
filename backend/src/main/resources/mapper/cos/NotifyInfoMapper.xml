@@ -12,19 +12,20 @@
         ni.del_flag,
         ni.create_date,
         ni.name,
-        si.code as staffCode,
-        si.name as staffName,
-        si.images as staffImages,
-        ei.name as enterpriseName,
-        ei.images as enterpriseImages,
-        di.dept_name,
-        poi.name as positionName
+        si.name as studentName,
+        si.images as studentImages,
+        ci.name   as className,
+        sti.name   as staffName,
+        sti.images as staffImages,
+        ti.name   as tieName,
+        mi.name   as majorName
         from
         notify_info ni
-        left join staff_info si on (si.id = ni.staff_id)
-        left join enterprise_info ei on (ei.id = si.enterprise_id)
-        left join dept_info di on (di.id = si.dept_id)
-        left join position_info poi on (poi.id = si.position_id)
+        left join student_info si on (si.id = ni.user_id)
+        left join major_info mi on (mi.id = si.major_id)
+        left join class_info ci on (ci.id = si.class_id)
+        left join staff_info sti on (sti.id = ci.teacher_id)
+        left join tie_info ti on (ti.id = ci.tie_id)
         where
         1 = 1
         <if test="notifyInfo.userName != null and notifyInfo.userName != ''">
@@ -38,9 +39,6 @@
         </if>
         <if test="notifyInfo.staffId != null and notifyInfo.staffId != ''">
             AND si.user_id = #{notifyInfo.staffId}
-        </if>
-        <if test="notifyInfo.enterpriseId != null and notifyInfo.enterpriseId != ''">
-            AND ei.user_id = #{notifyInfo.enterpriseId}
         </if>
         order by
         ni.create_date desc
@@ -103,7 +101,7 @@
                si.name   as staffName,
                si.images as staffImages
         from notify_info ni
-                 left join staff_info si on (si.id = ni.staff_id)
+                 left join staff_info si on (si.id = ni.user_id)
         where 1 = 1
           AND si.user_id = #{userId}
         AND ni.del_flag = '0'

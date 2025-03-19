@@ -39,7 +39,7 @@
     </div>
     <div>
       <div class="operator">
-<!--        <a-button type="primary" ghost @click="add">新增</a-button>-->
+        <a-button type="primary" ghost @click="add">新增</a-button>
         <a-button @click="batchDelete">删除</a-button>
       </div>
       <!-- 表格区域 -->
@@ -150,12 +150,8 @@ export default {
         ellipsis: true,
         dataIndex: 'address'
       }, {
-        title: '代课老师',
-        ellipsis: true,
-        dataIndex: 'staffName'
-      }, {
-        title: '导师头像',
-        dataIndex: 'staffImages',
+        title: '选修课表图片',
+        dataIndex: 'images',
         customRender: (text, record, index) => {
           if (!record.staffImages) return <a-avatar shape="square" icon="user" />
           return <a-popover>

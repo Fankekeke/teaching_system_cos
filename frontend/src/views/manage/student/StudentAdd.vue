@@ -46,16 +46,6 @@
           </a-form-item>
         </a-col>
         <a-col :span="12">
-          <a-form-item label='所属系' v-bind="formItemLayout">
-            <a-select style="width: 100%" v-decorator="[
-            'tieId',
-            { rules: [{ required: true, message: '请输入所属系!' }] }
-            ]">
-              <a-select-option :value="item.id" v-for="(item, index) in tieList" :key="index">{{ item.name }}</a-select-option>
-            </a-select>
-          </a-form-item>
-        </a-col>
-        <a-col :span="12">
           <a-form-item label='所属专业' v-bind="formItemLayout">
             <a-select style="width: 100%" v-decorator="[
             'majorId',

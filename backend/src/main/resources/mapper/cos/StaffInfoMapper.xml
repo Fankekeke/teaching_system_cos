@@ -76,7 +76,7 @@
         left join class_info cai on (cai.id = sci.class_id)
         left join course_info ci on
         (ci.id = sci.course_id)
-        left join left join staff_info si on
+        left join staff_info si on
         (si.id = ci.staff_id)
         left join tie_info ti on
         (ti.id = ci.tie_id)
@@ -110,7 +110,7 @@
         schedule_elective_info sei
         left join course_info ci on
         (ci.id = sei.course_id)
-        left join left join staff_info si on
+        left join staff_info si on
         (si.id = ci.staff_id)
         left join tie_info ti on
         (ti.id = ci.tie_id)

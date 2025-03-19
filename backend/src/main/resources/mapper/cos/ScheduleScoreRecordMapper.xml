@@ -27,7 +27,7 @@
         (stui.id = ssr.student_id)
         left join course_info ci on
         (ci.id = ssr.course_id)
-        left join left join staff_info si on
+        left join staff_info si on
         (si.id = ci.staff_id)
         left join tie_info ti on
         (ti.id = ci.tie_id)
@@ -72,7 +72,7 @@
         (stui.id = ssr.student_id)
         left join course_info ci on
         (ci.id = ssr.course_id)
-        left join left join staff_info si on
+        left join staff_info si on
         (si.id = ci.staff_id)
         left join tie_info ti on
         (ti.id = ci.tie_id)

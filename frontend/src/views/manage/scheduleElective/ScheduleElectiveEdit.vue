@@ -147,7 +147,7 @@ export default {
       let fields = ['courseDate', 'content', 'courseId', 'startTime', 'endTime']
       let obj = {}
       Object.keys(dishes).forEach((key) => {
-        if (key === 'startTime') {
+        if (key === 'courseDate') {
           dishes[key] = moment(dishes[key], 'YYYY-MM-DD')
         }
         if (key === 'startTime') {

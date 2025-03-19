@@ -7,7 +7,7 @@
           <div :class="advanced ? null: 'fold'">
             <a-col :md="6" :sm="24">
               <a-form-item
-                label="用户名称"
+                label="学生姓名"
                 :labelCol="{span: 5}"
                 :wrapperCol="{span: 18, offset: 1}">
                 <a-input v-model="queryParams.name"/>
@@ -103,45 +103,41 @@ export default {
     }),
     columns () {
       return [{
-        title: '用户名称',
+        title: '学生姓名',
         ellipsis: true,
-        dataIndex: 'staffName'
+        dataIndex: 'studentName'
       }, {
-        title: '员工头像',
-        dataIndex: 'staffImages',
+        title: '学生头像',
+        dataIndex: 'studentImages',
         customRender: (text, record, index) => {
-          if (!record.staffImages) return <a-avatar shape="square" icon="user" />
+          if (!record.studentImages) return <a-avatar shape="square" icon="user" />
           return <a-popover>
             <template slot="content">
-              <a-avatar shape="square" size={132} icon="user" src={ 'http://127.0.0.1:9527/imagesWeb/' + record.staffImages.split(',')[0] } />
+              <a-avatar shape="square" size={132} icon="user" src={ 'http://127.0.0.1:9527/imagesWeb/' + record.studentImages.split(',')[0] } />
             </template>
-            <a-avatar shape="square" icon="user" src={ 'http://127.0.0.1:9527/imagesWeb/' + record.staffImages.split(',')[0] } />
+            <a-avatar shape="square" icon="user" src={ 'http://127.0.0.1:9527/imagesWeb/' + record.studentImages.split(',')[0] } />
           </a-popover>
         }
       }, {
-        title: '所属部门',
-        ellipsis: true,
-        dataIndex: 'deptName'
+        title: '专业名称',
+        dataIndex: 'majorName',
+        ellipsis: true
       }, {
-        title: '职位',
-        ellipsis: true,
-        dataIndex: 'positionName'
+        title: '所属班级',
+        dataIndex: 'className',
+        ellipsis: true
       }, {
         title: '消息内容',
         dataIndex: 'content',
         ellipsis: true
       }, {
-        title: '所属校企',
-        ellipsis: true,
-        dataIndex: 'enterpriseName'
-      }, {
         title: '消息状态',
         dataIndex: 'delFlag',
         customRender: (text, row, index) => {
           switch (text) {
-            case '0':
+            case 0:
               return <a-tag>未读</a-tag>
-            case '1':
+            case 1:
               return <a-tag color="blue">已读</a-tag>
             default:
               return '- -'
