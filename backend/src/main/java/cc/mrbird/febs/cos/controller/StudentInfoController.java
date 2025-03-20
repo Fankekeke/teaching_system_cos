@@ -6,6 +6,7 @@ import cc.mrbird.febs.cos.entity.StudentInfo;
 import cc.mrbird.febs.cos.service.IStudentInfoService;
 import cc.mrbird.febs.system.service.UserService;
 import cn.hutool.core.date.DateUtil;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,13 +32,24 @@ public class StudentInfoController {
     /**
      * 分页获取学生信息
      *
-     * @param page                 分页对象
+     * @param page        分页对象
      * @param studentInfo 学生信息
      * @return 结果
      */
     @GetMapping("/page")
     public R page(Page<StudentInfo> page, StudentInfo studentInfo) {
         return R.ok(studentInfoService.queryStudentPage(page, studentInfo));
+    }
+
+    /**
+     * 根据用户ID查询学生信息
+     *
+     * @param userId 用户ID
+     * @return 结果
+     */
+    @GetMapping("/queryStudentByUserId")
+    public R queryStudentByUserId(Integer userId) {
+        return R.ok(studentInfoService.getOne(Wrappers.<StudentInfo>lambdaQuery().eq(StudentInfo::getUserId, userId)));
     }
 
     /**

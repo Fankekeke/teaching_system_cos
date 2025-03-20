@@ -55,6 +55,7 @@
         <template slot="operation" slot-scope="text, record">
           <a-icon type="setting" theme="twoTone" twoToneColor="#4a9ff5" @click="edit(record)" title="修 改"></a-icon>
           <a-icon type="file-search" @click="dishesViewOpen(record)" title="详 情" style="margin-left: 15px"></a-icon>
+          <a-icon type="audit" v-if="record.status == 0" @click="audit(record)" title="审 核" style="margin-left: 15px"></a-icon>
         </template>
       </a-table>
     </div>
@@ -127,11 +128,45 @@ export default {
     }),
     columns () {
       return [{
-        title: '用户名称',
+        title: '学生姓名',
+        ellipsis: true,
+        dataIndex: 'studentName'
+      }, {
+        title: '学生头像',
+        dataIndex: 'studentImages',
+        customRender: (text, record, index) => {
+          if (!record.studentImages) return <a-avatar shape="square" icon="user" />
+          return <a-popover>
+            <template slot="content">
+              <a-avatar shape="square" size={132} icon="user" src={ 'http://127.0.0.1:9527/imagesWeb/' + record.studentImages.split(',')[0] } />
+            </template>
+            <a-avatar shape="square" icon="user" src={ 'http://127.0.0.1:9527/imagesWeb/' + record.studentImages.split(',')[0] } />
+          </a-popover>
+        }
+      }, {
+        title: '课程名称',
+        ellipsis: true,
+        dataIndex: 'courseName'
+      }, {
+        title: '课程日期',
+        ellipsis: true,
+        dataIndex: 'courseDate'
+      }, {
+        title: '课程时间',
+        dataIndex: 'status',
+        customRender: (text, row, index) => {
+          return <a-tag>{{ text }}</a-tag>
+        }
+      }, {
+        title: '所属专业',
+        ellipsis: true,
+        dataIndex: 'majorName'
+      }, {
+        title: '代课老师',
         ellipsis: true,
         dataIndex: 'staffName'
       }, {
-        title: '员工头像',
+        title: '导师头像',
         dataIndex: 'staffImages',
         customRender: (text, record, index) => {
           if (!record.staffImages) return <a-avatar shape="square" icon="user" />
@@ -143,54 +178,18 @@ export default {
           </a-popover>
         }
       }, {
-        title: '所属校企',
-        ellipsis: true,
-        dataIndex: 'enterpriseName'
-      }, {
-        title: '主办方',
-        ellipsis: true,
-        dataIndex: 'organizer'
-      }, {
-        title: '预约特性',
+        title: '审核状态',
         dataIndex: 'status',
         customRender: (text, row, index) => {
-          return <a-tag>{{ text }}</a-tag>
-        }
-      }, {
-        title: '预约标题',
-        ellipsis: true,
-        dataIndex: 'title'
-      }, {
-        title: '预约图片',
-        dataIndex: 'images',
-        customRender: (text, record, index) => {
-          if (!record.images) return <a-avatar shape="square" icon="user" />
-          return <a-popover>
-            <template slot="content">
-              <a-avatar shape="square" size={132} icon="user" src={ 'http://127.0.0.1:9527/imagesWeb/' + record.images.split(',')[0] } />
-            </template>
-            <a-avatar shape="square" icon="user" src={ 'http://127.0.0.1:9527/imagesWeb/' + record.images.split(',')[0] } />
-          </a-popover>
-        }
-      }, {
-        title: '开始时间',
-        ellipsis: true,
-        dataIndex: 'startTime',
-        customRender: (text, row, index) => {
-          if (text !== null) {
-            return text
-          } else {
-            return '- -'
-          }
-        }
-      }, {
-        title: '结束时间',
-        dataIndex: 'endTime',
-        customRender: (text, row, index) => {
-          if (text !== null) {
-            return text
-          } else {
-            return '- -'
+          switch (text) {
+            case '0':
+              return <a-tag>审核中</a-tag>
+            case '1':
+              return <a-tag>通过</a-tag>
+            case '2':
+              return <a-tag>驳回</a-tag>
+            default:
+              return '- -'
           }
         }
       }, {
@@ -214,6 +213,28 @@ export default {
     this.fetch()
   },
   methods: {
+    audit (record) {
+      let that = this
+      this.$confirm({
+        title: '确定要审核通过当前的记录?',
+        content: '当您点击确定按钮后，此记录将会审核通过',
+        centered: true,
+        onOk () {
+          record.status = '1'
+          that.$put('/cos/course-reserve-info', record).then(() => {
+            that.$message.success('审核成功')
+            that.search()
+          })
+        },
+        onCancel () {
+          record.status = '2'
+          that.$put('/cos/course-reserve-info', record).then(() => {
+            that.$message.success('审核成功')
+            that.search()
+          })
+        }
+      })
+    },
     dishesViewOpen (row) {
       this.dishesView.data = row
       this.dishesView.visiable = true
