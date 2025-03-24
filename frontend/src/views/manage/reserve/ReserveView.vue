@@ -8,14 +8,14 @@
     <div style="font-size: 13px;font-family: SimHei" v-if="dishesData !== null">
       <a-row style="padding-left: 24px;padding-right: 24px;">
         <a-col style="margin-bottom: 15px"><span style="font-size: 15px;font-weight: 650;color: #000c17">基础信息</span></a-col>
-        <a-col :span="8"><b>举办人：</b>
-          {{ dishesData.staffName }}
+        <a-col :span="8"><b>预约人：</b>
+          {{ dishesData.studentName }}
         </a-col>
-        <a-col :span="8"><b>预约主题：</b>
-          {{ dishesData.title ? dishesData.title : '- -' }}
+        <a-col :span="8"><b>课程日期：</b>
+          {{ dishesData.courseDate ? dishesData.courseDate : '- -' }}
         </a-col>
-        <a-col :span="8"><b>预约地址：</b>
-          {{ dishesData.address ? dishesData.address : '- -' }}
+        <a-col :span="8"><b>预约课程：</b>
+          {{ dishesData.courseName ? dishesData.courseName : '- -' }}
         </a-col>
       </a-row>
       <br/>

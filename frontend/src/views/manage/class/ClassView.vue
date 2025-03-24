@@ -1,5 +1,5 @@
 <template>
-  <a-modal v-model="show" title="班级详情" @cancel="onClose" :width="1000">
+  <a-modal v-model="show" title="班级详情" @cancel="onClose" :width="800">
     <template slot="footer">
       <a-button key="back" @click="onClose" type="danger">
         关闭
@@ -8,23 +8,32 @@
     <div style="font-size: 13px;font-family: SimHei" v-if="dishesData !== null">
       <a-row style="padding-left: 24px;padding-right: 24px;">
         <a-col style="margin-bottom: 15px"><span style="font-size: 15px;font-weight: 650;color: #000c17">基础信息</span></a-col>
-        <a-col :span="8"><b>举办人：</b>
-          {{ dishesData.staffName }}
+        <a-col :span="8"><b>班级编号：</b>
+          {{ dishesData.code }}
         </a-col>
-        <a-col :span="8"><b>班级主题：</b>
-          {{ dishesData.title ? dishesData.title : '- -' }}
-        </a-col>
-        <a-col :span="8"><b>班级地址：</b>
-          {{ dishesData.address ? dishesData.address : '- -' }}
+        <a-col :span="8"><b>班级名称：</b>
+          {{ dishesData.name ? dishesData.name : '- -' }}
         </a-col>
       </a-row>
       <br/>
       <a-row style="padding-left: 24px;padding-right: 24px;">
-        <a-col :span="8"><b>开始时间：</b>
-          {{ dishesData.startTime }}
+        <a-col :span="8"><b>年级：</b>
+          {{ dishesData.gradeYaer }}
         </a-col>
-        <a-col :span="8"><b>结束时间：</b>
-          {{ dishesData.endTime }}
+        <a-col :span="8"><b>创建时间：</b>
+          {{ dishesData.createDate }}
+        </a-col>
+        <a-col :span="8"><b>代课老师：</b>
+          {{ dishesData.staffName }}
+        </a-col>
+      </a-row>
+      <br/>
+      <a-row style="padding-left: 24px;padding-right: 24px;">
+        <a-col :span="8"><b>所属系：</b>
+          {{ dishesData.tieName }}
+        </a-col>
+        <a-col :span="8"><b>所属专业：</b>
+          {{ dishesData.majorName }}
         </a-col>
       </a-row>
       <br/>
@@ -34,14 +43,9 @@
         </a-col>
       </a-row>
       <br/>
-      <a-row style="padding-left: 24px;padding-right: 24px;">
-        <a-col :span="8"><b>创建时间：</b>
-          {{ dishesData.createDate }}
-        </a-col>
-      </a-row>
       <br/>
       <a-row style="padding-left: 24px;padding-right: 24px;">
-        <a-col style="margin-bottom: 15px"><span style="font-size: 15px;font-weight: 650;color: #000c17">图册</span></a-col>
+        <a-col style="margin-bottom: 15px"><span style="font-size: 15px;font-weight: 650;color: #000c17">老师头像</span></a-col>
         <a-col :span="24">
           <a-upload
             name="avatar"
@@ -58,12 +62,12 @@
         </a-col>
       </a-row>
       <br/>
-      <a-row style="padding-left: 24px;padding-right: 24px;" v-if="staffList.length !== 0">
-        <a-col style="margin-bottom: 15px"><span style="font-size: 15px;font-weight: 650;color: #000c17">班级邀请人</span></a-col>
+      <a-row style="padding-left: 24px;padding-right: 24px;" v-if="studentInfo.length !== 0">
+        <a-col style="margin-bottom: 15px"><span style="font-size: 15px;font-weight: 650;color: #000c17">班级成员</span></a-col>
         <a-row :gutter="15">
-          <a-col :span="6" v-for="(item, index) in staffList" :key="index">
+          <a-col :span="6" v-for="(item, index) in studentInfo" :key="index">
             <a-card :bordered="false">
-              <a-card-meta :title="item.name" :description="item.deptName + '-' + item.positionName">
+              <a-card-meta :title="item.name" :description="item.phone">
                 <a-avatar
                   slot="avatar"
                   :src="'http://127.0.0.1:9527/imagesWeb/' + item.images.split(',')[0]"
@@ -117,6 +121,7 @@ export default {
       repairInfo: null,
       reserveInfo: null,
       durgList: [],
+      studentInfo: [],
       staffList: [],
       logisticsList: [],
       userInfo: null
@@ -125,12 +130,17 @@ export default {
   watch: {
     dishesShow: function (value) {
       if (value) {
-        this.imagesInit(this.dishesData.images)
-        this.queryStaffListByCondition(this.dishesData.id)
+        this.imagesInit(this.dishesData.staffImages)
+        this.queryDetail(this.dishesData.id)
       }
     }
   },
   methods: {
+    queryDetail (id) {
+      this.$get(`/cos/class-info/detail/${id}`).then((r) => {
+        this.studentInfo = r.data.data.studentInfo
+      })
+    },
     queryStaffListByCondition (id) {
       this.$get('/cos/class-info/queryStaffListByCondition', {conditionId: id}).then((r) => {
         this.staffList = r.data.data
