@@ -13,6 +13,7 @@
         ci.duration,
         ci.address,
         ci.people_num,
+        ci.credit,
         ci.`type`,
         ci.tie_id,
         ci.major_id,
@@ -37,6 +38,9 @@
         </if>
         <if test="courseInfo.staffName != null and courseInfo.staffName != ''">
             AND si.name LIKE CONCAT('%',#{courseInfo.staffName},'%')
+        </if>
+        <if test="courseInfo.staffId != null and courseInfo.staffId != ''">
+            AND si.user_id = #{courseInfo.staffId}
         </if>
         order by
         ci.create_date desc

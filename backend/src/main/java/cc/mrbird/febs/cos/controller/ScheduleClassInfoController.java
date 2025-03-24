@@ -52,6 +52,16 @@ public class ScheduleClassInfoController {
     }
 
     /**
+     * 获取首页数据
+     *
+     * @return 结果
+     */
+    @GetMapping("/homeData")
+    public R homeData() {
+        return R.ok(scheduleClassInfoService.homeData());
+    }
+
+    /**
      * 查询班级课表详情
      *
      * @return 结果

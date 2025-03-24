@@ -55,6 +55,9 @@ public class ScheduleClassInfo implements Serializable {
     private Integer courseId;
 
     @TableField(exist = false)
+    private Integer staffId;
+
+    @TableField(exist = false)
     private String className;
     @TableField(exist = false)
     private String courseName;

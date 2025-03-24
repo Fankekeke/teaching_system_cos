@@ -46,6 +46,12 @@
         <if test="electiveScoreRecord.majorName != null and electiveScoreRecord.majorName != ''">
             AND mi.name LIKE CONCAT('%',#{electiveScoreRecord.majorName},'%')
         </if>
+        <if test="electiveScoreRecord.studentId != null and electiveScoreRecord.studentId != ''">
+            AND stui.user_id = #{electiveScoreRecord.studentId}
+        </if>
+        <if test="electiveScoreRecord.staffId != null and electiveScoreRecord.staffId != ''">
+            AND si.user_id = #{electiveScoreRecord.staffId}
+        </if>
         order by
         sei.course_date desc
     </select>

@@ -42,6 +42,112 @@
         <if test="scheduleClassInfo.staffName != null and scheduleClassInfo.staffName != ''">
             AND si.name LIKE CONCAT('%',#{scheduleClassInfo.staffName},'%')
         </if>
+        <if test="scheduleClassInfo.classId != null and scheduleClassInfo.classId != ''">
+            AND ci.id = #{scheduleClassInfo.classId}
+        </if>
+        <if test="scheduleClassInfo.staffId != null and scheduleClassInfo.staffId != ''">
+            AND si.user_id = #{scheduleClassInfo.staffId}
+        </if>
         order by sci.course_date desc
+    </select>
+
+    <select id="selectDataByMonth" resultType="java.lang.Integer">
+        select count(1)
+        from schedule_class_info
+        where 1 = 1
+        <if test="year != null">
+            AND DATE_FORMAT( schedule_class_info.course_date, '%Y' ) = #{year}
+        </if>
+        <if test="month != null">
+            AND DATE_FORMAT( schedule_class_info.course_date, '%m' ) = #{month}
+        </if>
+    </select>
+
+    <select id="selectAlertByMonth" resultType="java.lang.Integer">
+        select count(1)
+        from schedule_elective_info
+        where 1 = 1
+        <if test="year != null">
+            AND DATE_FORMAT( schedule_elective_info.course_date, '%Y' ) = #{year}
+        </if>
+        <if test="month != null">
+            AND DATE_FORMAT( schedule_elective_info.course_date, '%m' ) = #{month}
+        </if>
+    </select>
+
+    <select id="selectDataNumWithinDays" resultType="java.util.LinkedHashMap">
+        SELECT
+        DATE_FORMAT( spo.days, '%m-%d' ) AS days,
+        IFNULL(COUNT(oi.id), 0) AS count
+        FROM
+        (
+        SELECT
+        DATE_SUB( curdate(), INTERVAL + 0 DAY ) days UNION
+        SELECT
+        DATE_SUB( curdate(), INTERVAL + 1 DAY ) UNION
+        SELECT
+        DATE_SUB( curdate(), INTERVAL + 2 DAY ) UNION
+        SELECT
+        DATE_SUB( curdate(), INTERVAL + 3 DAY ) UNION
+        SELECT
+        DATE_SUB( curdate(), INTERVAL + 4 DAY ) UNION
+        SELECT
+        DATE_SUB( curdate(), INTERVAL + 5 DAY ) UNION
+        SELECT
+        DATE_SUB( curdate(), INTERVAL + 6 DAY ) UNION
+        SELECT
+        DATE_SUB( curdate(), INTERVAL + 7 DAY ) UNION
+        SELECT
+        DATE_SUB( curdate(), INTERVAL + 8 DAY ) UNION
+        SELECT
+        DATE_SUB( curdate(), INTERVAL + 9 DAY )) spo
+        LEFT JOIN schedule_class_info oi ON (
+        DATE_FORMAT( oi.course_date, '%Y-%m-%d' ) = DATE_FORMAT( spo.days, '%Y-%m-%d' )
+        <if test="userId != null">
+            AND oi.user_id = #{userId}
+        </if>
+        )
+        GROUP BY
+        days
+        ORDER BY
+        days ASC
+    </select>
+
+    <select id="selectAlertNumWithinDays" resultType="java.util.LinkedHashMap">
+        SELECT
+        DATE_FORMAT( spo.days, '%m-%d' ) AS days,
+        IFNULL(COUNT(oi.id), 0) AS count
+        FROM
+        (
+        SELECT
+        DATE_SUB( curdate(), INTERVAL + 0 DAY ) days UNION
+        SELECT
+        DATE_SUB( curdate(), INTERVAL + 1 DAY ) UNION
+        SELECT
+        DATE_SUB( curdate(), INTERVAL + 2 DAY ) UNION
+        SELECT
+        DATE_SUB( curdate(), INTERVAL + 3 DAY ) UNION
+        SELECT
+        DATE_SUB( curdate(), INTERVAL + 4 DAY ) UNION
+        SELECT
+        DATE_SUB( curdate(), INTERVAL + 5 DAY ) UNION
+        SELECT
+        DATE_SUB( curdate(), INTERVAL + 6 DAY ) UNION
+        SELECT
+        DATE_SUB( curdate(), INTERVAL + 7 DAY ) UNION
+        SELECT
+        DATE_SUB( curdate(), INTERVAL + 8 DAY ) UNION
+        SELECT
+        DATE_SUB( curdate(), INTERVAL + 9 DAY )) spo
+        LEFT JOIN schedule_elective_info oi ON (
+        DATE_FORMAT( oi.course_date, '%Y-%m-%d' ) = DATE_FORMAT( spo.days, '%Y-%m-%d' )
+        <if test="userId != null">
+            AND oi.send_user = #{userId}
+        </if>
+        )
+        GROUP BY
+        days
+        ORDER BY
+        days ASC
     </select>
 </mapper>

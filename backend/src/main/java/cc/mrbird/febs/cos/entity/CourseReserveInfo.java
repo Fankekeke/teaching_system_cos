@@ -64,6 +64,9 @@ public class CourseReserveInfo implements Serializable {
     private String auditDate;
 
     @TableField(exist = false)
+    private Integer staffId;
+
+    @TableField(exist = false)
     private String studentName;
 
     @TableField(exist = false)

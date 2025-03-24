@@ -49,6 +49,12 @@
         <if test="courseReserveInfo.majorName != null and courseReserveInfo.majorName != ''">
             AND mi.name LIKE CONCAT('%',#{courseReserveInfo.majorName},'%')
         </if>
+        <if test="courseReserveInfo.studentId != null and courseReserveInfo.studentId != ''">
+            AND stui.user_id = #{courseReserveInfo.studentId}
+        </if>
+        <if test="courseReserveInfo.staffId != null and courseReserveInfo.staffId != ''">
+            AND si.user_id = #{courseReserveInfo.staffId}
+        </if>
         order by
         sei.course_date desc
     </select>

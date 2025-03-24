@@ -38,6 +38,9 @@
         <if test="scheduleElectiveInfo.staffName != null and scheduleElectiveInfo.staffName != ''">
             AND si.name LIKE CONCAT('%',#{scheduleElectiveInfo.staffName},'%')
         </if>
+        <if test="scheduleElectiveInfo.staffId != null and scheduleElectiveInfo.staffId != ''">
+            AND si.user_id = #{scheduleElectiveInfo.staffId}
+        </if>
         order by sei.create_date desc
     </select>
 </mapper>

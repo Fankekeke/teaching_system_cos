@@ -68,6 +68,7 @@ public class NotifyInfo implements Serializable {
     @TableField(exist = false)
     private String userName;
 
+
     public NotifyInfo(String userCode, Integer delFlag, String createDate, String name) {
         this.userCode = userCode;
         this.delFlag = delFlag;

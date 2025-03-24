@@ -38,6 +38,9 @@
         <if test="studentInfo.staffName != null and studentInfo.staffName != ''">
             AND si.name LIKE CONCAT('%',#{studentInfo.staffName},'%')
         </if>
+        <if test="studentInfo.staffId != null and studentInfo.staffId != ''">
+            AND si.user_id = #{studentInfo.staffId},
+        </if>
         order by stui.create_date desc
     </select>
 

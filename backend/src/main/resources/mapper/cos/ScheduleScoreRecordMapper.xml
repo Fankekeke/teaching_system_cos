@@ -44,6 +44,12 @@
         <if test="scheduleScoreRecord.staffName != null and scheduleScoreRecord.staffName != ''">
             AND si.name LIKE CONCAT('%',#{scheduleScoreRecord.staffName},'%')
         </if>
+        <if test="scheduleScoreRecord.studentId != null and scheduleScoreRecord.studentId != ''">
+            AND stui.user_id = #{scheduleScoreRecord.studentId}
+        </if>
+        <if test="scheduleScoreRecord.staffId != null and scheduleScoreRecord.staffId != ''">
+            AND si.user_id = #{scheduleScoreRecord.staffId}
+        </if>
         order by sci.course_date desc
     </select>
 

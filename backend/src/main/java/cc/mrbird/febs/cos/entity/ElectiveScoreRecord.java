@@ -48,6 +48,9 @@ public class ElectiveScoreRecord implements Serializable {
     private Integer score;
 
     @TableField(exist = false)
+    private Integer staffId;
+
+    @TableField(exist = false)
     private String studentName;
 
     @TableField(exist = false)

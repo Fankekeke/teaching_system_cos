@@ -23,4 +23,11 @@ public interface IScheduleClassInfoService extends IService<ScheduleClassInfo> {
      * @return 结果
      */
     IPage<LinkedHashMap<String, Object>> querySchedulePage(Page<ScheduleClassInfo> page, ScheduleClassInfo scheduleClassInfo);
+
+    /**
+     * 获取首页数据
+     *
+     * @return 结果
+     */
+    LinkedHashMap<String, Object> homeData();
 }

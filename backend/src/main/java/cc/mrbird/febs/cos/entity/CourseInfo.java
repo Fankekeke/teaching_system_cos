@@ -79,6 +79,11 @@ public class CourseInfo implements Serializable {
     private Integer majorId;
 
     /**
+     * 学分
+     */
+    private Integer credit;
+
+    /**
      * 创建时间
      */
     private String createDate;
