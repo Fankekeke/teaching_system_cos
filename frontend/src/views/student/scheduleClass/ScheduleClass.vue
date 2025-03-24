@@ -47,8 +47,8 @@
     </div>
     <div>
       <div class="operator">
-<!--        <a-button type="primary" ghost @click="add">新增</a-button>-->
-        <a-button @click="batchDelete">删除</a-button>
+<!--        <a-button type="primary" ghost @click="add">生成本月课表</a-button>-->
+<!--        <a-button @click="batchDelete">删除</a-button>-->
       </div>
       <!-- 表格区域 -->
       <a-table ref="TableInfo"
@@ -61,7 +61,7 @@
                :scroll="{ x: 900 }"
                @change="handleTableChange">
         <template slot="operation" slot-scope="text, record">
-          <a-icon type="setting" theme="twoTone" twoToneColor="#4a9ff5" @click="edit(record)" title="修 改"></a-icon>
+<!--          <a-icon type="setting" theme="twoTone" twoToneColor="#4a9ff5" @click="edit(record)" title="修 改"></a-icon>-->
           <a-icon type="file-search" @click="dishesViewOpen(record)" title="详 情" style="margin-left: 15px"></a-icon>
         </template>
       </a-table>
@@ -150,55 +150,43 @@ export default {
           }
         }
       }, {
-        title: '班级名称',
-        ellipsis: true,
-        dataIndex: 'className'
-      }, {
-        title: '选修课表特性',
-        dataIndex: 'status',
+        title: '所属班级',
+        dataIndex: 'className',
         customRender: (text, row, index) => {
-          return <a-tag>{{ text }}</a-tag>
+          if (text !== null) {
+            return text
+          } else {
+            return '- -'
+          }
         }
       }, {
-        title: '选修课表标题',
+        title: '课程名称',
         ellipsis: true,
-        dataIndex: 'title'
+        dataIndex: 'courseName'
       }, {
-        title: '选修课表图片',
+        title: '上课地址',
+        ellipsis: true,
+        dataIndex: 'address'
+      }, {
+        title: '代课老师',
+        ellipsis: true,
+        dataIndex: 'staffName'
+      }, {
+        title: '代课老师头像',
         dataIndex: 'images',
         customRender: (text, record, index) => {
-          if (!record.images) return <a-avatar shape="square" icon="user" />
+          if (!record.staffImages) return <a-avatar shape="square" icon="user" />
           return <a-popover>
             <template slot="content">
-              <a-avatar shape="square" size={132} icon="user" src={ 'http://127.0.0.1:9527/imagesWeb/' + record.images.split(',')[0] } />
+              <a-avatar shape="square" size={132} icon="user" src={ 'http://127.0.0.1:9527/imagesWeb/' + record.staffImages.split(',')[0] } />
             </template>
-            <a-avatar shape="square" icon="user" src={ 'http://127.0.0.1:9527/imagesWeb/' + record.images.split(',')[0] } />
+            <a-avatar shape="square" icon="user" src={ 'http://127.0.0.1:9527/imagesWeb/' + record.staffImages.split(',')[0] } />
           </a-popover>
         }
       }, {
-        title: '开始时间',
+        title: '所属专业',
         ellipsis: true,
-        dataIndex: 'startTime',
-        customRender: (text, row, index) => {
-          if (text !== null) {
-            return text
-          } else {
-            return '- -'
-          }
-        }
-      }, {
-        title: '结束时间',
-        dataIndex: 'endTime',
-        customRender: (text, row, index) => {
-          if (text !== null) {
-            return text
-          } else {
-            return '- -'
-          }
-        }
-      }, {
-        title: '创建时间',
-        dataIndex: 'createDate',
+        dataIndex: 'majorName',
         customRender: (text, row, index) => {
           if (text !== null) {
             return text
@@ -231,7 +219,11 @@ export default {
       this.advanced = !this.advanced
     },
     add () {
-      this.dishesAdd.visiable = true
+      this.$get('/cos/schedule-template-info/batchSaveSchedule').then(() => {
+        this.$message.success('添加成功')
+        this.search()
+      })
+      // this.dishesAdd.visiable = true
     },
     handledishesAddClose () {
       this.dishesAdd.visiable = false

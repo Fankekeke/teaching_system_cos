@@ -8,16 +8,17 @@
     <div style="font-size: 13px;font-family: SimHei" v-if="dishesData !== null">
       <a-row style="padding-left: 24px;padding-right: 24px;">
         <a-col style="margin-bottom: 15px"><span style="font-size: 15px;font-weight: 650;color: #000c17">基础信息</span></a-col>
-        <a-col :span="8"><b>举办人：</b>
-          {{ dishesData.staffName }}
+        <a-col :span="8"><b>课程时间：</b>
+          {{ dishesData.courseDate }}
         </a-col>
-        <a-col :span="8"><b>选修课表主题：</b>
-          {{ dishesData.title ? dishesData.title : '- -' }}
+        <a-col :span="8"><b>课程名称：</b>
+          {{ dishesData.courseName ? dishesData.courseName : '- -' }}
         </a-col>
-        <a-col :span="8"><b>选修课表地址：</b>
-          {{ dishesData.address ? dishesData.address : '- -' }}
+        <a-col :span="8"><b>代课老师：</b>
+          {{ dishesData.staffName ? dishesData.staffName : '- -' }}
         </a-col>
       </a-row>
+      <br/>
       <br/>
       <a-row style="padding-left: 24px;padding-right: 24px;">
         <a-col :span="8"><b>开始时间：</b>
@@ -26,7 +27,24 @@
         <a-col :span="8"><b>结束时间：</b>
           {{ dishesData.endTime }}
         </a-col>
+        <a-col :span="8"><b>时常：</b>
+          {{ dishesData.duration }}
+        </a-col>
       </a-row>
+      <br/>
+      <br/>
+      <a-row style="padding-left: 24px;padding-right: 24px;">
+        <a-col :span="8"><b>人数：</b>
+          {{ dishesData.peopleNum }}
+        </a-col>
+        <a-col :span="8"><b>学分：</b>
+          {{ dishesData.credit }}
+        </a-col>
+        <a-col :span="8"><b>专业名称：</b>
+          {{ dishesData.majorName }}
+        </a-col>
+      </a-row>
+      <br/>
       <br/>
       <a-row style="padding-left: 24px;padding-right: 24px;">
         <a-col :span="24"><b>选修课表内容：</b>
@@ -125,8 +143,7 @@ export default {
   watch: {
     dishesShow: function (value) {
       if (value) {
-        this.imagesInit(this.dishesData.images)
-        this.queryStaffListByCondition(this.dishesData.id)
+        this.imagesInit(this.dishesData.staffImages)
       }
     }
   },

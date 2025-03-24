@@ -18,24 +18,24 @@
             <a-row class="more-info" v-if="user.roleId == 74">
               <a-col :span="4"></a-col>
               <a-col :span="4"></a-col>
-<!--              <a-col :span="4">-->
-<!--                <head-info title="总订单" :content="titleData.registerNum" :center="false" :bordered="false"/>-->
-<!--              </a-col>-->
-<!--              <a-col :span="4">-->
-<!--                <head-info title="总单量" :content="titleData.orderPrice" :center="false" :bordered="false"/>-->
-<!--              </a-col>-->
-<!--              <a-col :span="4">-->
-<!--                <head-info title="出库数量" :content="titleData.outNum" :center="false" :bordered="false"/>-->
-<!--              </a-col>-->
-<!--              <a-col :span="4">-->
-<!--                <head-info title="入库数量" :content="titleData.putNum" :center="false"/>-->
-<!--              </a-col>-->
+              <a-col :span="4">
+                <head-info title="员工数量" :content="titleData.staffNum" :center="false" :bordered="false"/>
+              </a-col>
+              <a-col :span="4">
+                <head-info title="学生数量" :content="titleData.studentNum" :center="false" :bordered="false"/>
+              </a-col>
+              <a-col :span="4">
+                <head-info title="专业数" :content="titleData.majorNum" :center="false" :bordered="false"/>
+              </a-col>
+              <a-col :span="4">
+                <head-info title="班级数量" :content="titleData.classNum" :center="false"/>
+              </a-col>
             </a-row>
           </div>
         </a-col>
       </a-card>
     </a-row>
-    <home v-if="user.roleId == 74 || user.roleId == 76" @setTitle="setTitleData"></home>
+    <home v-if="user.roleId == 74" @setTitle="setTitleData"></home>
     <work v-if="user.roleId == 75"></work>
     <a-row :gutter="8" class="count-info" style="margin-top: 15px" v-show="user.roleId == 74">
       <a-col :span="12" class="visit-count-wrapper">
@@ -60,10 +60,10 @@ export default {
   data () {
     return {
       titleData: {
-        outNum: 0,
-        putNum: 0,
-        orderPrice: 0,
-        registerNum: 0
+        staffNum: 0,
+        studentNum: 0,
+        majorNum: 0,
+        classNum: 0
       },
       series: [],
       chartOptions: {

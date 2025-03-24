@@ -139,6 +139,30 @@ export default {
         ellipsis: true,
         dataIndex: 'code'
       }, {
+        title: '课程周',
+        ellipsis: true,
+        dataIndex: 'typeDay',
+        customRender: (text, row, index) => {
+          switch (text) {
+            case '1':
+              return <a-tag>周日</a-tag>
+            case '2':
+              return <a-tag>周一</a-tag>
+            case '3':
+              return <a-tag>周二</a-tag>
+            case '4':
+              return <a-tag>周三</a-tag>
+            case '5':
+              return <a-tag>周四</a-tag>
+            case '6':
+              return <a-tag>周五</a-tag>
+            case '7':
+              return <a-tag>周六</a-tag>
+            default:
+              return '- -'
+          }
+        }
+      }, {
         title: '开始结束时间',
         ellipsis: true,
         dataIndex: 'startTime',

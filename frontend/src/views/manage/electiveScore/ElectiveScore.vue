@@ -53,7 +53,7 @@
                :scroll="{ x: 900 }"
                @change="handleTableChange">
         <template slot="operation" slot-scope="text, record">
-          <a-icon type="setting" theme="twoTone" twoToneColor="#4a9ff5" @click="edit(record)" title="修 改"></a-icon>
+<!--          <a-icon type="setting" theme="twoTone" twoToneColor="#4a9ff5" @click="edit(record)" title="修 改"></a-icon>-->
           <a-icon type="file-search" @click="dishesViewOpen(record)" title="详 情" style="margin-left: 15px"></a-icon>
         </template>
       </a-table>
@@ -152,6 +152,7 @@ export default {
         dataIndex: 'courseDate'
       }, {
         title: '开始结束时间',
+        ellipsis: true,
         dataIndex: 'startTime',
         customRender: (text, row, index) => {
           if (text !== null) {
@@ -190,16 +191,6 @@ export default {
       }, {
         title: '分数',
         dataIndex: 'score',
-        customRender: (text, row, index) => {
-          if (text !== null) {
-            return text
-          } else {
-            return '- -'
-          }
-        }
-      }, {
-        title: '创建时间',
-        dataIndex: 'createDate',
         customRender: (text, row, index) => {
           if (text !== null) {
             return text

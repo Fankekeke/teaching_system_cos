@@ -8,23 +8,51 @@
     <div style="font-size: 13px;font-family: SimHei" v-if="dishesData !== null">
       <a-row style="padding-left: 24px;padding-right: 24px;">
         <a-col style="margin-bottom: 15px"><span style="font-size: 15px;font-weight: 650;color: #000c17">基础信息</span></a-col>
-        <a-col :span="8"><b>举办人：</b>
-          {{ dishesData.staffName }}
+        <a-col :span="8"><b>课程编号：</b>
+          {{ dishesData.code }}
         </a-col>
-        <a-col :span="8"><b>课程主题：</b>
-          {{ dishesData.title ? dishesData.title : '- -' }}
+        <a-col :span="8"><b>课程名称：</b>
+          {{ dishesData.name ? dishesData.name : '- -' }}
         </a-col>
-        <a-col :span="8"><b>课程地址：</b>
-          {{ dishesData.address ? dishesData.address : '- -' }}
+        <a-col :span="8"><b>课程年级：</b>
+          {{ dishesData.gradeId ? dishesData.gradeId : '- -' }}
         </a-col>
       </a-row>
       <br/>
       <a-row style="padding-left: 24px;padding-right: 24px;">
-        <a-col :span="8"><b>开始时间：</b>
-          {{ dishesData.startTime }}
+        <a-col :span="8"><b>时常：</b>
+          {{ dishesData.duration ? dishesData.duration : '- -' }}
         </a-col>
-        <a-col :span="8"><b>结束时间：</b>
-          {{ dishesData.endTime }}
+        <a-col :span="8"><b>上课地点：</b>
+          {{ dishesData.address ? dishesData.address : '- -' }}
+        </a-col>
+        <a-col :span="8"><b>人数：</b>
+          {{ dishesData.peopleNum ? dishesData.peopleNum : '- -' }}
+        </a-col>
+      </a-row>
+      <br/>
+      <a-row style="padding-left: 24px;padding-right: 24px;">
+        <a-col :span="8"><b>导师姓名：</b>
+          {{ dishesData.staffName ? dishesData.staffName : '- -' }}
+        </a-col>
+        <a-col :span="8"><b>所属系：</b>
+          {{ dishesData.tieName ? dishesData.tieName : '- -' }}
+        </a-col>
+        <a-col :span="8"><b>专业名称：</b>
+          {{ dishesData.majorName ? dishesData.majorName : '- -' }}
+        </a-col>
+      </a-row>
+      <br/>
+      <a-row style="padding-left: 24px;padding-right: 24px;">
+        <a-col :span="8"><b>学分：</b>
+          {{ dishesData.credit ? dishesData.credit : '- -' }}
+        </a-col>
+        <a-col :span="8"><b>课程类型：</b>
+          <span v-if="dishesData.type == 1">常规</span>
+          <span v-if="dishesData.type == 2">选修</span>
+        </a-col>
+        <a-col :span="8"><b>创建时间：</b>
+          {{ dishesData.createDate ? dishesData.createDate : '- -' }}
         </a-col>
       </a-row>
       <br/>
@@ -35,13 +63,7 @@
       </a-row>
       <br/>
       <a-row style="padding-left: 24px;padding-right: 24px;">
-        <a-col :span="8"><b>创建时间：</b>
-          {{ dishesData.createDate }}
-        </a-col>
-      </a-row>
-      <br/>
-      <a-row style="padding-left: 24px;padding-right: 24px;">
-        <a-col style="margin-bottom: 15px"><span style="font-size: 15px;font-weight: 650;color: #000c17">图册</span></a-col>
+        <a-col style="margin-bottom: 15px"><span style="font-size: 15px;font-weight: 650;color: #000c17">老师头像</span></a-col>
         <a-col :span="24">
           <a-upload
             name="avatar"
@@ -58,21 +80,6 @@
         </a-col>
       </a-row>
       <br/>
-      <a-row style="padding-left: 24px;padding-right: 24px;" v-if="staffList.length !== 0">
-        <a-col style="margin-bottom: 15px"><span style="font-size: 15px;font-weight: 650;color: #000c17">课程邀请人</span></a-col>
-        <a-row :gutter="15">
-          <a-col :span="6" v-for="(item, index) in staffList" :key="index">
-            <a-card :bordered="false">
-              <a-card-meta :title="item.name" :description="item.deptName + '-' + item.positionName">
-                <a-avatar
-                  slot="avatar"
-                  :src="'http://127.0.0.1:9527/imagesWeb/' + item.images.split(',')[0]"
-                />
-              </a-card-meta>
-            </a-card>
-          </a-col>
-        </a-row>
-      </a-row>
     </div>
   </a-modal>
 </template>
@@ -125,17 +132,11 @@ export default {
   watch: {
     dishesShow: function (value) {
       if (value) {
-        this.imagesInit(this.dishesData.images)
-        this.queryStaffListByCondition(this.dishesData.id)
+        this.imagesInit(this.dishesData.staffImages)
       }
     }
   },
   methods: {
-    queryStaffListByCondition (id) {
-      this.$get('/cos/course-info/queryStaffListByCondition', {conditionId: id}).then((r) => {
-        this.staffList = r.data.data
-      })
-    },
     local (dishesData) {
       baiduMap.clearOverlays()
       baiduMap.rMap().enableScrollWheelZoom(true)

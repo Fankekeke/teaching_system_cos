@@ -82,6 +82,8 @@ public class StudentInfo implements Serializable {
      * 所属账户
      */
     private Integer userId;
+    @TableField(exist = false)
+    private Integer staffId;
 
     @TableField(exist = false)
     private String className;

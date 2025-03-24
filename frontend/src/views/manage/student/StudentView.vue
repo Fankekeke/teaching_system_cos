@@ -8,35 +8,45 @@
     <div style="font-size: 13px;font-family: SimHei" v-if="dishesData !== null">
       <a-row style="padding-left: 24px;padding-right: 24px;">
         <a-col style="margin-bottom: 15px"><span style="font-size: 15px;font-weight: 650;color: #000c17">基础信息</span></a-col>
-        <a-col :span="8"><b>举办人：</b>
-          {{ dishesData.staffName }}
+        <a-col :span="8"><b>学生编号：</b>
+          {{ dishesData.code }}
         </a-col>
-        <a-col :span="8"><b>学生主题：</b>
-          {{ dishesData.title ? dishesData.title : '- -' }}
+        <a-col :span="8"><b>学生姓名：</b>
+          {{ dishesData.name ? dishesData.name : '- -' }}
         </a-col>
         <a-col :span="8"><b>学生地址：</b>
-          {{ dishesData.address ? dishesData.address : '- -' }}
+          <span v-if="dishesData.sex == 1">男</span>
+          <span v-if="dishesData.sex == 2">女</span>
         </a-col>
       </a-row>
       <br/>
       <a-row style="padding-left: 24px;padding-right: 24px;">
-        <a-col :span="8"><b>开始时间：</b>
-          {{ dishesData.startTime }}
+        <a-col :span="8"><b>联系方式：</b>
+          {{ dishesData.phone }}
         </a-col>
-        <a-col :span="8"><b>结束时间：</b>
-          {{ dishesData.endTime }}
+        <a-col :span="8"><b>邮箱地址：</b>
+          {{ dishesData.email }}
         </a-col>
-      </a-row>
-      <br/>
-      <a-row style="padding-left: 24px;padding-right: 24px;">
-        <a-col :span="24"><b>学生内容：</b>
-          {{ dishesData.content }}
-        </a-col>
-      </a-row>
-      <br/>
-      <a-row style="padding-left: 24px;padding-right: 24px;">
         <a-col :span="8"><b>创建时间：</b>
           {{ dishesData.createDate }}
+        </a-col>
+      </a-row>
+      <br/>
+      <a-row style="padding-left: 24px;padding-right: 24px;">
+        <a-col :span="8"><b>班级名称：</b>
+          {{ dishesData.className }}
+        </a-col>
+        <a-col :span="8"><b>导师名称：</b>
+          {{ dishesData.staffName }}
+        </a-col>
+        <a-col :span="8"><b>所属专业：</b>
+          {{ dishesData.majorName }}
+        </a-col>
+      </a-row>
+      <br/>
+      <a-row style="padding-left: 24px;padding-right: 24px;">
+        <a-col :span="24"><b>备注：</b>
+          {{ dishesData.content }}
         </a-col>
       </a-row>
       <br/>
@@ -58,21 +68,6 @@
         </a-col>
       </a-row>
       <br/>
-      <a-row style="padding-left: 24px;padding-right: 24px;" v-if="staffList.length !== 0">
-        <a-col style="margin-bottom: 15px"><span style="font-size: 15px;font-weight: 650;color: #000c17">学生邀请人</span></a-col>
-        <a-row :gutter="15">
-          <a-col :span="6" v-for="(item, index) in staffList" :key="index">
-            <a-card :bordered="false">
-              <a-card-meta :title="item.name" :description="item.deptName + '-' + item.positionName">
-                <a-avatar
-                  slot="avatar"
-                  :src="'http://127.0.0.1:9527/imagesWeb/' + item.images.split(',')[0]"
-                />
-              </a-card-meta>
-            </a-card>
-          </a-col>
-        </a-row>
-      </a-row>
     </div>
   </a-modal>
 </template>
@@ -126,7 +121,6 @@ export default {
     dishesShow: function (value) {
       if (value) {
         this.imagesInit(this.dishesData.images)
-        this.queryStaffListByCondition(this.dishesData.id)
       }
     }
   },

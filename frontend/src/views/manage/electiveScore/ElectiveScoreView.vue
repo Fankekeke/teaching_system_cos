@@ -19,6 +19,7 @@
         </a-col>
       </a-row>
       <br/>
+      <br/>
       <a-row style="padding-left: 24px;padding-right: 24px;">
         <a-col :span="8"><b>课程日期：</b>
           {{ dishesData.courseDate }}
@@ -31,6 +32,7 @@
         </a-col>
       </a-row>
       <br/>
+      <br/>
       <a-row style="padding-left: 24px;padding-right: 24px;">
         <a-col :span="8"><b>导师姓名：</b>
           {{ dishesData.staffName }}
@@ -42,6 +44,7 @@
           {{ dishesData.tieName }}
         </a-col>
       </a-row>
+      <br/>
       <br/>
       <a-row style="padding-left: 24px;padding-right: 24px;">
         <a-col :span="24"><b>课程地点：</b>

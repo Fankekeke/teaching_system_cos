@@ -8,37 +8,59 @@
     <div style="font-size: 13px;font-family: SimHei" v-if="dishesData !== null">
       <a-row style="padding-left: 24px;padding-right: 24px;">
         <a-col style="margin-bottom: 15px"><span style="font-size: 15px;font-weight: 650;color: #000c17">基础信息</span></a-col>
-        <a-col :span="8"><b>举办人：</b>
-          {{ dishesData.staffName }}
+        <a-col :span="8"><b>模板编号：</b>
+          {{ dishesData.code }}
         </a-col>
-        <a-col :span="8"><b>课表模板主题：</b>
-          {{ dishesData.title ? dishesData.title : '- -' }}
+        <a-col :span="8"><b>课程开始时间：</b>
+          {{ dishesData.startTime ? dishesData.startTime : '- -' }}
         </a-col>
-        <a-col :span="8"><b>课表模板地址：</b>
-          {{ dishesData.address ? dishesData.address : '- -' }}
-        </a-col>
-      </a-row>
-      <br/>
-      <a-row style="padding-left: 24px;padding-right: 24px;">
-        <a-col :span="8"><b>开始时间：</b>
-          {{ dishesData.startTime }}
-        </a-col>
-        <a-col :span="8"><b>结束时间：</b>
-          {{ dishesData.endTime }}
+        <a-col :span="8"><b>课程结束时间：</b>
+          {{ dishesData.endTime ? dishesData.endTime : '- -' }}
         </a-col>
       </a-row>
       <br/>
-      <a-row style="padding-left: 24px;padding-right: 24px;">
-        <a-col :span="24"><b>课表模板内容：</b>
-          {{ dishesData.content }}
-        </a-col>
-      </a-row>
       <br/>
       <a-row style="padding-left: 24px;padding-right: 24px;">
+        <a-col :span="8"><b>课程周：</b>
+          <span v-if="dishesData.typeDay == 1">周日</span>
+          <span v-if="dishesData.typeDay == 2">周一</span>
+          <span v-if="dishesData.typeDay == 3">周二</span>
+          <span v-if="dishesData.typeDay == 4">周三</span>
+          <span v-if="dishesData.typeDay == 5">周四</span>
+          <span v-if="dishesData.typeDay == 6">周五</span>
+          <span v-if="dishesData.typeDay == 7">周六</span>
+        </a-col>
         <a-col :span="8"><b>创建时间：</b>
           {{ dishesData.createDate }}
         </a-col>
+        <a-col :span="8"><b>班级名称：</b>
+          {{ dishesData.className }}
+        </a-col>
       </a-row>
+      <br/>
+      <br/>
+      <a-row style="padding-left: 24px;padding-right: 24px;">
+        <a-col :span="8"><b>课程名称：</b>
+          {{ dishesData.courseName }}
+        </a-col>
+        <a-col :span="8"><b>上课地点：</b>
+          {{ dishesData.address }}
+        </a-col>
+        <a-col :span="8"><b>代课老师：</b>
+          {{ dishesData.staffName }}
+        </a-col>
+      </a-row>
+      <br/>
+      <br/>
+      <a-row style="padding-left: 24px;padding-right: 24px;">
+        <a-col :span="8"><b>所属系：</b>
+          {{ dishesData.tieName }}
+        </a-col>
+        <a-col :span="8"><b>专业名称：</b>
+          {{ dishesData.majorName }}
+        </a-col>
+      </a-row>
+      <br/>
       <br/>
       <a-row style="padding-left: 24px;padding-right: 24px;">
         <a-col style="margin-bottom: 15px"><span style="font-size: 15px;font-weight: 650;color: #000c17">图册</span></a-col>
@@ -58,21 +80,6 @@
         </a-col>
       </a-row>
       <br/>
-      <a-row style="padding-left: 24px;padding-right: 24px;" v-if="staffList.length !== 0">
-        <a-col style="margin-bottom: 15px"><span style="font-size: 15px;font-weight: 650;color: #000c17">课表模板邀请人</span></a-col>
-        <a-row :gutter="15">
-          <a-col :span="6" v-for="(item, index) in staffList" :key="index">
-            <a-card :bordered="false">
-              <a-card-meta :title="item.name" :description="item.deptName + '-' + item.positionName">
-                <a-avatar
-                  slot="avatar"
-                  :src="'http://127.0.0.1:9527/imagesWeb/' + item.images.split(',')[0]"
-                />
-              </a-card-meta>
-            </a-card>
-          </a-col>
-        </a-row>
-      </a-row>
     </div>
   </a-modal>
 </template>
@@ -125,8 +132,7 @@ export default {
   watch: {
     dishesShow: function (value) {
       if (value) {
-        this.imagesInit(this.dishesData.images)
-        this.queryStaffListByCondition(this.dishesData.id)
+        this.imagesInit(this.dishesData.staffImages)
       }
     }
   },

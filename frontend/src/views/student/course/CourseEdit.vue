@@ -51,6 +51,14 @@
           </a-form-item>
         </a-col>
         <a-col :span="12">
+          <a-form-item label='学分' v-bind="formItemLayout">
+            <a-input-number :min="1" :max="999" v-decorator="[
+              'credit',
+              { rules: [{ required: true, message: '请输入学分!' }] }
+              ]" style="width: 100%"/>
+          </a-form-item>
+        </a-col>
+        <a-col :span="12">
           <a-form-item label='课程类型' v-bind="formItemLayout">
             <a-select v-decorator="[
               'type',

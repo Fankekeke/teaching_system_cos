@@ -40,7 +40,7 @@
     <div>
       <div class="operator">
 <!--        <a-button type="primary" ghost @click="add">新增</a-button>-->
-        <a-button @click="batchDelete">删除</a-button>
+<!--        <a-button @click="batchDelete">删除</a-button>-->
       </div>
       <!-- 表格区域 -->
       <a-table ref="TableInfo"
@@ -182,10 +182,6 @@ export default {
             return '- -'
           }
         }
-      }, {
-        title: '操作',
-        dataIndex: 'operation',
-        scopedSlots: {customRender: 'operation'}
       }]
     }
   },

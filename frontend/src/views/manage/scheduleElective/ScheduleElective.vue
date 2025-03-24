@@ -150,7 +150,11 @@ export default {
         ellipsis: true,
         dataIndex: 'address'
       }, {
-        title: '选修课表图片',
+        title: '导师姓名',
+        ellipsis: true,
+        dataIndex: 'staffName'
+      }, {
+        title: '代课老师头像',
         dataIndex: 'images',
         customRender: (text, record, index) => {
           if (!record.staffImages) return <a-avatar shape="square" icon="user" />
@@ -173,7 +177,19 @@ export default {
           }
         }
       }, {
+        title: '备注',
+        ellipsis: true,
+        dataIndex: 'content',
+        customRender: (text, row, index) => {
+          if (text !== null) {
+            return text
+          } else {
+            return '- -'
+          }
+        }
+      }, {
         title: '创建时间',
+        ellipsis: true,
         dataIndex: 'createDate',
         customRender: (text, row, index) => {
           if (text !== null) {

@@ -2,15 +2,15 @@
   <div>
     <a-row style="margin-top: 15px">
       <a-col :span="24">
-        <div style="background: #ECECEC; padding: 30px;" v-if="user.roleId == 74 || user.roleId == 76">
+        <div style="background: #ECECEC; padding: 30px;" v-if="user.roleId == 74">
           <a-row :gutter="16">
             <a-col :span="6">
               <a-card hoverable>
                 <a-row>
-                  <a-col :span="24" style="font-size: 13px;margin-bottom: 8px;font-family: SimHei">本月任务量</a-col>
+                  <a-col :span="24" style="font-size: 13px;margin-bottom: 8px;font-family: SimHei">本月班级课表数量</a-col>
                   <a-col :span="4"><a-icon type="arrow-up" style="font-size: 30px;margin-top: 3px"/></a-col>
                   <a-col :span="18" style="font-size: 28px;font-weight: 500;font-family: SimHei">
-                    {{ titleData.orderNumMonth }}
+                    {{ titleData.monthNum }}
                     <span style="font-size: 20px;margin-top: 3px">件</span>
                   </a-col>
                 </a-row>
@@ -19,10 +19,10 @@
             <a-col :span="6">
               <a-card hoverable>
                 <a-row>
-                  <a-col :span="24" style="font-size: 13px;margin-bottom: 8px;font-family: SimHei">本月任务完成量</a-col>
+                  <a-col :span="24" style="font-size: 13px;margin-bottom: 8px;font-family: SimHei">本月选课数量</a-col>
                   <a-col :span="4"><a-icon type="arrow-up" style="font-size: 30px;margin-top: 3px"/></a-col>
                   <a-col :span="18" style="font-size: 28px;font-weight: 500;font-family: SimHei">
-                    {{ titleData.orderAmountMonth }}
+                    {{ titleData.monthAlertNum }}
                     <span style="font-size: 20px;margin-top: 3px">件</span>
                   </a-col>
                 </a-row>
@@ -31,10 +31,10 @@
             <a-col :span="6">
               <a-card hoverable>
                 <a-row>
-                  <a-col :span="24" style="font-size: 13px;margin-bottom: 8px;font-family: SimHei">本年任务量</a-col>
+                  <a-col :span="24" style="font-size: 13px;margin-bottom: 8px;font-family: SimHei">本年班级课表数量</a-col>
                   <a-col :span="4"><a-icon type="arrow-up" style="font-size: 30px;margin-top: 3px"/></a-col>
                   <a-col :span="18" style="font-size: 28px;font-weight: 500;font-family: SimHei">
-                    {{ titleData.orderNumYear }}
+                    {{ titleData.yearNum }}
                     <span style="font-size: 20px;margin-top: 3px">件</span>
                   </a-col>
                 </a-row>
@@ -43,10 +43,10 @@
             <a-col :span="6">
               <a-card hoverable>
                 <a-row>
-                  <a-col :span="24" style="font-size: 13px;margin-bottom: 8px;font-family: SimHei">本年务完成量</a-col>
+                  <a-col :span="24" style="font-size: 13px;margin-bottom: 8px;font-family: SimHei">本年选课数量</a-col>
                   <a-col :span="4"><a-icon type="arrow-up" style="font-size: 30px;margin-top: 3px"/></a-col>
                   <a-col :span="18" style="font-size: 28px;font-weight: 500;font-family: SimHei">
-                    {{ titleData.orderAmountYear }}
+                    {{ titleData.yearAlertNum }}
                     <span style="font-size: 20px;margin-top: 3px">件</span>
                   </a-col>
                 </a-row>
@@ -114,14 +114,10 @@ export default {
       },
       bulletinList: [],
       titleData: {
-        orderNumMonth: 0,
-        orderAmountMonth: 0,
-        orderNumYear: 0,
-        orderAmountYear: 0,
-        monthPutNum: 0,
-        monthPutPrice: 0,
-        yearPutNum: 0,
-        yearPutPrice: 0
+        monthNum: 0,
+        monthAlertNum: 0,
+        yearNum: 0,
+        yearAlertNum: 0
       },
       loading: false,
       series: [{
@@ -143,7 +139,7 @@ export default {
           enabled: false
         },
         title: {
-          text: '近十天内完成工单统计',
+          text: '近十天选秀课表统计',
           align: 'left'
         },
         markers: {
@@ -162,7 +158,7 @@ export default {
           height: 300
         },
         title: {
-          text: '近十天工单统计',
+          text: '近十天班级课表统计',
           align: 'left'
         },
         plotOptions: {
@@ -193,7 +189,7 @@ export default {
         tooltip: {
           y: {
             formatter: function (val) {
-              return val + ' 单'
+              return val + ' 件'
             }
           }
         }
@@ -283,20 +279,14 @@ export default {
   },
   methods: {
     selectHomeData () {
-      this.$get('/cos/agent-info/homeData', {enterpriseId: this.user.roleId == 76 ? this.user.userId : null}).then((r) => {
-        // let titleData = { outNum: r.data.outNum, putNum: r.data.putNum, orderPrice: r.data.orderPrice, registerNum: r.data.registerNum }
-        // this.$emit('setTitle', titleData)
-        this.titleData.orderNumMonth = r.data.orderNumMonth
-        this.titleData.orderAmountMonth = r.data.orderAmountMonth
-        this.titleData.orderNumYear = r.data.orderNumYear
-        this.titleData.orderAmountYear = r.data.orderAmountYear
-        //
-        // this.titleData.monthPutNum = r.data.monthPutNum
-        // this.titleData.monthPutPrice = r.data.monthPutPrice
-        // this.titleData.yearPutNum = r.data.yearPutNum
-        // this.titleData.yearPutPrice = r.data.yearPutPrice
+      this.$get('/cos/schedule-class-info/homeData').then((r) => {
+        let titleData = { staffNum: r.data.staffNum, studentNum: r.data.studentNum, majorNum: r.data.majorNum, classNum: r.data.classNum }
+        this.$emit('setTitle', titleData)
+        this.titleData.monthNum = r.data.monthNum
+        this.titleData.monthAlertNum = r.data.monthAlertNum
+        this.titleData.yearNum = r.data.yearNum
+        this.titleData.yearAlertNum = r.data.yearAlertNum
         this.bulletinList = r.data.bulletin
-        let values = []
         // if (r.data.orderNumWithinDays !== null && r.data.orderNumWithinDays.length !== 0) {
         //   if (this.chartOptions1.xaxis.categories.length === 0) {
         //     this.chartOptions1.xaxis.categories = r.data.orderNumWithinDays.map(obj => { return obj.days })
@@ -305,11 +295,11 @@ export default {
         //   values.push(itemData)
         //   this.series1 = values
         // }
-        this.series1[0].data = r.data.orderNumDays.map(obj => { return obj.count })
-        this.chartOptions1.xaxis.categories = r.data.orderNumDays.map(obj => { return obj.days })
+        this.series1[0].data = r.data.numDayList.map(obj => { return obj.count })
+        this.chartOptions1.xaxis.categories = r.data.numDayList.map(obj => { return obj.days })
 
-        this.series[0].data = r.data.orderAmountDays.map(obj => { return obj.count })
-        this.chartOptions.xaxis.categories = r.data.orderAmountDays.map(obj => { return obj.days })
+        this.series[0].data = r.data.alertDayList.map(obj => { return obj.count })
+        this.chartOptions.xaxis.categories = r.data.alertDayList.map(obj => { return obj.days })
 
         // if (r.data.putNumWithinDays !== null && r.data.putNumWithinDays.length !== 0) {
         //   if (this.chartOptions2.xaxis.categories.length === 0) {

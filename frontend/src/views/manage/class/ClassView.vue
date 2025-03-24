@@ -1,5 +1,5 @@
 <template>
-  <a-modal v-model="show" title="班级详情" @cancel="onClose" :width="800">
+  <a-modal v-model="show" title="班级详情" @cancel="onClose" :width="1000">
     <template slot="footer">
       <a-button key="back" @click="onClose" type="danger">
         关闭
@@ -138,7 +138,7 @@ export default {
   methods: {
     queryDetail (id) {
       this.$get(`/cos/class-info/detail/${id}`).then((r) => {
-        this.studentInfo = r.data.data.studentInfo
+        this.studentInfo = r.data.studentInfo
       })
     },
     queryStaffListByCondition (id) {

@@ -1,5 +1,5 @@
 <template>
-  <a-modal v-model="show" title="预约详情" @cancel="onClose" :width="1000">
+  <a-modal v-model="show" title="预约详情" @cancel="onClose" :width="800">
     <template slot="footer">
       <a-button key="back" @click="onClose" type="danger">
         关闭
@@ -34,11 +34,6 @@
         </a-col>
       </a-row>
       <br/>
-      <a-row style="padding-left: 24px;padding-right: 24px;">
-        <a-col :span="8"><b>创建时间：</b>
-          {{ dishesData.createDate }}
-        </a-col>
-      </a-row>
       <br/>
       <a-row style="padding-left: 24px;padding-right: 24px;">
         <a-col style="margin-bottom: 15px"><span style="font-size: 15px;font-weight: 650;color: #000c17">图册</span></a-col>
@@ -125,8 +120,7 @@ export default {
   watch: {
     dishesShow: function (value) {
       if (value) {
-        this.imagesInit(this.dishesData.images)
-        this.queryStaffListByCondition(this.dishesData.id)
+        this.imagesInit(this.dishesData.studentImages)
       }
     }
   },
