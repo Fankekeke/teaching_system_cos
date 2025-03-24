@@ -94,7 +94,7 @@ public class ScheduleTemplateInfoController {
         }
         String date = DateUtil.format(new Date(), "yyyy-MM");
         // 先删除本月课表
-        scheduleClassInfoService.remove(Wrappers.<ScheduleClassInfo>lambdaQuery().apply("date_format(course_date, '%m-%d') = " + date));
+        scheduleClassInfoService.remove(Wrappers.<ScheduleClassInfo>lambdaQuery().apply("date_format(course_date, '%Y-%m') = date_format(curdate(), '%Y-%m')"));
 
         // 待添加的课表信息
         List<ScheduleClassInfo> scheduleClassInfoList = CollectionUtil.newArrayList();

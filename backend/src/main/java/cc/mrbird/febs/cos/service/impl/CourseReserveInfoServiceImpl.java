@@ -65,6 +65,7 @@ public class CourseReserveInfoServiceImpl extends ServiceImpl<CourseReserveInfoM
             NotifyInfo notifyInfo = new NotifyInfo(courseReserveInfo.getStudentId(), DateUtil.formatDateTime(new Date()), "1", "你好 您预约的课程申请已被驳回，请查看详细驳回信息");
             notifyInfoService.save(notifyInfo);
         }
+        courseReserveInfo.setAuditDate(DateUtil.formatDateTime(new Date()));
         return this.updateById(courseReserveInfo);
     }
 

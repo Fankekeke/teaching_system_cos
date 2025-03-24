@@ -47,7 +47,7 @@
     </div>
     <div>
       <div class="operator">
-<!--        <a-button type="primary" ghost @click="add">新增</a-button>-->
+        <a-button type="primary" ghost @click="add">生成本月课表</a-button>
         <a-button @click="batchDelete">删除</a-button>
       </div>
       <!-- 表格区域 -->
@@ -231,7 +231,11 @@ export default {
       this.advanced = !this.advanced
     },
     add () {
-      this.dishesAdd.visiable = true
+      this.$get('/cos/schedule-template-info/batchSaveSchedule').then(() => {
+        this.$message.success('添加成功')
+        this.search()
+      })
+      // this.dishesAdd.visiable = true
     },
     handledishesAddClose () {
       this.dishesAdd.visiable = false

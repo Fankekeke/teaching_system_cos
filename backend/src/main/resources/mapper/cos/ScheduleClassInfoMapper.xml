@@ -30,8 +30,6 @@
         left join major_info mi on
         (mi.id = ci.major_id)
         where 1 = 1
-        order by sci.course_date desc
-        where 1 = 1
         <if test="scheduleClassInfo.className != null and scheduleClassInfo.className != ''">
             AND cai.name LIKE CONCAT('%',#{scheduleClassInfo.className},'%')
         </if>

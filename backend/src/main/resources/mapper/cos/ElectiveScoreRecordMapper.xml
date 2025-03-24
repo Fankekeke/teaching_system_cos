@@ -10,8 +10,8 @@
         esr.course_id,
         esr.elective_id,
         esr.score,
-        si.name as studentName,
-        si.images as studentImages,
+        stui.name as studentName,
+        stui.images as studentImages,
         sei.course_date,
         sei.start_time,
         sei.end_time,
@@ -23,8 +23,8 @@
         mi.name as majorName
         from
         elective_score_record esr
-        left join student_info si on
-        (si.id = esr.student_id)
+        left join student_info stui on
+        (stui.id = esr.student_id)
         left join schedule_elective_info sei on
         (sei.id = esr.elective_id)
         left join course_info ci on
@@ -38,7 +38,7 @@
         where
         1 = 1
         <if test="electiveScoreRecord.studentName != null and electiveScoreRecord.studentName != ''">
-            AND si.name LIKE CONCAT('%',#{electiveScoreRecord.studentName},'%')
+            AND stui.name LIKE CONCAT('%',#{electiveScoreRecord.studentName},'%')
         </if>
         <if test="electiveScoreRecord.courseName != null and electiveScoreRecord.courseName != ''">
             AND ci.name LIKE CONCAT('%',#{electiveScoreRecord.courseName},'%')
@@ -58,8 +58,8 @@
         esr.course_id,
         esr.elective_id,
         esr.score,
-        si.name as studentName,
-        si.images as studentImages,
+        stui.name as studentName,
+        stui.images as studentImages,
         sei.course_date,
         sei.start_time,
         sei.end_time,
@@ -71,8 +71,8 @@
         mi.name as majorName
         from
         elective_score_record esr
-        left join student_info si on
-        (si.id = esr.student_id)
+        left join student_info stui on
+        (stui.id = esr.student_id)
         left join schedule_elective_info sei on
         (sei.id = esr.elective_id)
         left join course_info ci on
