@@ -25,6 +25,14 @@ public interface ScheduleClassInfoMapper extends BaseMapper<ScheduleClassInfo> {
      */
     IPage<LinkedHashMap<String, Object>> querySchedulePage(Page<ScheduleClassInfo> page, @Param("scheduleClassInfo") ScheduleClassInfo scheduleClassInfo);
 
+    /**
+     * 获取班级课表信息
+     *
+     * @param classId 班级ID
+     * @return 结果
+     */
+    List<LinkedHashMap<String, Object>> queryScheduleList(@Param("classId") Integer classId);
+
     Integer selectDataByMonth(@Param("year") Integer year, @Param("month") Integer month);
 
     Integer selectAlertByMonth(@Param("year") Integer year, @Param("month") Integer month);

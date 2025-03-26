@@ -54,6 +54,11 @@ public class ScheduleClassInfo implements Serializable {
      */
     private Integer courseId;
 
+    /**
+     * 状态（0.未打分 1.已打分）
+     */
+    private String status;
+
     @TableField(exist = false)
     private Integer staffId;
 

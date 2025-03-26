@@ -1,15 +1,16 @@
 package cc.mrbird.febs.cos.controller;
 
 
+import cc.mrbird.febs.common.exception.FebsException;
 import cc.mrbird.febs.common.utils.R;
-import cc.mrbird.febs.cos.entity.CourseInfo;
-import cc.mrbird.febs.cos.entity.CourseReserveInfo;
-import cc.mrbird.febs.cos.entity.ElectiveScoreRecord;
-import cc.mrbird.febs.cos.entity.StudentInfo;
+import cc.mrbird.febs.cos.entity.*;
 import cc.mrbird.febs.cos.service.*;
+import cn.hutool.core.util.StrUtil;
+import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.LinkedHashMap;
@@ -51,6 +52,26 @@ public class ElectiveScoreRecordController {
     @GetMapping("/page")
     public R page(Page<ElectiveScoreRecord> page, ElectiveScoreRecord electiveScoreRecord) {
         return R.ok(electiveScoreRecordService.queryScoreRecord(page, electiveScoreRecord));
+    }
+
+    /**
+     * 保存课程分数记录
+     *
+     * @param electiveScoreRecord 课程分数记录
+     * @return 结果
+     */
+    @PostMapping("/batchSaveScore")
+    @Transactional(rollbackFor = Exception.class)
+    public R batchSaveScore(ElectiveScoreRecord electiveScoreRecord) throws FebsException {
+        if (StrUtil.isEmpty(electiveScoreRecord.getScoreDataStr())) {
+            throw new FebsException("学生成绩不能为空");
+        }
+        // 获取课表信息
+        ScheduleElectiveInfo scheduleClassInfo = scheduleElectiveInfoService.getById(electiveScoreRecord.getElectiveId());
+        scheduleClassInfo.setStatus("1");
+        scheduleElectiveInfoService.updateById(scheduleClassInfo);
+        List<ElectiveScoreRecord> recordList = JSONUtil.toList(electiveScoreRecord.getScoreDataStr(), ElectiveScoreRecord.class);
+        return R.ok(electiveScoreRecordService.saveBatch(recordList));
     }
 
     /**

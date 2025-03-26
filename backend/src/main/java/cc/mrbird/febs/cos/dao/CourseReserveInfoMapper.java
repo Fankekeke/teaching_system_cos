@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 
 /**
  * 课程预约 mapper层
@@ -23,4 +24,12 @@ public interface CourseReserveInfoMapper extends BaseMapper<CourseReserveInfo> {
      * @return 结果
      */
     IPage<LinkedHashMap<String, Object>> queryResevePage(Page<CourseReserveInfo> page, @Param("courseReserveInfo") CourseReserveInfo courseReserveInfo);
+
+    /**
+     * 获取课程预约列表
+     *
+     * @param studentId 学生ID
+     * @return 结果
+     */
+    List<LinkedHashMap<String, Object>> queryScheduleElectiveList(@Param("studentId") Integer studentId);
 }

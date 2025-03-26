@@ -1,12 +1,18 @@
 package cc.mrbird.febs.cos.controller;
 
 
+import cc.mrbird.febs.common.exception.FebsException;
 import cc.mrbird.febs.common.utils.R;
+import cc.mrbird.febs.cos.entity.ScheduleClassInfo;
 import cc.mrbird.febs.cos.entity.ScheduleScoreRecord;
+import cc.mrbird.febs.cos.service.IScheduleClassInfoService;
 import cc.mrbird.febs.cos.service.IScheduleScoreRecordService;
+import cn.hutool.core.util.StrUtil;
+import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,6 +29,8 @@ public class ScheduleScoreRecordController {
 
     private final IScheduleScoreRecordService scheduleScoreRecordService;
 
+    private final IScheduleClassInfoService scheduleClassInfoService;
+
     /**
      * 分页获取课程分数记录信息
      *
@@ -33,6 +41,26 @@ public class ScheduleScoreRecordController {
     @GetMapping("/page")
     public R page(Page<ScheduleScoreRecord> page, ScheduleScoreRecord scheduleScoreRecord) {
         return R.ok(scheduleScoreRecordService.queryShedulePage(page, scheduleScoreRecord));
+    }
+
+    /**
+     * 保存课程分数记录
+     *
+     * @param scheduleScoreRecord 课程分数记录
+     * @return 结果
+     */
+    @PostMapping("/batchSaveScore")
+    @Transactional(rollbackFor = Exception.class)
+    public R batchSaveScore(ScheduleScoreRecord scheduleScoreRecord) throws FebsException {
+        if (StrUtil.isEmpty(scheduleScoreRecord.getScoreDataStr())) {
+            throw new FebsException("学生成绩不能为空");
+        }
+        // 获取课表信息
+        ScheduleClassInfo scheduleClassInfo = scheduleClassInfoService.getById(scheduleScoreRecord.getScheduleId());
+        scheduleClassInfo.setStatus("1");
+        scheduleClassInfoService.updateById(scheduleClassInfo);
+        List<ScheduleScoreRecord> recordList = JSONUtil.toList(scheduleScoreRecord.getScoreDataStr(), ScheduleScoreRecord.class);
+        return R.ok(scheduleScoreRecordService.saveBatch(recordList));
     }
 
     /**

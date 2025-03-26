@@ -50,6 +50,17 @@ public class CourseReserveInfoServiceImpl extends ServiceImpl<CourseReserveInfoM
     }
 
     /**
+     * 获取课程预约列表
+     *
+     * @param studentId 学生ID
+     * @return 结果
+     */
+    @Override
+    public List<LinkedHashMap<String, Object>> queryScheduleElectiveList(Integer studentId) {
+        return baseMapper.queryScheduleElectiveList(studentId);
+    }
+
+    /**
      * 审核预约
      *
      * @param courseReserveInfo 课程预约信息

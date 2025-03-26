@@ -30,8 +30,8 @@
         <if test="classInfo.staffName != null and classInfo.staffName != ''">
             AND si.name LIKE CONCAT('%',#{classInfo.staffName},'%')
         </if>
-        <if test="classInfo.teacherId != null and classInfo.teacherId != ''">
-            AND si.user_id = #{classInfo.teacherId}
+        <if test="classInfo.staffId != null and classInfo.staffId != ''">
+            AND si.user_id = #{classInfo.staffId}
         </if>
         order by ci.create_date desc
     </select>

@@ -74,6 +74,19 @@ public class ScheduleElectiveInfoController {
     }
 
     /**
+     * 查询选修课表学生列表
+     *
+     * @param id 主键
+     * @return 结果
+     */
+    @GetMapping("/queryScheduleElectiveStudentList")
+    public R queryScheduleElectiveStudentList(Integer id) {
+        // 返回数据
+        List<LinkedHashMap<String, Object>> result = scheduleElectiveInfoService.queryScheduleElectiveStudentList(id);
+        return R.ok(result);
+    }
+
+    /**
      * 查询选修课表信息详情
      *
      * @param id 主键ID

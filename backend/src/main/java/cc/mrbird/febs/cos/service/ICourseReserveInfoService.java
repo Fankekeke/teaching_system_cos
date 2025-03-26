@@ -26,6 +26,14 @@ public interface ICourseReserveInfoService extends IService<CourseReserveInfo> {
     IPage<LinkedHashMap<String, Object>> queryResevePage(Page<CourseReserveInfo> page, CourseReserveInfo courseReserveInfo);
 
     /**
+     * 获取课程预约列表
+     *
+     * @param studentId 学生ID
+     * @return 结果
+     */
+    List<LinkedHashMap<String, Object>> queryScheduleElectiveList(Integer studentId);
+
+    /**
      * 审核预约
      *
      * @param courseReserveInfo 课程预约信息

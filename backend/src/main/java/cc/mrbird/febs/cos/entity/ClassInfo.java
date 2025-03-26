@@ -63,6 +63,9 @@ public class ClassInfo implements Serializable {
      */
     private Integer teacherId;
 
+    @TableField(exist = false)
+    private Integer staffId;
+
     /**
      * 创建时间
      */

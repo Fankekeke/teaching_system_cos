@@ -58,4 +58,50 @@
         order by
         sei.course_date desc
     </select>
+
+    <!-- 获取课程预约列表 -->
+    <select id="queryScheduleElectiveList" resultType="java.util.LinkedHashMap">
+        select
+        cri.id,
+        cri.student_id,
+        cri.elective_id,
+        cri.course_id,
+        cri.content,
+        cri.status,
+        cri.reason,
+        cri.audit_date,
+        stui.name as studentName,
+        stui.images as studentImages,
+        sei.course_date,
+        sei.start_time,
+        sei.end_time,
+        ci.name as courseName,
+        ci.address,
+        si.name as staffName,
+        si.images as staffImages,
+        ti.name as tieName,
+        mi.name as majorName
+        from
+        course_reserve_info cri
+        left join student_info stui on
+        (stui.id = cri.student_id)
+        left join schedule_elective_info sei on
+        (sei.id = cri.elective_id)
+        left join course_info ci on
+        (ci.id = cri.course_id)
+        left join staff_info si on
+        (si.id = ci.staff_id)
+        left join tie_info ti on
+        (ti.id = ci.tie_id)
+        left join major_info mi on
+        (mi.id = ci.major_id)
+        where
+        1 = 1
+        AND cri.status = '0'
+        <if test="studentId != null and studentId != ''">
+            AND stui.id = #{studentId}
+        </if>
+        order by
+        sei.course_date desc
+    </select>
 </mapper>

@@ -54,6 +54,43 @@
         order by sci.course_date desc
     </select>
 
+    <!-- 获取班级课表信息 -->
+    <select id="queryScheduleList" resultType="java.util.LinkedHashMap">
+        select
+        sci.id,
+        sci.course_date,
+        sci.start_time,
+        sci.end_time,
+        sci.class_id,
+        sci.course_id,
+        cai.name as className,
+        ci.name as courseName,
+        ci.address,
+        ci.duration,
+        ci.people_num,
+        ci.credit,
+        si.name as staffName,
+        si.images as staffImages,
+        ti.name as tieName,
+        mi.name as majorName
+        from
+        schedule_class_info sci
+        left join class_info cai on (cai.id = sci.class_id)
+        left join course_info ci on
+        (ci.id = sci.course_id)
+        left join staff_info si on
+        (si.id = ci.staff_id)
+        left join tie_info ti on
+        (ti.id = ci.tie_id)
+        left join major_info mi on
+        (mi.id = ci.major_id)
+        where 1 = 1
+        <if test="classId != null and classId != ''">
+            AND ci.id = #{classId}
+        </if>
+        order by sci.course_date desc
+    </select>
+
     <select id="selectDataByMonth" resultType="java.lang.Integer">
         select count(1)
         from schedule_class_info

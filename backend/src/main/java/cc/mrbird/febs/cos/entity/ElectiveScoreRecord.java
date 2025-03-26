@@ -58,5 +58,7 @@ public class ElectiveScoreRecord implements Serializable {
 
     @TableField(exist = false)
     private String majorName;
+    @TableField(exist = false)
+    private String scoreDataStr;
 
 }

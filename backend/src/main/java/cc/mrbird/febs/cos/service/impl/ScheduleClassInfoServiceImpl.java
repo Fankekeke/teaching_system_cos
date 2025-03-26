@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 
 /**
  * 班级课表信息 实现层
@@ -48,6 +49,17 @@ public class ScheduleClassInfoServiceImpl extends ServiceImpl<ScheduleClassInfoM
     @Override
     public IPage<LinkedHashMap<String, Object>> querySchedulePage(Page<ScheduleClassInfo> page, ScheduleClassInfo scheduleClassInfo) {
         return baseMapper.querySchedulePage(page, scheduleClassInfo);
+    }
+
+    /**
+     * 获取班级课表信息
+     *
+     * @param classId 班级ID
+     * @return 结果
+     */
+    @Override
+    public List<LinkedHashMap<String, Object>> queryScheduleList(Integer classId) {
+        return baseMapper.queryScheduleList(classId);
     }
 
     /**

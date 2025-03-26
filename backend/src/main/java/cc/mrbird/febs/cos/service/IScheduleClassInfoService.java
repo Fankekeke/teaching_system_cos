@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 
 /**
  * 班级课表信息 service层
@@ -23,6 +24,14 @@ public interface IScheduleClassInfoService extends IService<ScheduleClassInfo> {
      * @return 结果
      */
     IPage<LinkedHashMap<String, Object>> querySchedulePage(Page<ScheduleClassInfo> page, ScheduleClassInfo scheduleClassInfo);
+
+    /**
+     * 获取班级课表信息
+     *
+     * @param classId 班级ID
+     * @return 结果
+     */
+    List<LinkedHashMap<String, Object>> queryScheduleList(Integer classId);
 
     /**
      * 获取首页数据

@@ -58,4 +58,6 @@ public class ScheduleScoreRecord implements Serializable {
     private String majorName;
     @TableField(exist = false)
     private String staffName;
+    @TableField(exist = false)
+    private String scoreDataStr;
 }

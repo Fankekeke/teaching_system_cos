@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 
 /**
  * 选修课表信息 service层
@@ -23,4 +24,12 @@ public interface IScheduleElectiveInfoService extends IService<ScheduleElectiveI
      * @return 结果
      */
     IPage<LinkedHashMap<String, Object>> queryElectivePage(Page<ScheduleElectiveInfo> page, ScheduleElectiveInfo scheduleElectiveInfo);
+
+    /**
+     * 查询选修课表学生列表
+     *
+     * @param id 主键
+     * @return 结果
+     */
+    List<LinkedHashMap<String, Object>> queryScheduleElectiveStudentList(Integer id);
 }
