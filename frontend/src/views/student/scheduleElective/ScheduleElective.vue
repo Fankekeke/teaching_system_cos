@@ -330,7 +330,7 @@ export default {
         params.size = this.pagination.defaultPageSize
         params.current = this.pagination.defaultCurrent
       }
-      params.enterpriseId = this.currentUser.userId
+      params.studentId = this.currentUser.userId
       this.$get('/cos/schedule-elective-info/page', {
         ...params
       }).then((r) => {
