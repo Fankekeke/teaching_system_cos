@@ -97,9 +97,9 @@
         (mi.id = ci.major_id)
         where
         1 = 1
-        AND cri.status = '0'
+        AND cri.status = '1'
         <if test="studentId != null and studentId != ''">
-            AND stui.id = #{studentId}
+            AND stui.user_id = #{studentId}
         </if>
         order by
         sei.course_date desc

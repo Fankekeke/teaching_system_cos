@@ -129,7 +129,7 @@ export default {
     },
     selectBulletinDetail () {
       this.dataLoading = true
-      this.$get(`/cos/staff-info/selectBulletinDetail/${this.currentUser.userId}`).then((r) => {
+      this.$get(`/cos/student-info/selectBulletinDetail/${this.currentUser.userId}`).then((r) => {
         this.userInfo = r.data.user
         this.newsList = r.data.bulletin
         if (this.newsList.length !== 0) {

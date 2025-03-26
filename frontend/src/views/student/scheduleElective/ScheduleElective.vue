@@ -53,7 +53,7 @@
                :scroll="{ x: 900 }"
                @change="handleTableChange">
         <template slot="operation" slot-scope="text, record">
-          <a-icon type="setting" theme="twoTone" twoToneColor="#4a9ff5" @click="edit(record)" title="修 改"></a-icon>
+          <a-icon type="check-square" theme="twoTone" twoToneColor="#4a9ff5" @click="edit(record)" title="预 约"></a-icon>
           <a-icon type="file-search" @click="dishesViewOpen(record)" title="详 情" style="margin-left: 15px"></a-icon>
         </template>
       </a-table>
@@ -234,8 +234,26 @@ export default {
       this.search()
     },
     edit (record) {
-      this.$refs.dishesEdit.setFormValues(record)
-      this.dishesEdit.visiable = true
+      // this.$refs.dishesEdit.setFormValues(record)
+      // this.dishesEdit.visiable = true
+      let that = this
+      this.$confirm({
+        title: '确定是否预约?',
+        content: '',
+        centered: true,
+        onOk () {
+          that.$post('/cos/course-reserve-info', {
+            studentId: that.currentUser.userId,
+            electiveId: record.id,
+            courseId: record.courseId
+          }).then(() => {
+            that.$message.success('预约成功，请等待审核')
+            that.search()
+          })
+        },
+        onCancel () {
+        }
+      })
     },
     handledishesEditClose () {
       this.dishesEdit.visiable = false

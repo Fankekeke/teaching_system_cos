@@ -32,5 +32,5 @@ public interface IClassInfoService extends IService<ClassInfo> {
      * @param classId 班级ID
      * @return 结果
      */
-    List<StudentInfo> queryStudentByClassId(Integer classId);
+    List<LinkedHashMap<String, Object>> queryStudentByClassId(Integer classId);
 }

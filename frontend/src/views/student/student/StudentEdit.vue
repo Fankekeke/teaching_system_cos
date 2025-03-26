@@ -47,7 +47,7 @@
         </a-col>
         <a-col :span="12">
           <a-form-item label='所属专业' v-bind="formItemLayout">
-            <a-select style="width: 100%" v-decorator="[
+            <a-select disabled style="width: 100%" v-decorator="[
             'majorId',
             { rules: [{ required: true, message: '请输入所属专业!' }] }
             ]">
@@ -57,7 +57,7 @@
         </a-col>
         <a-col :span="12">
           <a-form-item label='所属班级' v-bind="formItemLayout">
-            <a-select style="width: 100%" v-decorator="[
+            <a-select disabled style="width: 100%" v-decorator="[
             'classId',
             { rules: [{ required: true, message: '请输入所属班级!' }] }
             ]">

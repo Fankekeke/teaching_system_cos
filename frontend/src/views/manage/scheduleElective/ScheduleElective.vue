@@ -53,7 +53,7 @@
                :scroll="{ x: 900 }"
                @change="handleTableChange">
         <template slot="operation" slot-scope="text, record">
-          <a-icon type="setting" theme="twoTone" twoToneColor="#4a9ff5" @click="edit(record)" title="修 改"></a-icon>
+<!--          <a-icon v-if="record.status == 0" type="folder-open" theme="twoTone" twoToneColor="#4a9ff5" @click="scoreViewOpen(record)" title="填写成绩"></a-icon>-->
           <a-icon type="file-search" @click="dishesViewOpen(record)" title="详 情" style="margin-left: 15px"></a-icon>
         </template>
       </a-table>
@@ -75,6 +75,12 @@
       :dishesShow="dishesView.visiable"
       :dishesData="dishesView.data">
     </dishes-view>
+    <score-view
+      @close="handlescheduleClassScoreViewClose"
+      @success="handlescheduleClassScoreViewSuccess"
+      :dishesShow="scheduleClassScoreView.visiable"
+      :dishesData="scheduleClassScoreView.data">
+    </score-view>
   </a-card>
 </template>
 
@@ -83,13 +89,14 @@ import RangeDate from '@/components/datetime/RangeDate'
 import dishesAdd from './ScheduleElectiveAdd.vue'
 import dishesEdit from './ScheduleElectiveEdit.vue'
 import dishesView from './ScheduleElectiveView.vue'
+import scoreView from './ScheduleElectivScoreView.vue'
 import {mapState} from 'vuex'
 import moment from 'moment'
 moment.locale('zh-cn')
 
 export default {
   name: 'dishes',
-  components: {dishesAdd, dishesEdit, dishesView, RangeDate},
+  components: {dishesAdd, dishesEdit, dishesView, RangeDate, scoreView},
   data () {
     return {
       advanced: false,
@@ -100,6 +107,10 @@ export default {
         visiable: false
       },
       dishesView: {
+        visiable: false,
+        data: null
+      },
+      scheduleClassScoreView: {
         visiable: false,
         data: null
       },
@@ -212,6 +223,18 @@ export default {
     dishesViewOpen (row) {
       this.dishesView.data = row
       this.dishesView.visiable = true
+    },
+    scoreViewOpen (row) {
+      this.scheduleClassScoreView.data = row
+      this.scheduleClassScoreView.visiable = true
+    },
+    handlescheduleClassScoreViewClose () {
+      this.scheduleClassScoreView.visiable = false
+    },
+    handlescheduleClassScoreViewSuccess () {
+      this.scheduleClassScoreView.visiable = false
+      this.$message.success('成绩添加成功')
+      this.search()
     },
     handledishesViewClose () {
       this.dishesView.visiable = false

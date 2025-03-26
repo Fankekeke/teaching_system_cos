@@ -12,6 +12,7 @@
         sei.course_id,
         sei.content,
         sei.create_date,
+        sei.status,
         ci.name as courseName,
         ci.address,
         ci.duration,
@@ -43,6 +44,10 @@
         </if>
         <if test="scheduleElectiveInfo.staffId != null and scheduleElectiveInfo.staffId != ''">
             AND si.user_id = #{scheduleElectiveInfo.staffId}
+        </if>
+        <if test="scheduleElectiveInfo.studentId != null and scheduleElectiveInfo.studentId != ''">
+            AND sei.status = 0
+            AND curdate() &lt; sei.course_date
         </if>
         order by sei.create_date desc
     </select>

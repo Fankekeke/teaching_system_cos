@@ -5,6 +5,7 @@ import cc.mrbird.febs.cos.entity.StaffInfo;
 import cc.mrbird.febs.cos.dao.StaffInfoMapper;
 import cc.mrbird.febs.cos.service.IBulletinInfoService;
 import cc.mrbird.febs.cos.service.IStaffInfoService;
+import cn.hutool.core.collection.CollectionUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -13,9 +14,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author FanK
@@ -48,7 +51,9 @@ public class StaffInfoServiceImpl extends ServiceImpl<StaffInfoMapper, StaffInfo
      */
     @Override
     public List<LinkedHashMap<String, Object>> queryScheduleByStaffId(Integer staffId) {
-        return baseMapper.queryScheduleByStaffId(staffId);
+        List<LinkedHashMap<String, Object>> result1 = baseMapper.queryScheduleByStaffId1(staffId);
+        List<LinkedHashMap<String, Object>> result2 = baseMapper.queryScheduleByStaffId2(staffId);
+        return new ArrayList<>(CollectionUtil.addAll(result1, result2));
     }
 
     /**
@@ -71,6 +76,7 @@ public class StaffInfoServiceImpl extends ServiceImpl<StaffInfoMapper, StaffInfo
             return result;
         }
         result.put("user", userInfo);
+        result.put("order", this.queryScheduleByStaffId(userId));
 
         // 公告信息
         List<BulletinInfo> bulletinInfoList = bulletinInfoService.list(Wrappers.<BulletinInfo>lambdaQuery().eq(BulletinInfo::getRackUp, "1"));

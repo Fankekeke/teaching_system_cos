@@ -70,6 +70,8 @@ public class ScheduleElectiveInfo implements Serializable {
     @TableField(exist = false)
     private Integer staffId;
     @TableField(exist = false)
+    private Integer studentId;
+    @TableField(exist = false)
     private String courseName;
     @TableField(exist = false)
     private String majorName;

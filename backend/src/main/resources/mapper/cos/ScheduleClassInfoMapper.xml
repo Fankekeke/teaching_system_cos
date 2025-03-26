@@ -11,6 +11,7 @@
         sci.end_time,
         sci.class_id,
         sci.course_id,
+        sci.status,
         cai.name as className,
         ci.name as courseName,
         ci.address,

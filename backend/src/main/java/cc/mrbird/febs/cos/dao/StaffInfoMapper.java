@@ -29,8 +29,15 @@ public interface StaffInfoMapper extends BaseMapper<StaffInfo> {
      * @param staffId 导师ID
      * @return 结果
      */
-    List<LinkedHashMap<String, Object>> queryScheduleByStaffId(@Param("staffId") Integer staffId);
+    List<LinkedHashMap<String, Object>> queryScheduleByStaffId1(@Param("staffId") Integer staffId);
 
+    /**
+     * 查询导师课表信息
+     *
+     * @param staffId 导师ID
+     * @return 结果
+     */
+    List<LinkedHashMap<String, Object>> queryScheduleByStaffId2(@Param("staffId") Integer staffId);
     /**
      * 查询导师信息
      *

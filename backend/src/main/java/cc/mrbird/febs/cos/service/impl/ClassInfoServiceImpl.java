@@ -5,6 +5,7 @@ import cc.mrbird.febs.cos.entity.ClassInfo;
 import cc.mrbird.febs.cos.dao.ClassInfoMapper;
 import cc.mrbird.febs.cos.entity.StudentInfo;
 import cc.mrbird.febs.cos.service.IClassInfoService;
+import cn.hutool.core.collection.CollectionUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -13,8 +14,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 班级管理 实现层
@@ -46,7 +49,11 @@ public class ClassInfoServiceImpl extends ServiceImpl<ClassInfoMapper, ClassInfo
      * @return 结果
      */
     @Override
-    public List<StudentInfo> queryStudentByClassId(Integer classId) {
-        return studentInfoMapper.selectList(Wrappers.<StudentInfo>lambdaQuery().eq(StudentInfo::getClassId, classId));
+    public List<LinkedHashMap<String, Object>> queryStudentByClassId(Integer classId) {
+        List<StudentInfo> studentInfos = studentInfoMapper.selectList(Wrappers.<StudentInfo>lambdaQuery().eq(StudentInfo::getClassId, classId));
+        if (CollectionUtil.isEmpty(studentInfos)) {
+            return Collections.emptyList();
+        }
+        return studentInfoMapper.queryStudentByIds(studentInfos.stream().map(StudentInfo::getId).collect(Collectors.toList()));
     }
 }

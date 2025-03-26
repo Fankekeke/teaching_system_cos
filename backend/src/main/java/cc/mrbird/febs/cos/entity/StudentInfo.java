@@ -86,6 +86,9 @@ public class StudentInfo implements Serializable {
     private Integer staffId;
 
     @TableField(exist = false)
+    private Integer studentId;
+
+    @TableField(exist = false)
     private String className;
     @TableField(exist = false)
     private String courseName;

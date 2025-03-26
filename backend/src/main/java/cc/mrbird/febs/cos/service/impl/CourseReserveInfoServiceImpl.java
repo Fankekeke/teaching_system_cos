@@ -98,4 +98,15 @@ public class CourseReserveInfoServiceImpl extends ServiceImpl<CourseReserveInfoM
         List<Integer> studentIds = list.stream().map(CourseReserveInfo::getStudentId).collect(Collectors.toList());
         return studentInfoMapper.queryStudentByIds(studentIds);
     }
+
+    /**
+     * 查询课程预约信息
+     *
+     * @param studentId 学生ID
+     * @return 结果
+     */
+    @Override
+    public List<LinkedHashMap<String, Object>> queryCourseReserveInfoByStudent(Integer studentId) {
+        return null;
+    }
 }

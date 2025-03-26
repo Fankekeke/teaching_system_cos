@@ -39,6 +39,6 @@ public class ScheduleScoreRecordServiceImpl extends ServiceImpl<ScheduleScoreRec
      */
     @Override
     public List<LinkedHashMap<String, Object>> queryScheduleScoreRecord(Integer scheduleId) {
-        return null;
+        return baseMapper.queryScheduleScoreRecord(scheduleId);
     }
 }

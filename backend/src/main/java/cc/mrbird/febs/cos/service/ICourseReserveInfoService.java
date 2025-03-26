@@ -48,4 +48,12 @@ public interface ICourseReserveInfoService extends IService<CourseReserveInfo> {
      * @return 结果
      */
     List<LinkedHashMap<String, Object>> queryCourseReserveInfo(Integer electiveId);
+
+    /**
+     * 查询课程预约信息
+     *
+     * @param studentId 学生ID
+     * @return 结果
+     */
+    List<LinkedHashMap<String, Object>> queryCourseReserveInfoByStudent(Integer studentId);
 }

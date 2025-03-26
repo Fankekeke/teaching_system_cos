@@ -1,11 +1,9 @@
 package cc.mrbird.febs.cos.controller;
 
 
+import cc.mrbird.febs.common.exception.FebsException;
 import cc.mrbird.febs.common.utils.R;
-import cc.mrbird.febs.cos.entity.CourseInfo;
-import cc.mrbird.febs.cos.entity.CourseReserveInfo;
-import cc.mrbird.febs.cos.entity.ScheduleElectiveInfo;
-import cc.mrbird.febs.cos.entity.StudentInfo;
+import cc.mrbird.febs.cos.entity.*;
 import cc.mrbird.febs.cos.service.*;
 import cn.hutool.core.date.DateUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
@@ -43,6 +41,8 @@ public class CourseReserveInfoController {
     private final IStaffInfoService staffInfoService;
 
     private final IMajorInfoService majorInfoService;
+
+    private final INotifyInfoService notifyInfoService;
 
     /**
      * 分页获取课程预约信息
@@ -108,11 +108,16 @@ public class CourseReserveInfoController {
      * @return 结果
      */
     @PostMapping
-    public R save(CourseReserveInfo courseReserveInfo) {
+    public R save(CourseReserveInfo courseReserveInfo) throws FebsException {
         // 更新学生ID
         StudentInfo studentInfo = studentInfoService.getOne(Wrappers.<StudentInfo>lambdaQuery().eq(StudentInfo::getUserId, courseReserveInfo.getStudentId()));
         if (studentInfo != null) {
             courseReserveInfo.setStudentId(studentInfo.getId());
+        }
+
+        // 判断是有正在预约中
+        if (courseReserveInfoService.count(Wrappers.<CourseReserveInfo>lambdaQuery().eq(CourseReserveInfo::getStudentId, courseReserveInfo.getStudentId()).eq(CourseReserveInfo::getStatus, "0")) > 0) {
+            throw new FebsException("您已预约过课程，请勿重复预约");
         }
 
         // 获取课程信息
@@ -120,14 +125,16 @@ public class CourseReserveInfoController {
         // 获取课表
         ScheduleElectiveInfo scheduleElectiveInfo = scheduleElectiveInfoService.getById(courseReserveInfo.getElectiveId());
         if (DateUtil.parse(scheduleElectiveInfo.getCourseDate() + " " + scheduleElectiveInfo.getStartTime()).getTime() < System.currentTimeMillis()) {
-            return R.error("课程预约时间已结束，无法预约");
+            throw new FebsException("课程预约时间已结束，无法预约");
         }
 
         // 获取当前已预约的人数
         int count = courseReserveInfoService.count(Wrappers.<CourseReserveInfo>lambdaQuery().eq(CourseReserveInfo::getElectiveId, courseReserveInfo.getElectiveId()).eq(CourseReserveInfo::getStatus, "1"));
         if (count >= courseInfo.getPeopleNum()) {
-            return R.error("该课程已满员，无法预约");
+            throw new FebsException("该课程已满员，无法预约");
         }
+        courseReserveInfo.setContent(DateUtil.formatChineseDate(new Date(), false, true) + " - " + studentInfo.getName() + ", 预约课程");
+        courseReserveInfo.setStatus("0");
         return R.ok(courseReserveInfoService.save(courseReserveInfo));
     }
 

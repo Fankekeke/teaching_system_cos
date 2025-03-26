@@ -2,12 +2,11 @@ package cc.mrbird.febs.cos.controller;
 
 
 import cc.mrbird.febs.common.utils.R;
+import cc.mrbird.febs.cos.entity.BulletinInfo;
+import cc.mrbird.febs.cos.entity.CourseReserveInfo;
 import cc.mrbird.febs.cos.entity.ScheduleClassInfo;
 import cc.mrbird.febs.cos.entity.StudentInfo;
-import cc.mrbird.febs.cos.service.ICourseInfoService;
-import cc.mrbird.febs.cos.service.ICourseReserveInfoService;
-import cc.mrbird.febs.cos.service.IScheduleClassInfoService;
-import cc.mrbird.febs.cos.service.IStudentInfoService;
+import cc.mrbird.febs.cos.service.*;
 import cc.mrbird.febs.system.service.UserService;
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.date.DateUtil;
@@ -40,6 +39,8 @@ public class StudentInfoController {
 
     private final ICourseReserveInfoService courseReserveInfoService;
 
+    private final IBulletinInfoService bulletinInfoService;
+
     /**
      * 分页获取学生信息
      *
@@ -50,6 +51,43 @@ public class StudentInfoController {
     @GetMapping("/page")
     public R page(Page<StudentInfo> page, StudentInfo studentInfo) {
         return R.ok(studentInfoService.queryStudentPage(page, studentInfo));
+    }
+
+    /**
+     * 查询用户信息详情【公告信息】
+     *
+     * @param id 主键ID
+     * @return 结果
+     */
+    @GetMapping("/selectBulletinDetail/{id}")
+    public R selectBulletinDetail(@PathVariable("id") Integer id) {
+        // 返回数据
+        LinkedHashMap<String, Object> result = new LinkedHashMap<String, Object>() {
+            {
+                put("user", null);
+                put("bulletin", Collections.emptyList());
+            }
+        };
+        StudentInfo userInfo = studentInfoService.getOne(Wrappers.<StudentInfo>lambdaQuery().eq(StudentInfo::getUserId, id));
+        if (userInfo == null) {
+            return R.ok(result);
+        }
+        result.put("user", userInfo);
+
+        if (userInfo.getClassId() == null) {
+            return R.ok(Collections.emptyList());
+        }
+        // 根据班级ID查询课程信息
+        List<LinkedHashMap<String, Object>> scheduleList = scheduleClassInfoService.queryScheduleList(userInfo.getClassId());
+        // 根据学生ID获取通过预约选课
+
+        List<LinkedHashMap<String, Object>> reserveList = courseReserveInfoService.queryScheduleElectiveList(id);
+        result.put("order", CollectionUtil.addAll(scheduleList, reserveList));
+
+        // 公告信息
+        List<BulletinInfo> bulletinInfoList = bulletinInfoService.list(Wrappers.<BulletinInfo>lambdaQuery().eq(BulletinInfo::getRackUp, "1"));
+        result.put("bulletin", bulletinInfoList);
+        return R.ok(result);
     }
 
     /**
@@ -103,7 +141,7 @@ public class StudentInfoController {
         // 根据班级ID查询课程信息
         List<LinkedHashMap<String, Object>> scheduleList = scheduleClassInfoService.queryScheduleList(studentInfo.getClassId());
         // 根据学生ID获取通过预约选课
-        List<LinkedHashMap<String, Object>> reserveList = courseReserveInfoService.queryCourseReserveInfo(studentId);
+        List<LinkedHashMap<String, Object>> reserveList = courseReserveInfoService.queryScheduleElectiveList(studentId);
         return R.ok(CollectionUtil.addAll(scheduleList, reserveList));
     }
 

@@ -135,19 +135,6 @@ export default {
         ellipsis: true,
         dataIndex: 'enterpriseName'
       }, {
-        title: '消息状态',
-        dataIndex: 'delFlag',
-        customRender: (text, row, index) => {
-          switch (text) {
-            case '0':
-              return <a-tag>未读</a-tag>
-            case '1':
-              return <a-tag color="blue">已读</a-tag>
-            default:
-              return '- -'
-          }
-        }
-      }, {
         title: '发送时间',
         dataIndex: 'createDate'
       }]

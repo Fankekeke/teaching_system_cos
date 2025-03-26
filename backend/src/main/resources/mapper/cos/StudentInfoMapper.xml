@@ -39,7 +39,10 @@
             AND si.name LIKE CONCAT('%',#{studentInfo.staffName},'%')
         </if>
         <if test="studentInfo.staffId != null and studentInfo.staffId != ''">
-            AND si.user_id = #{studentInfo.staffId},
+            AND si.user_id = #{studentInfo.staffId}
+        </if>
+        <if test="studentInfo.studentId != null and studentInfo.studentId != ''">
+            AND stui.user_id = #{studentInfo.studentId}
         </if>
         order by stui.create_date desc
     </select>
@@ -75,6 +78,6 @@
         <foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
             #{item}
         </foreach>
-        stui.create_date desc
+        ORDER BY stui.create_date desc
     </select>
 </mapper>

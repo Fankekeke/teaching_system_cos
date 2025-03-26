@@ -77,14 +77,14 @@
       </a-row>
       <br/>
       <a-row style="padding-left: 24px;padding-right: 24px;" v-if="staffList.length !== 0">
-        <a-col style="margin-bottom: 15px"><span style="font-size: 15px;font-weight: 650;color: #000c17">选修课表邀请人</span></a-col>
+        <a-col style="margin-bottom: 15px"><span style="font-size: 15px;font-weight: 650;color: #000c17">本次课程分数</span></a-col>
         <a-row :gutter="15">
           <a-col :span="6" v-for="(item, index) in staffList" :key="index">
             <a-card :bordered="false">
-              <a-card-meta :title="item.name" :description="item.deptName + '-' + item.positionName">
+              <a-card-meta :title="item.studentName" :description="item.score + '分'">
                 <a-avatar
                   slot="avatar"
-                  :src="'http://127.0.0.1:9527/imagesWeb/' + item.images.split(',')[0]"
+                  :src="'http://127.0.0.1:9527/imagesWeb/' + item.studentImages.split(',')[0]"
                 />
               </a-card-meta>
             </a-card>
@@ -144,10 +144,16 @@ export default {
     dishesShow: function (value) {
       if (value) {
         this.imagesInit(this.dishesData.staffImages)
+        this.queryScheduleScoreRecord(this.dishesData.id)
       }
     }
   },
   methods: {
+    queryScheduleScoreRecord (id) {
+      this.$get('/cos/elective-score-record/queryElectiveScoreRecord', {electiveId: id}).then((r) => {
+        this.staffList = r.data.data
+      })
+    },
     queryStaffListByCondition (id) {
       this.$get('/cos/schedule-elective-info/queryStaffListByCondition', {conditionId: id}).then((r) => {
         this.staffList = r.data.data

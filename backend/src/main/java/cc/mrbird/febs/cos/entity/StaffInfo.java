@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.io.Serializable;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import lombok.Data;
@@ -113,6 +114,9 @@ public class StaffInfo implements Serializable {
      * 岗位管理
      */
     private Integer positionId;
+
+    @TableField(exist = false)
+    private Integer staffId;
 
 
 }

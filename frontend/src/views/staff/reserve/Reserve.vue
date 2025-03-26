@@ -222,14 +222,14 @@ export default {
         centered: true,
         onOk () {
           record.status = '1'
-          that.$put('/cos/course-reserve-info', record).then(() => {
+          that.$put('/cos/course-reserve-info/auditReserve', record).then(() => {
             that.$message.success('审核成功')
             that.search()
           })
         },
         onCancel () {
           record.status = '2'
-          that.$put('/cos/course-reserve-info', record).then(() => {
+          that.$put('/cos/course-reserve-info/auditReserve', record).then(() => {
             that.$message.success('审核成功')
             that.search()
           })

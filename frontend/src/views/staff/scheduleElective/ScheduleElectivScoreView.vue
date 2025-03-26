@@ -1,8 +1,11 @@
 <template>
-  <a-modal v-model="show" title="选修课表详情" @cancel="onClose" :width="1000">
+  <a-modal v-model="show" title="成绩填写" @cancel="onClose" :width="1000">
     <template slot="footer">
       <a-button key="back" @click="onClose" type="danger">
         关闭
+      </a-button>
+      <a-button key="back1" @click="saveScore" type="primary">
+        提交
       </a-button>
     </template>
     <div style="font-size: 13px;font-family: SimHei" v-if="dishesData !== null">
@@ -46,50 +49,28 @@
       </a-row>
       <br/>
       <br/>
-      <a-row style="padding-left: 24px;padding-right: 24px;">
-        <a-col :span="24"><b>选修课表内容：</b>
-          {{ dishesData.content }}
+      <a-row style="padding-left: 24px;padding-right: 24px;" v-if="dataList.length !== 0">
+        <a-col style="margin-bottom: 15px"><span style="font-size: 15px;font-weight: 650;color: #000c17">班级分数</span></a-col>
+        <a-col style="margin-bottom: 15px">
+          <a-alert message="必须填写规范" banner />
+          <a-table :columns="columns" :data-source="dataList" :pagination="false">
+            <template slot="nameShow" slot-scope="text, record">
+              <span>{{ record.name }}</span>
+            </template>
+            <template slot="classNameShow" slot-scope="text, record">
+              <span>{{ record.className }}</span>
+            </template>
+            <template slot="majorNameShow" slot-scope="text, record">
+              <span>{{ record.majorName }}</span>
+            </template>
+            <template slot="phoneShow" slot-scope="text, record">
+              <span>{{ record.phone }}</span>
+            </template>
+            <template slot="scoreShow" slot-scope="text, record">
+              <a-input-number v-model="record.score" :min="0" :step="1"/>
+            </template>
+          </a-table>
         </a-col>
-      </a-row>
-      <br/>
-      <a-row style="padding-left: 24px;padding-right: 24px;">
-        <a-col :span="8"><b>创建时间：</b>
-          {{ dishesData.createDate }}
-        </a-col>
-      </a-row>
-      <br/>
-      <a-row style="padding-left: 24px;padding-right: 24px;">
-        <a-col style="margin-bottom: 15px"><span style="font-size: 15px;font-weight: 650;color: #000c17">图册</span></a-col>
-        <a-col :span="24">
-          <a-upload
-            name="avatar"
-            action="http://127.0.0.1:9527/file/fileUpload/"
-            list-type="picture-card"
-            :file-list="fileList"
-            @preview="handlePreview"
-            @change="picHandleChange"
-          >
-          </a-upload>
-          <a-modal :visible="previewVisible" :footer="null" @cancel="handleCancel">
-            <img alt="example" style="width: 100%" :src="previewImage" />
-          </a-modal>
-        </a-col>
-      </a-row>
-      <br/>
-      <a-row style="padding-left: 24px;padding-right: 24px;" v-if="staffList.length !== 0">
-        <a-col style="margin-bottom: 15px"><span style="font-size: 15px;font-weight: 650;color: #000c17">本次课程分数</span></a-col>
-        <a-row :gutter="15">
-          <a-col :span="6" v-for="(item, index) in staffList" :key="index">
-            <a-card :bordered="false">
-              <a-card-meta :title="item.studentName" :description="item.score + '分'">
-                <a-avatar
-                  slot="avatar"
-                  :src="'http://127.0.0.1:9527/imagesWeb/' + item.studentImages.split(',')[0]"
-                />
-              </a-card-meta>
-            </a-card>
-          </a-col>
-        </a-row>
       </a-row>
     </div>
   </a-modal>
@@ -124,6 +105,41 @@ export default {
       },
       set: function () {
       }
+    },
+    columns () {
+      return [{
+        title: '学生姓名',
+        dataIndex: 'name',
+        scopedSlots: {customRender: 'nameShow'}
+      }, {
+        title: '头像',
+        dataIndex: 'images',
+        customRender: (text, record, index) => {
+          if (!record.images) return <a-avatar shape="square" icon="user" />
+          return <a-popover>
+            <template slot="content">
+              <a-avatar shape="square" size={132} icon="user" src={ 'http://127.0.0.1:9527/imagesWeb/' + record.images.split(',')[0] } />
+            </template>
+            <a-avatar shape="square" icon="user" src={ 'http://127.0.0.1:9527/imagesWeb/' + record.images.split(',')[0] } />
+          </a-popover>
+        }
+      }, {
+        title: '所属班级',
+        dataIndex: 'className',
+        scopedSlots: {customRender: 'classNameShow'}
+      }, {
+        title: '所属专业',
+        dataIndex: 'majorName',
+        scopedSlots: {customRender: 'majorNameShow'}
+      }, {
+        title: '联系方式',
+        dataIndex: 'phone',
+        scopedSlots: {customRender: 'phoneShow'}
+      }, {
+        title: '分数',
+        dataIndex: 'score',
+        scopedSlots: {customRender: 'scoreShow'}
+      }]
     }
   },
   data () {
@@ -134,7 +150,7 @@ export default {
       previewImage: '',
       repairInfo: null,
       reserveInfo: null,
-      durgList: [],
+      dataList: [],
       staffList: [],
       logisticsList: [],
       userInfo: null
@@ -143,20 +159,14 @@ export default {
   watch: {
     dishesShow: function (value) {
       if (value) {
-        this.imagesInit(this.dishesData.staffImages)
-        this.queryScheduleScoreRecord(this.dishesData.id)
+        this.queryStaffListByCondition(this.dishesData.id)
       }
     }
   },
   methods: {
-    queryScheduleScoreRecord (id) {
-      this.$get('/cos/elective-score-record/queryElectiveScoreRecord', {electiveId: id}).then((r) => {
-        this.staffList = r.data.data
-      })
-    },
     queryStaffListByCondition (id) {
-      this.$get('/cos/schedule-elective-info/queryStaffListByCondition', {conditionId: id}).then((r) => {
-        this.staffList = r.data.data
+      this.$get('/cos/schedule-elective-info/queryScheduleElectiveStudentList', {id: id}).then((r) => {
+        this.dataList = r.data.data
       })
     },
     local (dishesData) {
@@ -190,6 +200,24 @@ export default {
     },
     picHandleChange ({ fileList }) {
       this.fileList = fileList
+    },
+    saveScore () {
+      if (this.dataList.length === 0) {
+        this.$message.error('请填写学生信息')
+        return false
+      }
+      this.dataList.forEach((item, index) => {
+        item.studentId = item.id
+        item.courseId = this.dishesData.courseId
+        item.electiveId = this.dishesData.id
+      })
+      this.$post('/cos/elective-score-record/batchSaveScore', {
+        courseId: this.dishesData.courseId,
+        electiveId: this.dishesData.id,
+        scoreDataStr: JSON.stringify(this.dataList)
+      }).then((r) => {
+        this.$emit('success')
+      })
     },
     onClose () {
       this.$emit('close')

@@ -93,7 +93,7 @@
         </a-col>
         <a-col :span="12">
           <a-form-item label='所属部门' v-bind="formItemLayout">
-            <a-select v-decorator="[
+            <a-select disabled v-decorator="[
               'deptId',
               { rules: [{ required: true, message: '请输入所属部门!' }] }
               ]">
@@ -103,7 +103,7 @@
         </a-col>
         <a-col :span="12">
           <a-form-item label='所属岗位' v-bind="formItemLayout">
-            <a-select v-decorator="[
+            <a-select disabled v-decorator="[
               'positionId',
               { rules: [{ required: true, message: '请输入所属岗位!' }] }
               ]">
@@ -113,7 +113,7 @@
         </a-col>
         <a-col :md="6" :sm="24">
           <a-form-item label='所属系' v-bind="formItemLayout">
-            <a-select style="width: 100%" v-decorator="[
+            <a-select disabled style="width: 100%" v-decorator="[
             'tieId',
             { rules: [{ required: true, message: '请输入所属系!' }] }
             ]">
@@ -123,7 +123,7 @@
         </a-col>
         <a-col :md="6" :sm="24">
           <a-form-item label='所属专业' v-bind="formItemLayout">
-            <a-select style="width: 100%" v-decorator="[
+            <a-select disabled style="width: 100%" v-decorator="[
             'majorId',
             { rules: [{ required: true, message: '请输入所属专业!' }] }
             ]">

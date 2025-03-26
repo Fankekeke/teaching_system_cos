@@ -3,8 +3,10 @@ package cc.mrbird.febs.cos.controller;
 
 import cc.mrbird.febs.common.utils.R;
 import cc.mrbird.febs.cos.entity.ScheduleClassInfo;
+import cc.mrbird.febs.cos.entity.ScheduleScoreRecord;
 import cc.mrbird.febs.cos.entity.ScheduleTemplateInfo;
 import cc.mrbird.febs.cos.service.IScheduleClassInfoService;
+import cc.mrbird.febs.cos.service.IScheduleScoreRecordService;
 import cc.mrbird.febs.cos.service.IScheduleTemplateInfoService;
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.date.DateField;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 课表模板 控制层
@@ -33,6 +36,8 @@ public class ScheduleTemplateInfoController {
     private final IScheduleTemplateInfoService scheduleTemplateInfoService;
 
     private final IScheduleClassInfoService scheduleClassInfoService;
+
+    private final IScheduleScoreRecordService scheduleScoreRecordService;
 
     /**
      * 分页获取课表模板信息
@@ -94,7 +99,13 @@ public class ScheduleTemplateInfoController {
         }
         String date = DateUtil.format(new Date(), "yyyy-MM");
         // 先删除本月课表
+        List<ScheduleClassInfo> scheduleClassInfoListMonth = scheduleClassInfoService.list(Wrappers.<ScheduleClassInfo>lambdaQuery().apply("date_format(course_date, '%Y-%m') = date_format(curdate(), '%Y-%m')"));
         scheduleClassInfoService.remove(Wrappers.<ScheduleClassInfo>lambdaQuery().apply("date_format(course_date, '%Y-%m') = date_format(curdate(), '%Y-%m')"));
+        // 删除成绩信息
+        if (CollectionUtil.isNotEmpty(scheduleClassInfoListMonth)) {
+            List<Integer> scheduleIds = scheduleClassInfoListMonth.stream().map(ScheduleClassInfo::getId).collect(Collectors.toList());
+            scheduleScoreRecordService.remove(Wrappers.<ScheduleScoreRecord>lambdaQuery().in(ScheduleScoreRecord::getScheduleId, scheduleIds));
+        }
 
         // 待添加的课表信息
         List<ScheduleClassInfo> scheduleClassInfoList = CollectionUtil.newArrayList();
@@ -113,11 +124,9 @@ public class ScheduleTemplateInfoController {
                     scheduleClassInfo.setCourseDate(DateUtil.formatDateTime(dateTime));
                     scheduleClassInfo.setStartTime(scheduleTemplate.getStartTime());
                     scheduleClassInfo.setEndTime(scheduleTemplate.getEndTime());
-
                     scheduleClassInfoList.add(scheduleClassInfo);
                 }
             }
-
         }
         if (CollectionUtil.isNotEmpty(scheduleClassInfoList)) {
             scheduleClassInfoService.saveBatch(scheduleClassInfoList);
